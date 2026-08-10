@@ -1,35 +1,30 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import {
+  ENLACES_LEGALES,
+  ENLACES_NAVEGACION,
+  LINKEDIN_URL,
+} from "@/lib/navegacion";
 
 /**
  * Footer used by the service pages. Mirrors the live site's four-column layout
- * (brand + Explora / Legal / Síguenos) with a two-sided bottom bar. The Home
+ * (brand + Explore / Legal / Síguenos) with a two-sided bottom bar. The Home
  * keeps its own SiteFooter — these are deliberately different.
  */
-const COLUMNS = [
-  {
-    title: "Explora",
-    links: [
-      { label: "Informe de sostenibilidad", href: "/informe-de-sostenibilidad" },
-      { label: "Mapa del sitio", href: "/" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Términos y condiciones", href: "/legal/terminos-y-condiciones" },
-      { label: "Aviso de privacidad", href: "/legal/aviso-privacidad" },
-    ],
-  },
+/**
+ * Las dos primeras columnas salen de la fuente única de navegación: antes tenían
+ * su propia lista y por eso arrastraban el enlace roto a
+ * /informe-de-sostenibilidad/ y un "Mapa del sitio" que llevaba a la Home.
+ */
+const COLUMNS: {
+  title: string;
+  links: { label: string; href: string; external?: boolean }[];
+}[] = [
+  { title: "Explore", links: ENLACES_NAVEGACION },
+  { title: "Legal", links: ENLACES_LEGALES },
   {
     title: "Síguenos",
-    links: [
-      {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/company/responsable-asesoria-sostenibilidad-rse-esg",
-        external: true,
-      },
-    ],
+    links: [{ label: "LinkedIn", href: LINKEDIN_URL, external: true }],
   },
 ];
 

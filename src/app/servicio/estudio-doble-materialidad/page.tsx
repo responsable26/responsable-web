@@ -11,7 +11,8 @@ import {
   type Beneficio,
 } from "@/components/servicio/beneficios-carousel";
 
-const CANONICAL = "https://responsable.net/servicio/estudio-doble-materialidad/";
+const CANONICAL =
+  "https://responsable.net/servicio/estudio-doble-materialidad/";
 const DESCRIPTION =
   "Realizamos su estudio de doble materialidad: identificamos impactos, riesgos y oportunidades ASG y los convertimos en decisiones de negocio. Alineado a CSRD y ESRS.";
 
@@ -170,9 +171,24 @@ const BREADCRUMB_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://responsable.net/" },
-    { "@type": "ListItem", position: 2, name: "Servicios", item: "https://responsable.net/" },
-    { "@type": "ListItem", position: 3, name: "Estudio de Doble Materialidad", item: CANONICAL },
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: "https://responsable.net/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Servicios",
+      item: "https://responsable.net/",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Estudio de Doble Materialidad",
+      item: CANONICAL,
+    },
   ],
 };
 
@@ -197,7 +213,10 @@ export default function EstudioDobleMaterialidadPage() {
           videoSrc="/responsable-back.mp4"
           videoPoster="/responsable-back-poster.jpg"
         >
-          <nav aria-label="Ruta de navegación" className="font-body text-[0.9rem]">
+          <nav
+            aria-label="Ruta de navegación"
+            className="font-body text-[0.9rem]"
+          >
             <ol className="flex flex-wrap items-center gap-2 text-white/70">
               <li>
                 <Link href="/" className="hover:text-white">
@@ -227,12 +246,12 @@ export default function EstudioDobleMaterialidadPage() {
           </p>
           <p className="font-body mt-4 max-w-2xl text-white/80">
             Cuando todos los temas de sostenibilidad parecen importantes,
-            priorizar se vuelve difícil. El estudio de doble materialidad ayuda a
-            distinguir qué impactos genera la empresa sobre las personas y el
+            priorizar se vuelve difícil. El estudio de doble materialidad ayuda
+            a distinguir qué impactos genera la empresa sobre las personas y el
             medio ambiente, y qué riesgos y oportunidades pueden afectar su
-            desempeño financiero. En ResponSable convertimos ese análisis en foco
-            estratégico para decidir dónde actuar, qué reportar y cómo asignar
-            mejor los recursos.
+            desempeño financiero. En ResponSable convertimos ese análisis en
+            foco estratégico para decidir dónde actuar, qué reportar y cómo
+            asignar mejor los recursos.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -290,7 +309,10 @@ export default function EstudioDobleMaterialidadPage() {
         </section>
 
         {/* ---------------------- TEMAS MATERIALES CLAROS ---------------------- */}
-        <section id="por-que-importa" className="bg-off-white py-[var(--section-y)]">
+        <section
+          id="por-que-importa"
+          className="bg-off-white py-[var(--section-y)]"
+        >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <div className="grid items-center gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[2fr_1fr]">
               <div>
@@ -304,16 +326,16 @@ export default function EstudioDobleMaterialidadPage() {
                   El principal beneficio es dejar de gestionar la sostenibilidad
                   como una lista extensa de temas. La empresa distingue qué
                   asuntos exigen acción inmediata, cuáles pueden afectar su
-                  desempeño financiero y dónde existen oportunidades que conviene
-                  desarrollar.
+                  desempeño financiero y dónde existen oportunidades que
+                  conviene desarrollar.
                 </p>
                 <p className="font-body mt-4 max-w-[60ch] text-[1.15rem] text-ink-soft">
                   Así, puede enfocar recursos, justificar presupuesto, definir
                   responsabilidades e indicadores y sostener sus decisiones con
                   mayor trazabilidad ante Dirección. Cuando se consulta a grupos
-                  de interés, el análisis también incorpora expectativas externas
-                  y ayuda a anticipar tensiones que una mirada exclusivamente
-                  interna podría pasar por alto.
+                  de interés, el análisis también incorpora expectativas
+                  externas y ayuda a anticipar tensiones que una mirada
+                  exclusivamente interna podría pasar por alto.
                 </p>
               </div>
               {/* Pending asset: assets/img/mundo_responsable.webp */}

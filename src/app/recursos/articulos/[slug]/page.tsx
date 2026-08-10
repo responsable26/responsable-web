@@ -66,7 +66,10 @@ export default async function ArticuloPage(
   );
   const conIndice = total >= 2;
   const categoria = articulo.categorias[0];
-  const relacionados = ARTICULOS.filter((a) => a.slug !== articulo.slug).slice(0, 3);
+  const relacionados = ARTICULOS.filter((a) => a.slug !== articulo.slug).slice(
+    0,
+    3,
+  );
 
   const ARTICLE_JSON_LD = {
     "@context": "https://schema.org",

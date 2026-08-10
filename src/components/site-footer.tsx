@@ -2,24 +2,11 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { Newsletter } from "@/components/newsletter";
 import { ContactButton } from "@/components/contact-button";
-
-/* Navegación principal. "Home" se mueve aquí desde "Más Información": es
-   navegación, no información complementaria. */
-const COLUMNA_NOSOTROS = [
-  { label: "Home", href: "/" },
-  { label: "Nosotros", href: "/nosotros" },
-  { label: "Centro de Recursos", href: "/recursos" },
-  { label: "Informe de Sostenibilidad", href: "/informe-de-sostenibilidad" },
-  { label: "Términos y Condiciones", href: "/legal/terminos-y-condiciones" },
-  { label: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
-];
-
-/* "Mapa del Sitio" estaba en las dos columnas; queda solo en esta. */
-const COLUMNA_INFO = [
-  { label: "Mapa del Sitio", href: "/" },
-  { label: "Términos y Condiciones", href: "/legal/terminos-y-condiciones" },
-  { label: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
-];
+import {
+  ENLACES_LEGALES,
+  ENLACES_NAVEGACION,
+  LINKEDIN_URL,
+} from "@/lib/navegacion";
 
 export function SiteFooter() {
   return (
@@ -39,18 +26,23 @@ export function SiteFooter() {
             <Logo className="h-8 w-auto text-white" />
             <p className="font-body mt-4 text-sm text-white/75">
               ResponSable es una agencia de sostenibilidad que acompaña a las
-              empresas a llevar su estrategia de RSE, la doble materialidad
-              y la gestión social al corazón del negocio, para generar valor
-              real y fortalecer su resiliencia.
+              empresas a llevar su estrategia de RSE, la doble materialidad y la
+              gestión social al corazón del negocio, para generar valor real y
+              fortalecer su resiliencia.
             </p>
             <a
-              href="https://www.linkedin.com/company/responsable-asesoria-sostenibilidad-rse-esg"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn de ResponSable"
               className="mt-5 inline-flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="size-4" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-4"
+                aria-hidden="true"
+              >
                 <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.86 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12M7.12 20.45H3.56V9h3.56z" />
               </svg>
             </a>
@@ -65,9 +57,11 @@ export function SiteFooter() {
           </div>
 
           <div className="basis-40">
-            <h3 className="font-head text-sm font-semibold text-white">Nosotros</h3>
+            <h3 className="font-head text-sm font-semibold text-white">
+              Nosotros
+            </h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {COLUMNA_NOSOTROS.map((link) => (
+              {ENLACES_NAVEGACION.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
@@ -81,9 +75,11 @@ export function SiteFooter() {
           </div>
 
           <div className="basis-40">
-            <h3 className="font-head text-sm font-semibold text-white">Más Información</h3>
+            <h3 className="font-head text-sm font-semibold text-white">
+              Más Información
+            </h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {COLUMNA_INFO.map((link) => (
+              {ENLACES_LEGALES.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}

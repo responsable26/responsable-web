@@ -14,7 +14,7 @@ export function Newsletter() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-magenta px-8 py-10 sm:px-12">
       <h2 className="font-head text-2xl font-semibold text-white sm:text-3xl">
-        Suscríbete al Newsletter
+        Suscríbase al Newsletter
       </h2>
 
       <form className="flex flex-wrap gap-3">

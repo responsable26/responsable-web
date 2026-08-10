@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { ContactModalProvider } from "@/context/contact-modal-context";
 import { ContactModal } from "@/components/contact-modal/contact-modal";
+import { ScrollSuave } from "@/components/scroll-suave";
 import "./globals.css";
 
 /*
@@ -35,11 +36,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="es"
-      className={`${poppins.variable} h-full antialiased`}
-    >
+    <html lang="es" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        <ScrollSuave />
         <ContactModalProvider>
           {children}
           <ContactModal />

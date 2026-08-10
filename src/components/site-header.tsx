@@ -17,16 +17,26 @@ import { useContactModal } from "@/context/contact-modal-context";
 const NAV_LINKS: {
   label: string;
   href: string;
-  activa: (ruta: string) => boolean;
+  /**
+   * `seccion` es el id de la sección que ocupa el centro del viewport, o null.
+   * Hace falta porque "Servicios" apunta a un ancla dentro de la Home: por ruta
+   * siempre sería "/" y nunca se marcaría.
+   */
+  activa: (ruta: string, seccion: string | null) => boolean;
 }[] = [
-  { label: "Home", href: "/", activa: (r) => r === "/" },
   {
     label: "Servicios",
     // PROVISIONAL: /servicio/ es todavía un stub sin contenido, así que apunta
     // al ancla de la sección de servicios de la Home. Cambiar a "/servicio/"
     // en cuanto esa página exista.
     href: "/#servicios",
-    activa: (r) => r.startsWith("/servicio"),
+    activa: (r, seccion) =>
+      r.startsWith("/servicio") || seccion === "servicios",
+  },
+  {
+    label: "Casos de Éxito",
+    href: "/casos-de-exito/",
+    activa: (r) => r.startsWith("/casos-de-exito"),
   },
   {
     label: "Conócenos",
@@ -39,11 +49,6 @@ const NAV_LINKS: {
     // Cubre el índice y cada artículo individual, que cuelgan de /recursos/.
     activa: (r) => r.startsWith("/recursos"),
   },
-];
-
-const LEGAL_LINKS = [
-  { label: "Términos y Condiciones", href: "/legal/terminos-y-condiciones" },
-  { label: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
 ];
 
 export type AnchorLink = { label: string; href: string };
@@ -80,6 +85,44 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
     principal a la vista.
   */
   const navContextual = Boolean(anchors?.length);
+
+  /*
+    Sección que ocupa la franja central del viewport. Solo existe #servicios y
+    solo en la Home; en el resto de páginas el observador no encuentra nada y el
+    estado se queda en null, que es lo correcto.
+  */
+  const [seccionVisible, setSeccionVisible] = useState<string | null>(null);
+
+  useEffect(() => {
+    const seccion = document.getElementById("servicios");
+    if (!seccion) return;
+    const observador = new IntersectionObserver(
+      ([entrada]) =>
+        setSeccionVisible(entrada.isIntersecting ? "servicios" : null),
+      // Banda central: la sección se marca cuando el lector la tiene delante,
+      // no cuando asoma por un borde.
+      { rootMargin: "-35% 0px -35% 0px" },
+    );
+    observador.observe(seccion);
+    /*
+      El reinicio va en la limpieza y no en el cuerpo del efecto: al navegar a
+      una página sin #servicios, la limpieza del efecto anterior corre antes que
+      el nuevo, así que el estado no se queda colgado del último marcado.
+    */
+    return () => {
+      observador.disconnect();
+      setSeccionVisible(null);
+    };
+  }, [ruta]);
+
+  /*
+    Origen del último clic, para que el anillo de foco no aparezca con ratón.
+    Un <a> nativo resuelve bien :focus-visible al pulsarlo, pero al navegar a un
+    ancla de la misma página el foco se reposiciona por vía programática y el
+    navegador enciende la marca de focus-visible. Quitando el foco cuando el
+    clic vino de un puntero, el teclado conserva su anillo y el ratón no.
+  */
+  const clicConPuntero = useRef(false);
 
   useEffect(() => {
     let queued = false;
@@ -149,7 +192,7 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
       <div
         className={`mx-auto flex items-center justify-between gap-4 lg:gap-14 transition-[max-width,border-radius,background-color,box-shadow,padding] duration-300 ease-out ${
           scrolled
-            ? "max-w-[24rem] rounded-full bg-navy px-3 py-2.5 shadow lg:max-w-[58rem] lg:px-8"
+            ? "max-w-[24rem] rounded-full bg-navy px-3 py-2.5 shadow lg:max-w-[54rem] lg:px-8"
             : `max-w-full rounded-none px-[clamp(1rem,4vw,2.5rem)] py-4 ${
                 transparent ? "bg-transparent" : "bg-navy"
               }`
@@ -215,19 +258,6 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
                 </li>
               ))}
             </ul>
-            <ul className="mt-2 flex flex-col border-t border-border pt-2">
-              {LEGAL_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="font-body block rounded-sm px-3 py-2 text-sm text-ink-soft hover:bg-off-white hover:text-navy"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </nav>
         </div>
 
@@ -237,12 +267,20 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
             className="hidden items-center gap-6 lg:flex"
           >
             {NAV_LINKS.map((link) => {
-              const activa = link.activa(ruta);
+              const activa = link.activa(ruta, seccionVisible);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   aria-current={activa ? "page" : undefined}
+                  onPointerDown={() => {
+                    clicConPuntero.current = true;
+                  }}
+                  onClick={(event) => {
+                    if (!clicConPuntero.current) return;
+                    clicConPuntero.current = false;
+                    event.currentTarget.blur();
+                  }}
                   className={`font-head rounded-sm text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-white ${
                     activa
                       ? "text-white underline decoration-magenta decoration-2 underline-offset-8"

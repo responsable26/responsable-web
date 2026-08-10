@@ -244,3 +244,16 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Lenis. Las tres reglas que pide la librería para que el scroll real no pelee
+   con el scroll-behavior nativo ni con alturas heredadas. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}

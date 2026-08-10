@@ -42,15 +42,15 @@ export const CUADRANTES: Cuadrante[] = [
     pregunta: "¿Dónde Estoy?",
     colorToken: "amarillo",
     intro:
-      "Ya sea que tu empresa apenas comience en sostenibilidad o lleve años trabajando en ella, siempre vale la pena detenerse y mirar con rigor dónde está hoy. Evaluamos lo que se está haciendo, qué tan bien está funcionando y qué impacto está generando.",
+      "Ya sea que su empresa apenas comience en sostenibilidad o lleve años trabajando en ella, siempre vale la pena detenerse y mirar con rigor dónde está hoy. Evaluamos lo que se está haciendo, qué tan bien está funcionando y qué impacto está generando.",
     servicios: [
       {
         nombre: "Benchmark en Sostenibilidad",
         descripcion:
           "Situamos a su empresa frente a competidores y líderes de mercado para ver con precisión qué la separa del liderazgo. El resultado no es un comparativo más, sino perspectiva para decidir dónde conviene diferenciarse.",
         puntos: [
-          "Comparamos tu desempeño frente a competidores y líderes de mercado.",
-          "Identificamos qué te separa del liderazgo en sostenibilidad.",
+          "Comparamos su desempeño frente a competidores y líderes de mercado.",
+          "Identificamos qué lo separa del liderazgo en sostenibilidad.",
           "Revelamos fortalezas, rezagos y oportunidades de diferenciación.",
           "Detectamos prácticas que hoy ya son estándar en el mercado.",
           "Traducimos el benchmark en perspectiva estratégica para decidir mejor.",
@@ -61,10 +61,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Medimos el retorno social de sus programas y convertimos los resultados en evidencia que resiste el escrutinio. Con ella podrá decidir en qué iniciativas invertir, cuáles ajustar y cuáles sostener en el tiempo.",
         puntos: [
-          "Mide el retorno social de programas e iniciativas",
-          "Traduce resultados sociales en evidencia defendible",
-          "Identifica qué programas generan mayor valor social",
-          "Fortalece decisiones sobre inversión, mejora y continuidad",
+          "Medimos el retorno social de sus programas e iniciativas.",
+          "Traducimos los resultados sociales en evidencia defendible.",
+          "Identificamos qué programas generan mayor valor social.",
+          "Fortalecemos las decisiones sobre inversión, mejora y continuidad.",
         ],
       },
       {
@@ -72,10 +72,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Este análisis conecta su inversión social con los drivers del negocio y ordena la asignación de recursos sobre supuestos trazables, hasta sostener un caso de negocio que Dirección y Finanzas puedan revisar.",
         puntos: [
-          "Mide el retorno sobre la inversión social",
-          "Conecta programas sociales con drivers de negocio",
-          "Prioriza recursos con evidencia y supuestos trazables",
-          "Construye un caso de negocio para Dirección y Finanzas",
+          "Medimos el retorno sobre su inversión social.",
+          "Conectamos los programas sociales con los drivers del negocio.",
+          "Priorizamos recursos con evidencia y supuestos trazables.",
+          "Construimos un caso de negocio para Dirección y Finanzas.",
         ],
       },
       {
@@ -83,7 +83,7 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Analizamos el entorno social donde opera su empresa y fijamos una línea base contra la cual medir después. Con ese punto de partida, las decisiones de inversión y relacionamiento dejan de apoyarse en percepciones sueltas.",
         puntos: [
-          "Analizamos el contexto social en el que opera tu empresa.",
+          "Analizamos el contexto social en el que opera su empresa.",
           "Identificamos percepciones, expectativas y tensiones relevantes.",
           "Detectamos factores que pueden fortalecer o debilitar la relación con la comunidad.",
           "Establecemos una línea base para medir evolución, impacto y riesgos sociales.",
@@ -95,10 +95,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "¿Qué tan madura es realmente su gestión de sostenibilidad? Contrastamos lo que está definido con lo que ocurre en la operación y con los referentes del sector, y cerramos con prioridades en términos de negocio.",
         puntos: [
-          "Evalúa el nivel real de madurez en sostenibilidad",
-          "Contrasta la gestión interna con referentes del sector",
-          "Detecta brechas entre lo definido y lo que ocurre en la operación",
-          "Convierte resultados en prioridades y recomendaciones de negocio.",
+          "Evaluamos el nivel real de madurez en sostenibilidad.",
+          "Contrastamos su gestión interna con referentes del sector.",
+          "Detectamos las brechas entre lo definido y lo que ocurre en la operación.",
+          "Convertimos los resultados en prioridades y recomendaciones de negocio.",
         ],
       },
       {
@@ -117,9 +117,9 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Revisamos su portafolio social completo: qué tan conocido es, qué tan alineado está con los objetivos del negocio y qué tan consistente resulta en conjunto. La salida le indica qué escalar, qué ajustar y qué cerrar.",
         puntos: [
-          "Hacemos visible qué tan conocida, útil y relevante es tu inversión social.",
-          "Verificamos la alineación de tus iniciativas con los objetivos del negocio.",
-          "Analizamos la lógica, pertinencia y consistencia de tu portafolio social.",
+          "Hacemos visible qué tan conocida, útil y relevante es su inversión social.",
+          "Verificamos la alineación de sus iniciativas con los objetivos del negocio.",
+          "Analizamos la lógica, pertinencia y consistencia de su portafolio social.",
           "Identificamos qué iniciativas conviene ajustar, escalar o cerrar.",
           "Recomendamos dónde concentrar recursos para maximizar valor estratégico.",
           "Damos argumentos sólidos para defender presupuestos y fortalecer decisiones futuras.",
@@ -130,10 +130,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Evaluamos su gestión contra las siete materias fundamentales de la ISO 26000, distinguiendo lo que está documentado de lo que de verdad se aplica, se mide y se comunica. Las brechas salen ordenadas por prioridad.",
         puntos: [
-          "Evalúa las siete materias fundamentales de ISO 26000",
-          "Analiza qué está definido, documentado, aplicado, medido y comunicado",
-          "Detecta políticas o prácticas que las áreas todavía no conocen",
-          "Convierte fortalezas y brechas en prioridades de mejora",
+          "Evaluamos las siete materias fundamentales de la ISO 26000.",
+          "Analizamos qué está definido, documentado, aplicado, medido y comunicado.",
+          "Detectamos políticas o prácticas que las áreas todavía no conocen.",
+          "Convertimos fortalezas y brechas en prioridades de mejora.",
         ],
       },
     ],
@@ -143,7 +143,7 @@ export const CUADRANTES: Cuadrante[] = [
     pregunta: "¿Adónde Voy?",
     colorToken: "magenta",
     intro:
-      "Cuando el punto de partida es claro, el siguiente paso es definir el rumbo. Te ayudamos a visualizar hacia dónde debe avanzar tu empresa, qué ambición tiene sentido plantear y qué prioridades estratégicas pueden generar mayor valor para el negocio y su entorno.",
+      "Cuando el punto de partida es claro, el siguiente paso es definir el rumbo. Le ayudamos a visualizar hacia dónde debe avanzar su empresa, qué ambición tiene sentido plantear y qué prioridades estratégicas pueden generar mayor valor para el negocio y su entorno.",
     servicios: [
       {
         nombre: "Estudio de Doble Materialidad",
@@ -151,10 +151,10 @@ export const CUADRANTES: Cuadrante[] = [
           "Determinamos qué temas son materiales para su empresa y para sus grupos de interés, integrando la mirada de impacto con la financiera. El resultado orienta estrategia, gestión de riesgos e informe de sostenibilidad.",
         href: "/servicio/estudio-doble-materialidad/",
         puntos: [
-          "Identifica temas materiales para el negocio y sus grupos de interés",
-          "Integra materialidad de impacto y materialidad financiera",
-          "Orienta estrategia, riesgos e informe de sostenibilidad",
-          "Adapta el alcance según presupuesto, madurez y nivel de consulta.",
+          "Identificamos los temas materiales para el negocio y para sus grupos de interés.",
+          "Integramos la materialidad de impacto y la financiera.",
+          "Orientamos estrategia, riesgos e informe de sostenibilidad.",
+          "Adaptamos el alcance a su presupuesto, madurez y nivel de consulta.",
         ],
       },
       {
@@ -211,10 +211,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Definimos qué comunicar, a quién y con qué evidencia detrás. Ordenamos mensajes, públicos y canales, y fijamos los límites que separan un avance bien contado de una afirmación que su empresa no puede sostener.",
         puntos: [
-          "Define qué comunicar, a quién y con qué evidencia",
-          "Compara tu comunicación con el sector y líderes",
-          "Ordena mensajes, públicos, canales, riesgos y límites",
-          "Evita exagerar avances o esconder información relevante",
+          "Definimos qué comunicar, a quién y con qué evidencia.",
+          "Comparamos su comunicación con la del sector y la de los líderes.",
+          "Ordenamos mensajes, públicos, canales, riesgos y límites.",
+          "Evitamos exagerar avances u ocultar información relevante.",
         ],
       },
     ],
@@ -224,17 +224,17 @@ export const CUADRANTES: Cuadrante[] = [
     pregunta: "¿Cómo lo Hago?",
     colorToken: "lavanda",
     intro:
-      "Tener claridad no basta. Hay que traducirla en acción. Diseñamos la ruta, las capacidades y las herramientas necesarias para que la sostenibilidad se implemente de forma ordenada, creíble y alineada con la realidad de tu empresa.",
+      "Tener claridad no basta. Hay que traducirla en acción. Diseñamos la ruta, las capacidades y las herramientas necesarias para que la sostenibilidad se implemente de forma ordenada, creíble y alineada con la realidad de su empresa.",
     servicios: [
       {
         nombre: "Distintivo ESR",
         descripcion:
           "Acompañamos su postulación al Distintivo ESR en la medida en que usted decida delegar. Coordinamos áreas, responsables y fechas, y documentamos las prácticas que ya existen para que el área no cargue sola con el proceso.",
         puntos: [
-          "Elija cuánto acompañamiento y trabajo delegar",
-          "Coordina áreas, responsables y fechas",
-          "Documenta mejor prácticas que ya existen",
-          "Reduce retrabajos y carga para sostenibilidad",
+          "Ajustamos cuánto acompañamiento y trabajo delega usted.",
+          "Coordinamos áreas, responsables y fechas.",
+          "Documentamos las mejores prácticas que ya existen.",
+          "Reducimos retrabajos y carga para el área de sostenibilidad.",
         ],
       },
       {
@@ -254,7 +254,7 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "No todos los reconocimientos valen lo que cuestan. Analizamos cuáles convienen a su empresa por metodología, reputación e inversión, y ordenamos la evidencia y la participación interna para llegar con solidez.",
         puntos: [
-          "Te acompañamos en la obtención de reconocimientos y certificaciones relevantes.",
+          "Lo acompañamos en la obtención de reconocimientos y certificaciones relevantes.",
           "Analizamos cuáles realmente convienen por metodología, reputación e inversión.",
           "Ordenamos evidencia, procesos y participación interna para avanzar con solidez.",
           "Ayudamos a involucrar a distintas áreas en un objetivo común.",
@@ -289,10 +289,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Formación con contenido ajustado a cada nivel jerárquico y ejemplos tomados de las áreas de su empresa. La imparten consultores en ejercicio, en formatos que van de la sensibilización al programa aplicado.",
         puntos: [
-          "Contenido adaptado a cada nivel jerárquico",
-          "Casos de negocio y ejemplos de sus áreas",
-          "Facilitadores con experiencia real en consultoría",
-          "Formatos desde sensibilización hasta programas aplicados",
+          "Adaptamos el contenido a cada nivel jerárquico.",
+          "Usamos casos de negocio y ejemplos de sus propias áreas.",
+          "Impartimos con facilitadores que ejercen la consultoría.",
+          "Cubrimos formatos que van de la sensibilización al programa aplicado.",
         ],
       },
       {
@@ -312,10 +312,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Apoyo continuo para ordenar prioridades y hacer avanzar pendientes sin contratar cada proyecto por separado. Se ajusta por horas, por periodo o como iguala mensual, según lo que su operación requiera en cada momento.",
         puntos: [
-          "Ordena prioridades y proyectos de sostenibilidad",
-          "Avanza tareas puntuales sin contratar cada proyecto por separado",
-          "Reciba guía experta, seguimiento y retroalimentación",
-          "Adapta el acompañamiento por horas, periodo o iguala mensual",
+          "Ordenamos sus prioridades y proyectos de sostenibilidad.",
+          "Avanzamos tareas puntuales sin que contrate cada proyecto por separado.",
+          "Damos guía experta, seguimiento y retroalimentación.",
+          "Adaptamos el acompañamiento por horas, por periodo o como iguala mensual.",
         ],
       },
     ],
@@ -325,17 +325,17 @@ export const CUADRANTES: Cuadrante[] = [
     pregunta: "¿Cómo Comunico?",
     colorToken: "teal",
     intro:
-      "Lo que no se comunica con claridad pierde fuerza. Te ayudamos a traducir avances, compromisos y resultados en mensajes sólidos, relevantes y creíbles, que fortalezcan la confianza, la reputación y el valor de tu empresa ante sus grupos de interés.",
+      "Lo que no se comunica con claridad pierde fuerza. Le ayudamos a traducir avances, compromisos y resultados en mensajes sólidos, relevantes y creíbles, que fortalezcan la confianza, la reputación y el valor de su empresa ante sus grupos de interés.",
     servicios: [
       {
         nombre: "Estrategia de Sostenibilidad",
         descripcion:
           "Convertimos lo que su empresa ya sabe —materialidad, benchmark, tendencias— en pilares, objetivos y líneas de acción alineados con la visión del negocio, priorizados con criterios de factibilidad y no por orden de llegada.",
         puntos: [
-          "Define pilares, objetivos y líneas de acción",
-          "Alinea sostenibilidad con visión de negocio",
-          "Convierte estudios de materialidad, benchmark y tendencias en estrategia accionable",
-          "Prioriza acciones con criterios de factibilidad",
+          "Definimos pilares, objetivos y líneas de acción.",
+          "Alineamos la sostenibilidad con la visión del negocio.",
+          "Convertimos estudios de materialidad, benchmark y tendencias en estrategia accionable.",
+          "Priorizamos las acciones con criterios de factibilidad.",
         ],
       },
       {
@@ -343,10 +343,10 @@ export const CUADRANTES: Cuadrante[] = [
         descripcion:
           "Estructuramos la información, los indicadores y los avances de su empresa en un informe alineado con su estrategia, sus grupos de interés y los estándares. Puede tomarse completo, como brief o en modalidad coach.",
         puntos: [
-          "Estructura información, indicadores y avances de sostenibilidad.",
-          "Alinea el informe a estrategia, grupos de interés y estándares.",
-          "Fortalece narrativa, redacción, diseño y comunicación.",
-          "Puede realizarse como informe completo, brief o modalidad coach.",
+          "Estructuramos información, indicadores y avances de sostenibilidad.",
+          "Alineamos el informe con su estrategia, sus grupos de interés y los estándares.",
+          "Fortalecemos narrativa, redacción, diseño y comunicación.",
+          "Lo realizamos como informe completo, como brief o en modalidad coach.",
         ],
       },
       {
@@ -355,11 +355,11 @@ export const CUADRANTES: Cuadrante[] = [
           "Materiales complementarios que extienden el alcance de su informe y de su estrategia de comunicación. Adaptamos cada pieza al mensaje, la audiencia y el canal, sin que ganar alcance se pague con una pérdida de rigor.",
         noEnlazable: true,
         puntos: [
-          "Transformamos tus avances en piezas que hacen la sostenibilidad más visible, clara y atractiva.",
-          "Desarrollamos materiales complementarios que amplifican el valor del informe y de tu estrategia de comunicación.",
+          "Transformamos sus avances en piezas que hacen la sostenibilidad más visible, clara y atractiva.",
+          "Desarrollamos materiales complementarios que amplifican el valor del informe y de su estrategia de comunicación.",
           "Adaptamos cada soporte al mensaje, la audiencia y el canal más adecuado.",
           "Ayudamos a comunicar con mayor fuerza sin perder rigor ni consistencia.",
-          "Damos herramientas para que tu sostenibilidad llegue más lejos y conecte mejor.",
+          "Damos herramientas para que su sostenibilidad llegue más lejos y conecte mejor.",
         ],
       },
     ],

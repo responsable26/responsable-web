@@ -21,11 +21,11 @@ export function CtaContacto() {
       <div className="relative mx-auto flex max-w-[var(--container)] flex-wrap items-center justify-between gap-8">
         <div className="max-w-xl">
           <h2 className="font-head text-3xl font-semibold text-magenta sm:text-4xl">
-            Convierte la sostenibilidad en una decisión estratégica de negocio
+            Convierta la sostenibilidad en una decisión estratégica de negocio
           </h2>
           <p className="font-body mt-4 text-ink-soft">
-            Anticipa riesgos, fortalece tu relación con grupos de interés y
-            enfoca tus recursos en lo que realmente protege la operación y
+            Anticipe riesgos, fortalezca su relación con los grupos de interés y
+            enfoque sus recursos en lo que realmente protege la operación y
             genera valor.
           </p>
         </div>

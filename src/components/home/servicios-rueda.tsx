@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ChevronIcon } from "@/components/icons";
 import { ServicioModal } from "@/components/home/servicio-modal";
+import { desplazarA } from "@/lib/scroll-suave";
 import { CUADRANTES, type Cuadrante, type Servicio } from "@/lib/servicios";
 
 /* ───────────────────────── geometría de la rueda ─────────────────────────
@@ -96,8 +97,15 @@ function trazadoEtiqueta({ desde, hasta, invertido }: Sector) {
      lavanda  #738ac8  ink 4.96    -> ink, navy se queda en 4.09
      teal     #1ab39f  navy 5.27   -> navy
 
-   Se repite aquí porque la sección de pestañas no se puede tocar. Si las dos
-   conviven de forma definitiva, este mapa debería vivir en un único sitio.
+   Este mapa es ya el único del proyecto: la sección de pestañas que lo
+   duplicaba se eliminó.
+
+   El acento usa border-l-<color> y no border-<color>: la tarjeta lleva también
+   border-border para su contorno, y Tailwind emite las utilidades de color de
+   borde en orden alfabético. `border-amarillo` caía antes que `border-border` y
+   perdía, mientras que las otras tres caían después y ganaban — de ahí que solo
+   la tarjeta amarilla se quedara sin barra. border-left-color es una propiedad
+   distinta y no compite con el contorno.
 */
 const COLORES: Record<
   Cuadrante["colorToken"],
@@ -107,25 +115,25 @@ const COLORES: Record<
     relleno: "fill-amarillo",
     texto: "fill-navy",
     trazo: "stroke-navy",
-    acento: "border-amarillo",
+    acento: "border-l-amarillo",
   },
   magenta: {
     relleno: "fill-magenta",
     texto: "fill-white",
     trazo: "stroke-white",
-    acento: "border-magenta",
+    acento: "border-l-magenta",
   },
   lavanda: {
     relleno: "fill-lavanda",
     texto: "fill-ink",
     trazo: "stroke-ink",
-    acento: "border-lavanda",
+    acento: "border-l-lavanda",
   },
   teal: {
     relleno: "fill-teal",
     texto: "fill-navy",
     trazo: "stroke-navy",
-    acento: "border-teal",
+    acento: "border-l-teal",
   },
 };
 
@@ -256,10 +264,7 @@ export function ServiciosRueda() {
     const centroObjetivo = margen + disponible / 2;
     const delta = caja.top + caja.height / 2 - centroObjetivo;
 
-    window.scrollTo({
-      top: Math.max(0, window.scrollY + delta),
-      behavior: sinMovimiento() ? "auto" : "smooth",
-    });
+    desplazarA(Math.max(0, window.scrollY + delta), !sinMovimiento());
   }
 
   function abrirServicio(servicio: Servicio, boton: HTMLButtonElement) {
@@ -332,7 +337,20 @@ export function ServiciosRueda() {
   }
 
   return (
-    <section className="bg-off-white px-6 py-[var(--section-y)] lg:px-10">
+    /* id="servicios" es el destino del enlace «Servicios» del header y del
+       «Conozca más» de Intro. Vivía en la sección de pestañas, hoy eliminada. */
+    <section
+      id="servicios"
+      /*
+        Padding superior reducido respecto al resto de secciones, y a propósito:
+        el fondo off-white arranca justo aquí, así que el borde ya marca el
+        inicio y no hace falta que --section-y lo repita. La sección anterior
+        aporta además su propio padding inferior, de modo que con el valor
+        completo se acumulaban dos separaciones y el eyebrow quedaba muy lejos
+        del borde de color. El inferior sí conserva el ritmo del sitio.
+      */
+      className="bg-off-white px-6 pt-[clamp(2.25rem,5vw,4rem)] pb-[var(--section-y)] lg:px-10"
+    >
       {/*
         Esta sección usa el contenedor ancho y no el estándar de 1120px: la
         rueda ocupa 540px fijos en el centro, así que con el contenedor normal
@@ -377,7 +395,7 @@ export function ServiciosRueda() {
             solo dibuja la rueda en el centro, así que sin esto su caja
             transparente se traga los clics de todo lo que quede debajo.
           */}
-          <div className="relative lg:sticky lg:top-[calc(50vh-260px)] lg:self-center lg:[grid-area:1/1] lg:pointer-events-none">
+          <div className="relative lg:sticky lg:top-[calc(50vh-210px)] lg:self-center lg:[grid-area:1/1] lg:pointer-events-none">
             <div
               className={`flex w-full justify-center transition-transform duration-500 ease-out ${
                 lado === "derecha"
@@ -392,7 +410,7 @@ export function ServiciosRueda() {
                 viewBox="0 0 400 400"
                 role="group"
                 aria-label="Rueda de servicios por cuadrante"
-                className="pointer-events-auto block w-full max-w-[340px] sm:max-w-[520px]"
+                className="pointer-events-auto block w-full max-w-[300px] sm:max-w-[420px]"
               >
                 {SECTORES.map((sector, index) => {
                   const cuadrante = CUADRANTES[index];
@@ -500,7 +518,7 @@ export function ServiciosRueda() {
                       efectivo cae con él.
                     */}
                       <text
-                        className={`font-head [font-size:19px] font-semibold sm:[font-size:16px] ${color.texto}`}
+                        className={`font-head [font-size:19px] font-semibold sm:[font-size:17px] ${color.texto}`}
                         dominantBaseline="middle"
                         textAnchor="middle"
                       >
@@ -535,7 +553,7 @@ export function ServiciosRueda() {
                   aria-hidden="true"
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className={`font-body [font-size:15px] fill-ink-soft transition-opacity duration-300 sm:[font-size:13px] ${
+                  className={`font-body [font-size:16px] fill-ink-soft transition-opacity duration-300 sm:[font-size:13px] ${
                     activo === null ? "opacity-100" : "opacity-0"
                   }`}
                 >

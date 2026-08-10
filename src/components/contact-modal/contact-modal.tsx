@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContactModal } from "@/context/contact-modal-context";
 import { CloseIcon } from "@/components/icons";
+import { pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
 import { FormField } from "@/components/contact-modal/form-field";
 
 type FormValues = {
@@ -57,6 +58,9 @@ export function ContactModal() {
     if (!isOpen) return;
 
     document.body.style.overflow = "hidden";
+    // El overflow del body no basta con Lenis: su bucle sigue moviendo el
+    // documento aunque el body no desborde.
+    pausarScroll();
     closeButtonRef.current?.focus();
 
     function onKeyDown(e: KeyboardEvent) {
@@ -66,6 +70,7 @@ export function ContactModal() {
 
     return () => {
       document.body.style.overflow = "";
+      reanudarScroll();
       document.removeEventListener("keydown", onKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,8 +137,8 @@ export function ContactModal() {
             Contáctanos
           </h2>
           <p className="font-body mt-4 max-w-md text-ink-soft">
-            Agradecemos tu interés en ResponSable. Elije entre las siguientes
-            opciones, nos comunicaremos contigo tan pronto como sea posible.
+            Agradecemos su interés en ResponSable. Elija entre las siguientes
+            opciones, nos comunicaremos con usted tan pronto como sea posible.
           </p>
           <Image
             src="/modal.webp"
@@ -202,7 +207,7 @@ export function ContactModal() {
 
               <div className="field field--full flex flex-col gap-1.5 sm:col-span-2">
                 <label htmlFor="mensaje" className="font-head text-[0.8rem] font-medium text-white/90">
-                  Escribe más información de tu solicitud
+                  Escriba más información de su solicitud
                 </label>
                 <textarea
                   id="mensaje"
@@ -255,7 +260,7 @@ export function ContactModal() {
 
             {status === "error" ? (
               <div className="modal__form-error rounded-sm border border-[rgba(255,90,122,0.5)] bg-[rgba(255,90,122,0.15)] px-4 py-3 text-sm text-[#ffd5dd]">
-                Ocurrió un error al enviar tu información. Por favor intenta de
+                Ocurrió un error al enviar su información. Por favor, inténtelo de
                 nuevo.
               </div>
             ) : null}
@@ -266,8 +271,8 @@ export function ContactModal() {
                   ✓
                 </span>
                 <p className="font-body text-sm text-white">
-                  ¡Gracias! Tu información fue enviada correctamente. Nos
-                  pondremos en contacto contigo pronto.
+                  ¡Gracias! Su información fue enviada correctamente. Nos
+                  pondremos en contacto con usted pronto.
                 </p>
               </div>
             ) : (

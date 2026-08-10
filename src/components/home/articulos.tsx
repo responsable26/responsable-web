@@ -154,7 +154,7 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
               Últimos Artículos
             </h2>
             <p className="font-body mt-4 max-w-[60ch] text-ink-soft">
-              Ideas que transforman el impacto en acción. Explora nuestros
+              Ideas que transforman el impacto en acción. Explore nuestros
               artículos sobre Sostenibilidad y Responsabilidad Social
               Empresarial.
             </p>
@@ -213,6 +213,10 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
       */}
       <div
         ref={scrollerRef}
+        /* Lenis calcula la orientación de cada gesto: con este atributo cede
+           los horizontales a esta pista y conserva los verticales para la
+           página, así que el snap y el trackpad siguen funcionando. */
+        data-lenis-prevent-horizontal=""
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}

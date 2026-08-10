@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useState, type MouseEvent } from "react";
 import { ChevronIcon } from "@/components/icons";
+import { desplazarA } from "@/lib/scroll-suave";
 import type { EntradaIndice } from "@/lib/indice-articulo";
 
 /** Desplaza hasta el ancla dejando libre la altura del header fijo. */
@@ -14,7 +15,9 @@ function irAlAncla(id: string) {
   const sinMovimiento = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
-  window.scrollTo({ top, behavior: sinMovimiento ? "auto" : "smooth" });
+  // Pasa por Lenis cuando existe: un window.scrollTo nativo pelearía con su
+  // bucle y el desplazamiento saldría a tirones.
+  desplazarA(top, !sinMovimiento);
   // replaceState y no location.hash: asignar el hash provoca un salto nativo
   // que anularía el desplazamiento suave que acabamos de lanzar.
   history.replaceState(null, "", `#${id}`);

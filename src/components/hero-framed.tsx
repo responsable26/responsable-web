@@ -16,7 +16,11 @@ type HeroFramedProps = {
  * the copy inside that sits in the shared --container. Constraining the card to
  * --container instead made the hero read as inset compared to the live site.
  */
-export function HeroFramed({ children, videoSrc, videoPoster }: HeroFramedProps) {
+export function HeroFramed({
+  children,
+  videoSrc,
+  videoPoster,
+}: HeroFramedProps) {
   return (
     <section className="px-4 py-4 sm:px-7">
       {/* Viewport height minus the in-flow header (4.5rem) and the margins

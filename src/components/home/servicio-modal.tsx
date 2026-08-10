@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 import Link from "next/link";
 import { CloseIcon } from "@/components/icons";
+import { pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
 import { ContactButton } from "@/components/contact-button";
 import type { Servicio } from "@/lib/servicios";
 
@@ -34,6 +35,9 @@ export function ServicioModal({
     if (!servicio) return;
 
     document.body.style.overflow = "hidden";
+    // El overflow del body no basta con Lenis: su bucle sigue moviendo el
+    // documento aunque el body no desborde.
+    pausarScroll();
     cerrarRef.current?.focus();
 
     function onKeyDown(event: KeyboardEvent) {
@@ -62,6 +66,7 @@ export function ServicioModal({
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = "";
+      reanudarScroll();
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [servicio, onClose]);

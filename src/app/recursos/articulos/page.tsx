@@ -33,7 +33,7 @@ export default function ArticulosPage() {
             Artículos
           </h1>
           <p className="font-body mt-3 max-w-[60ch] text-[1.15rem] text-ink-soft">
-            Ideas que transforman el impacto en acción. Explora nuestros
+            Ideas que transforman el impacto en acción. Explore nuestros
             artículos sobre Sostenibilidad y Responsabilidad Social Empresarial.
           </p>
 

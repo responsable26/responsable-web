@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   trailingSlash: true,
+  images: {
+    /* Miniaturas de los videos testimoniales. Es el único origen remoto del
+       sitio; todo lo demás se sirve desde /public. */
+    remotePatterns: [{ protocol: 'https', hostname: 'i.ytimg.com' }],
+  },
   async redirects() {
     return [
       {
@@ -25,6 +30,10 @@ const nextConfig: NextConfig = {
       { source: '/mapa-del-sitio/', destination: '/', permanent: true },
       { source: '/gracias/', destination: '/', permanent: true },
       { source: '/historia/', destination: '/nosotros/', permanent: true },
+      /* Rutas del WordPress viejo que la auditoría de enlaces detectó como 404
+         y que corresponden a casos de éxito. */
+      { source: '/heineken/', destination: '/casos-de-exito/heineken-mexico/', permanent: true },
+      { source: '/confian-en-nosotros/', destination: '/casos-de-exito/', permanent: true },
     ];
   },
 };
