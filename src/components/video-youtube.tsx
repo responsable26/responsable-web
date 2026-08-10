@@ -95,7 +95,24 @@ export function VideoYoutube({
                 actual === maxres(id) ? respaldo(id) : actual,
               )
             }
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            /*
+              La escala 1.03 es el estado base, no un efecto: las miniaturas de
+              YouTube traen un filete negro pegado al borde —hasta 3px arriba y
+              abajo sobre los 720 del asset, y 1px a los lados en la de
+              HEINEKEN— que con object-cover en una caja 16:9 se veía tal cual,
+              porque imagen y caja tienen la misma proporción y no había nada
+              que recortar. 1.03 recorta un 1.46% por lado, muy por encima del
+              0.42% que hace falta para tapar el peor de esos filetes.
+
+              El hover sube a 1.06 para conservar la respuesta al cursor: es el
+              mismo salto de tres centésimas que había antes, ahora sobre la
+              nueva base. Recorta un 2.83% por lado, y el contenido más cercano
+              a un borde en los cinco casos está al 7.2% (el logo de HEINEKEN,
+              por abajo), así que no llega a tocar ni logotipos ni texto. El
+              disco de reproducción es un hermano en el DOM y no lo afecta
+              ninguna de las dos escalas.
+            */
+            className="scale-[1.03] object-cover transition-transform duration-300 group-hover:scale-[1.06]"
           />
           {/* Velo: sube el contraste del disco sobre miniaturas claras. */}
           <span className="absolute inset-0 bg-navy/25 transition-colors group-hover:bg-navy/10" />

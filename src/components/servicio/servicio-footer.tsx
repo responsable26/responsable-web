@@ -8,7 +8,7 @@ import {
 
 /**
  * Footer used by the service pages. Mirrors the live site's four-column layout
- * (brand + Explore / Legal / Síguenos) with a two-sided bottom bar. The Home
+ * (brand + Explore / Legal / Síganos) with a two-sided bottom bar. The Home
  * keeps its own SiteFooter — these are deliberately different.
  */
 /**
@@ -23,7 +23,7 @@ const COLUMNS: {
   { title: "Explore", links: ENLACES_NAVEGACION },
   { title: "Legal", links: ENLACES_LEGALES },
   {
-    title: "Síguenos",
+    title: "Síganos",
     links: [{ label: "LinkedIn", href: LINKEDIN_URL, external: true }],
   },
 ];

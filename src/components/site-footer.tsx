@@ -51,7 +51,7 @@ export function SiteFooter() {
                 /contacto/: el botón lo sustituye abriendo el modal. */}
             <div className="mt-6">
               <ContactButton variant="primary" size="sm">
-                Contáctanos
+                Contáctenos
               </ContactButton>
             </div>
           </div>

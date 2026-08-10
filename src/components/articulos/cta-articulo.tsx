@@ -20,7 +20,7 @@ export function CtaArticulo({
       <p className="font-head text-base font-semibold text-navy">{titulo}</p>
       <p className="font-body mt-2 text-sm text-ink-soft">{apoyo}</p>
       <ContactButton variant="primary" size="sm" className="mt-4">
-        Contáctanos
+        Contáctenos
       </ContactButton>
     </div>
   );

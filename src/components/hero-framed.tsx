@@ -5,6 +5,23 @@ type HeroFramedProps = {
   /** Background video source. Omit for the plain navy + gradients treatment. */
   videoSrc?: string;
   videoPoster?: string;
+  /**
+   * Colocación del contenido dentro de la tarjeta.
+   *
+   * `bottom` —el valor por defecto— es la composición original: el bloque se
+   * apoya en el borde inferior y la tarjeta ocupa casi el alto de la ventana.
+   * La conserva Estudio de Doble Materialidad, que se diseñó así.
+   *
+   * `center` centra el bloque en los dos ejes y baja el alto de la tarjeta. Con
+   * el contenido centrado, un alto de casi toda la ventana deja un vacío grande
+   * arriba y abajo; el tope de 34rem lo recorta sin impedir que la tarjeta
+   * crezca cuando el contenido no cabe, porque sigue siendo un mínimo.
+   *
+   * Es una prop y no un cambio del valor por defecto para que la página que ya
+   * existía no se vea afectada: sin pasarla, el componente se comporta igual que
+   * antes hasta el último píxel.
+   */
+  align?: "bottom" | "center";
 };
 
 /**
@@ -20,13 +37,20 @@ export function HeroFramed({
   children,
   videoSrc,
   videoPoster,
+  align = "bottom",
 }: HeroFramedProps) {
+  const centrado = align === "center";
+
   return (
     <section className="px-4 py-4 sm:px-7">
       {/* Viewport height minus the in-flow header (4.5rem) and the margins
           above and below (1.75rem each). */}
       <div
-        className="relative flex min-h-[calc(100svh-8rem)] flex-col justify-end overflow-hidden rounded-[22px] bg-navy"
+        className={`relative flex flex-col overflow-hidden rounded-[22px] bg-navy ${
+          centrado
+            ? "min-h-[min(calc(100svh-8rem),34rem)] justify-center"
+            : "min-h-[calc(100svh-8rem)] justify-end"
+        }`}
         style={
           videoSrc
             ? undefined
@@ -53,7 +77,14 @@ export function HeroFramed({
           </>
         ) : null}
 
-        <div className="relative z-20 mx-auto w-full max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)] py-10 sm:py-16">
+        {/* El padding se conserva en la variante centrada: cuando el contenido
+            supera el alto mínimo deja de haber holgura que centrar, y es lo
+            único que impide entonces que el texto toque el borde de la tarjeta. */}
+        <div
+          className={`relative z-20 mx-auto w-full max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)] py-10 sm:py-16 ${
+            centrado ? "text-center" : ""
+          }`}
+        >
           {children}
         </div>
       </div>

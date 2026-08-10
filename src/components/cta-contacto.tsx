@@ -36,7 +36,7 @@ export function CtaContacto() {
           introdujo entonces, para que lea como acción principal.
         */}
         <ContactButton variant="dark" size="lg">
-          Contáctanos
+          Contáctenos
         </ContactButton>
       </div>
     </section>

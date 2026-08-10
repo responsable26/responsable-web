@@ -451,7 +451,7 @@ export default function EstudioDobleMaterialidadPage() {
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
-              Sigue explorando
+              Siga explorando
             </p>
             <h2
               id="related-title"

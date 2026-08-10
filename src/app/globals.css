@@ -176,6 +176,126 @@ body {
   }
 }
 
+/* Banda de logos de clientes: marquesina de desplazamiento continuo.
+
+   El bucle es solo CSS y no acumula desfase: la pista contiene la secuencia dos
+   veces y la animación va de translate3d(0) a translate3d(-50%), que sobre el
+   ancho de la pista es exactamente una secuencia. Al reiniciarse, el fotograma
+   final y el inicial dibujan lo mismo, así que no hay corte visible ni deriva
+   por más vueltas que dé —no hay contador ni medida en JS que se desajuste—.
+
+   Se anima solo transform: no toca layout ni dispara scrollLeft, así que corre
+   en el compositor y no compite con Lenis. */
+@layer components {
+  .marquee {
+    /* Referencia de medida para el ancho de cada hueco: 100cqw es el ancho de
+       esta tarjeta, de modo que 100cqw / --marquee-visibles da exactamente los
+       logos a la vista que se piden, sin medir nada en JS. */
+    container-type: inline-size;
+    /* El recorte de los logos contra los bordes de la tarjeta. Va aquí y no como
+       utilidad de Tailwind porque la regla de movimiento reducido de más abajo
+       necesita reabrir el eje X, y una utilidad ganaría siempre a esa media
+       query por estar en una capa posterior. */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* Referencia para los desvanecidos de los bordes. */
+    position: relative;
+  }
+
+  /* Desvanecido de los bordes: los logos entran y salen hacia el blanco de la
+     tarjeta en lugar de cortarse a ras.
+
+     Son dos veladuras encima de la pista, no una máscara sobre la tarjeta: una
+     máscara volvería translúcido también su fondo blanco y por ahí asomaría el
+     navy de la sección. Y no pueden ir sobre la pista, que está en movimiento:
+     el desvanecido tiene que quedarse quieto en el borde.
+
+     El ancho es proporcional a la tarjeta (5cqw) con un suelo de 2rem para que
+     en móvil no se quede por debajo del hueco entre logos y el efecto se pierda.
+     Sale más estrecho que el margen lateral de un hueco en los tres tamaños
+     —56px sobre 224 en desktop, 38 sobre 256 en tablet, 32 sobre 180 en móvil—,
+     así que solo cubre el aire entre logos y el borde del que está entrando:
+     ningún logo enteramente a la vista queda velado, y el central menos aún. Por
+     eso tampoco baja el número de logos legibles a la vez.
+
+     pointer-events: none para no robarle el hover a la banda ni a los logos. */
+  .marquee::before,
+  .marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: max(2rem, 5cqw);
+    pointer-events: none;
+  }
+  .marquee::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-white), transparent);
+  }
+  .marquee::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-white), transparent);
+  }
+
+  .marquee-pista {
+    display: flex;
+    width: max-content;
+    /* 60s sobre una secuencia de ~1800px son unos 30px/s: velocidad de fondo,
+       lenta para no robar la lectura de la sección. */
+    animation: marquee-desplazar 60s linear infinite;
+  }
+
+  /* La pausa por hover es un cambio de play-state, no de posición: la animación
+     se congela y se reanuda en el mismo punto del ciclo. Por eso entrar y salir
+     rápido varias veces no produce salto: no hay estado propio que sincronizar. */
+  .marquee:hover .marquee-pista {
+    animation-play-state: paused;
+  }
+
+  .marquee-grupo {
+    display: flex;
+    flex: none;
+  }
+
+  .marquee-hueco {
+    flex: none;
+    width: calc(100cqw / var(--marquee-visibles, 5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 1.25rem;
+  }
+}
+
+@keyframes marquee-desplazar {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Con movimiento reducido no se desplaza nada. `animation: none` y no una
+   duración corta: la regla global de más arriba fuerza animation-duration a
+   0.01ms con !important, lo que aquí dejaría la pista saltando al -50% final.
+   Quitar el nombre de la animación la desactiva del todo, con o sin esa
+   duración.
+
+   La copia sobra sin movimiento —repetiría la lista sin motivo—, así que se
+   retira y el eje X se abre a scroll manual para llegar a los que no quepan. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-pista {
+    animation: none;
+  }
+  .marquee-copia {
+    display: none;
+  }
+}
+
 /* Interactividad: cursor y foco.
 
    Tailwind v3 traía en su preflight `button, [role="button"] { cursor: pointer }`.

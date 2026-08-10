@@ -66,6 +66,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Identificamos qué programas generan mayor valor social.",
           "Fortalecemos las decisiones sobre inversión, mejora y continuidad.",
         ],
+        href: "/servicio/sroi-social-return-on-investment/",
       },
       {
         nombre: "ROI de la inversión social",
@@ -77,6 +78,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Priorizamos recursos con evidencia y supuestos trazables.",
           "Construimos un caso de negocio para Dirección y Finanzas.",
         ],
+        href: "/servicio/roi-rentabilidad-de-la-sostenibilidad/",
       },
       {
         nombre: "Diagnóstico Social y Línea base comunitaria",
@@ -100,6 +102,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Detectamos las brechas entre lo definido y lo que ocurre en la operación.",
           "Convertimos los resultados en prioridades y recomendaciones de negocio.",
         ],
+        href: "/servicio/diagnostico-de-sostenibilidad/",
       },
       {
         nombre: "Mapeo de la Sostenibilidad en la Cadena de Valor",
@@ -135,6 +138,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Detectamos políticas o prácticas que las áreas todavía no conocen.",
           "Convertimos fortalezas y brechas en prioridades de mejora.",
         ],
+        href: "/servicio/iso-26000/",
       },
     ],
   },
@@ -216,6 +220,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Ordenamos mensajes, públicos, canales, riesgos y límites.",
           "Evitamos exagerar avances u ocultar información relevante.",
         ],
+        href: "/servicio/estrategia-de-comunicacion-en-sostenibilidad/",
       },
     ],
   },
@@ -236,6 +241,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Documentamos las mejores prácticas que ya existen.",
           "Reducimos retrabajos y carga para el área de sostenibilidad.",
         ],
+        href: "/servicio/distintivo-esr/",
       },
       {
         nombre: "Comité de Sostenibilidad",
@@ -294,6 +300,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Impartimos con facilitadores que ejercen la consultoría.",
           "Cubrimos formatos que van de la sensibilización al programa aplicado.",
         ],
+        href: "/servicio/cursos-talleres-para-empresas/",
       },
       {
         nombre: "Capacitación a la Medida",
@@ -317,6 +324,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Damos guía experta, seguimiento y retroalimentación.",
           "Adaptamos el acompañamiento por horas, por periodo o como iguala mensual.",
         ],
+        href: "/servicio/acompanamiento-sostenibilidad/",
       },
     ],
   },
@@ -337,6 +345,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Convertimos estudios de materialidad, benchmark y tendencias en estrategia accionable.",
           "Priorizamos las acciones con criterios de factibilidad.",
         ],
+        href: "/servicio/estrategia-sostenibilidad/",
       },
       {
         nombre: "Informe de Sostenibilidad",
@@ -348,6 +357,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Fortalecemos narrativa, redacción, diseño y comunicación.",
           "Lo realizamos como informe completo, como brief o en modalidad coach.",
         ],
+        href: "/servicio/informe-de-sostenibilidad/",
       },
       {
         nombre: "Adicionales",

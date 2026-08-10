@@ -323,7 +323,7 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
             onClick={open}
             className="font-head shrink-0 rounded bg-magenta px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#C71268] focus-visible:outline-white sm:px-5"
           >
-            Contáctanos
+            Contáctenos
           </button>
         </div>
       </div>

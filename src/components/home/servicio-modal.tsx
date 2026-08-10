@@ -127,7 +127,7 @@ export function ServicioModal({
                 justify-*: con un solo botón no queda hueco a la derecha. */}
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <ContactButton variant="primary" size="sm">
-                Contáctanos
+                Contáctenos
               </ContactButton>
 
               {enlazable ? (

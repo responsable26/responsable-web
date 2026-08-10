@@ -134,7 +134,7 @@ export function ContactModal() {
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
         <div className="modal__media flex flex-col bg-off-white px-8 py-16 sm:px-12">
           <h2 id="contact-modal-title" className="font-head text-4xl font-semibold text-navy">
-            Contáctanos
+            Contáctenos
           </h2>
           <p className="font-body mt-4 max-w-md text-ink-soft">
             Agradecemos su interés en ResponSable. Elija entre las siguientes
