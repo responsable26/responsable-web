@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
+/* §3 Espaciado y layout — sin namespace de utilidad equivalente en Tailwind v4,
+   se dejan como custom properties listas para usarse (p. ej. max-w-[var(--container)]). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --container: 1120px;
+  --section-y: clamp(3.5rem, 8vw, 6.5rem);
 }
 
+@theme {
+  /* §1 Paleta de colores */
+  --color-navy: #222955;
+  --color-magenta: #ea157a;
+  --color-teal: #17b3a3;
+  --color-off-white: #f7f7fb;
+  --color-white: #ffffff;
+  --color-ink: #1a1c2e;
+  --color-ink-soft: #4a4d63;
+  --color-border: #e5e6ef;
+  --color-amarillo: #feb80a;
+
+  /* Tonos derivados (rgba) */
+  --color-navy-90: rgba(34, 41, 85, 0.9);
+  --color-navy-08: rgba(34, 41, 85, 0.08);
+  --color-navy-04: rgba(34, 41, 85, 0.04);
+  --color-magenta-10: rgba(234, 21, 122, 0.1);
+  --color-teal-12: rgba(23, 179, 163, 0.12);
+
+  /* §3 Radios y sombras */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 12px 40px rgba(34, 41, 85, 0.1);
+  --shadow-sm: 0 4px 16px rgba(34, 41, 85, 0.08);
+}
+
+/* §2 Tipografía — referencian las variables inyectadas por next/font/google en layout.tsx */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-head: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-white);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+/* Headings were inheriting the body's 1.6, which is a body-copy value and left
+   multi-line titles looking like separate sentences. The live site uses 1.2 on
+   every heading level; that is the deliberate value, 1.6 was accidental.
+
+   Must live in @layer base: unlayered CSS outranks anything in Tailwind's
+   layers, so declaring this at top level silently beat every leading-* utility
+   (the Home H1 and "Nuestro Proceso" both lost their tighter values). */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.2;
+  }
 }
