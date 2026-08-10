@@ -6,16 +6,18 @@ type HeroFramedProps = {
   videoSrc?: string;
   videoPoster?: string;
   /**
-   * Colocación del contenido dentro de la tarjeta.
+   * Colocación VERTICAL del contenido dentro de la tarjeta. No toca el eje
+   * horizontal: el bloque se alinea a la izquierda en las dos variantes.
    *
    * `bottom` —el valor por defecto— es la composición original: el bloque se
    * apoya en el borde inferior y la tarjeta ocupa casi el alto de la ventana.
    * La conserva Estudio de Doble Materialidad, que se diseñó así.
    *
-   * `center` centra el bloque en los dos ejes y baja el alto de la tarjeta. Con
-   * el contenido centrado, un alto de casi toda la ventana deja un vacío grande
-   * arriba y abajo; el tope de 34rem lo recorta sin impedir que la tarjeta
-   * crezca cuando el contenido no cabe, porque sigue siendo un mínimo.
+   * `center` lo centra en el alto y baja el techo de la tarjeta. Las dos cosas
+   * van juntas: centrar el bloque dentro de un alto de casi toda la ventana
+   * repartiría a los lados el vacío que antes quedaba arriba, así que el tope
+   * de 34rem es lo que hace que el centrado se note. Sigue siendo un mínimo, de
+   * modo que la tarjeta crece cuando el contenido no cabe.
    *
    * Es una prop y no un cambio del valor por defecto para que la página que ya
    * existía no se vea afectada: sin pasarla, el componente se comporta igual que
@@ -79,12 +81,12 @@ export function HeroFramed({
 
         {/* El padding se conserva en la variante centrada: cuando el contenido
             supera el alto mínimo deja de haber holgura que centrar, y es lo
-            único que impide entonces que el texto toque el borde de la tarjeta. */}
-        <div
-          className={`relative z-20 mx-auto w-full max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)] py-10 sm:py-16 ${
-            centrado ? "text-center" : ""
-          }`}
-        >
+            único que impide entonces que el texto toque el borde de la tarjeta.
+
+            Sin text-center: la variante `center` es solo vertical. El mx-auto de
+            aquí centra el contenedor de ancho --container dentro de la tarjeta,
+            que es lo que ya hacía antes; el contenido se alinea a su izquierda. */}
+        <div className="relative z-20 mx-auto w-full max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)] py-10 sm:py-16">
           {children}
         </div>
       </div>

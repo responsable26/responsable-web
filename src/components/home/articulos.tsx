@@ -1,120 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { ChevronIcon } from "@/components/icons";
 import { ArticuloCard } from "@/components/articulos/articulo-card";
+import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
 import type { ArticuloMeta } from "@/lib/articulos";
 
-/**
- * Umbral en píxeles por debajo del cual un pointerdown+pointerup se considera
- * clic y no arrastre. 8 y no 5: al pulsar con el ratón la mano desplaza unos
- * pocos píxeles, y con el umbral justo un clic con pulso se leía como arrastre.
- * Sigue muy por debajo de lo que recorre cualquier arrastre intencionado.
- */
-const DRAG_THRESHOLD = 8;
-
 export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [dragging, setDragging] = useState(false);
-  const drag = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false });
-
-  function scrollByCard(direction: 1 | -1) {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-
-    /*
-      El paso se mide en cada clic en lugar de fijarse como constante: así sigue
-      siendo exacto si cambian el ancho de tarjeta, el gap, o si difieren por
-      breakpoint — y con el ancho fluido de abajo cambian en cada resize.
-      getBoundingClientRect conserva los subpíxeles (offsetWidth los redondea, y
-      el error se acumularía clic a clic).
-    */
-    const card = scroller.firstElementChild;
-    if (!card) return;
-    const gap = parseFloat(getComputedStyle(scroller).columnGap);
-    const step = card.getBoundingClientRect().width + (Number.isNaN(gap) ? 0 : gap);
-
-    scroller.scrollBy({ left: direction * step, behavior: "smooth" });
-  }
-
-  function onPointerDown(event: React.PointerEvent<HTMLDivElement>) {
-    // Solo ratón: en táctil y lápiz el scroll nativo ya funciona, y capturar el
-    // puntero ahí rompería el gesto propio del sistema.
-    if (event.pointerType !== "mouse") return;
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-
-    /*
-      Aquí solo se anota el punto de partida. Ni se captura el puntero ni se
-      tocan estilos: hasta que el umbral no se supera, esto todavía puede ser
-      un clic y no debe alterarse nada.
-    */
-    drag.current = {
-      active: true,
-      startX: event.clientX,
-      scrollLeft: scroller.scrollLeft,
-      moved: false,
-    };
-  }
-
-  function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
-    const state = drag.current;
-    const scroller = scrollerRef.current;
-    if (!state.active || !scroller) return;
-
-    const dx = event.clientX - state.startX;
-    if (!state.moved) {
-      if (Math.abs(dx) < DRAG_THRESHOLD) return;
-      state.moved = true;
-      setDragging(true);
-
-      /*
-        La captura del puntero se toma AQUÍ, al confirmarse el arrastre, y no en
-        pointerdown. Mientras hay captura activa el `click` posterior se despacha
-        al elemento que captura —la pista— y no al <a> de la tarjeta, así que
-        capturar antes de saber si había arrastre anulaba la navegación de todos
-        los clics, superasen o no el umbral.
-
-        Los dos estilos se desactivan también aquí y se restauran al soltar:
-        - scroll-snap-type mandatorio pelearía con cada asignación de scrollLeft
-          y el arrastre saldría a tirones. Al restaurarlo, encuadra solo.
-        - scroll-behavior: smooth animaría cada asignación, con lo que la pista
-          iría por detrás del cursor.
-      */
-      scroller.setPointerCapture(event.pointerId);
-      scroller.style.scrollSnapType = "none";
-      scroller.style.scrollBehavior = "auto";
-    }
-    scroller.scrollLeft = state.scrollLeft - dx;
-  }
-
-  function endDrag(event: React.PointerEvent<HTMLDivElement>) {
-    const scroller = scrollerRef.current;
-    if (!drag.current.active || !scroller) return;
-
-    drag.current.active = false;
-    setDragging(false);
-    // Solo hay algo que deshacer si el arrastre llegó a empezar.
-    if (scroller.hasPointerCapture(event.pointerId)) {
-      scroller.releasePointerCapture(event.pointerId);
-    }
-    // Quitar los inline styles devuelve el snap y el scroll suave de las clases;
-    // reponer el snap mandatorio es lo que encuadra la tarjeta al soltar.
-    scroller.style.scrollSnapType = "";
-    scroller.style.scrollBehavior = "";
-  }
-
-  /*
-    En fase de captura, antes de que el click llegue al <a> de la tarjeta: si
-    hubo arrastre se cancela la navegación. `moved` se limpia aquí y no en
-    endDrag porque el click se dispara después del pointerup.
-  */
-  function onClickCapture(event: React.MouseEvent<HTMLDivElement>) {
-    if (!drag.current.moved) return;
-    event.preventDefault();
-    event.stopPropagation();
-    drag.current.moved = false;
-  }
+  /* El arrastre, el snap y la barra oculta salen del hook compartido con
+     los pasos del proceso de las páginas de servicio. Aquí solo queda la
+     geometría propia de este carrusel: la sangría hasta el borde del
+     viewport y el ancho de tarjeta. */
+  const { ref, desplazarUnPaso, propsPista, clasesPista } =
+    usePistaArrastrable();
 
   return (
     /*
@@ -163,7 +60,7 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={() => scrollByCard(-1)}
+              onClick={() => desplazarUnPaso(-1)}
               aria-label="Artículo anterior"
               /*
                 Hover del botón circular con borde, calcado del carrusel de
@@ -177,7 +74,7 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
             </button>
             <button
               type="button"
-              onClick={() => scrollByCard(1)}
+              onClick={() => desplazarUnPaso(1)}
               aria-label="Artículo siguiente"
               /*
                 Hover del botón magenta sólido, con el mismo #C71268 que usan
@@ -212,24 +109,9 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
         -mt-4 = mt-6 anterior (24px) − py-10 (40px).
       */}
       <div
-        ref={scrollerRef}
-        /* Lenis calcula la orientación de cada gesto: con este atributo cede
-           los horizontales a esta pista y conserva los verticales para la
-           página, así que el snap y el trackpad siguen funcionando. */
-        data-lenis-prevent-horizontal=""
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onClickCapture={onClickCapture}
-        // Corta el arrastre nativo de enlaces e imágenes, que en un carrusel
-        // aparece como el "fantasma" del elemento pegado al cursor.
-        onDragStart={(event) => event.preventDefault()}
-        className={`-mt-4 -mb-10 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-[max(1.5rem,calc((100%-var(--container))/2))] py-10 scroll-pl-[max(1.5rem,calc((100%-var(--container))/2))] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
-          dragging
-            ? "cursor-grabbing select-none [&_a]:cursor-grabbing"
-            : "cursor-grab [&_a]:cursor-grab"
-        }`}
+        ref={ref}
+        {...propsPista}
+        className={`${clasesPista} -mt-4 -mb-10 gap-6 px-[max(1.5rem,calc((100%-var(--container))/2))] py-10 scroll-pl-[max(1.5rem,calc((100%-var(--container))/2))]`}
       >
         {articulos.map((articulo, index) => (
           /*

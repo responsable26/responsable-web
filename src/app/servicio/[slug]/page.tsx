@@ -7,6 +7,7 @@ import { HeroFramed } from "@/components/hero-framed";
 import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
 import { RelatedCard } from "@/components/related-card";
+import { ProcesoPasos } from "@/components/servicio/proceso-pasos";
 import {
   CONTENIDO_SERVICIOS,
   getContenidoServicio,
@@ -274,7 +275,7 @@ export default async function ServicioPage(
             aria-label="Ruta de navegación"
             className="font-body text-[0.9rem]"
           >
-            <ol className="flex flex-wrap items-center justify-center gap-2 text-white/70">
+            <ol className="flex flex-wrap items-center gap-2 text-white/70">
               <li>
                 <Link href="/" className="hover:text-white">
                   Inicio
@@ -296,29 +297,27 @@ export default async function ServicioPage(
           </nav>
 
           {/*
-            mx-auto en cada bloque además del text-center del contenedor: el
-            texto se centra solo dentro de su caja, pero la caja la sigue
-            limitando su max-w y sin mx-auto quedaría pegada a la izquierda.
+            Todo alineado a la izquierda, como el hero de Doble Materialidad. El
+            centrado de la variante `center` de HeroFramed es solo vertical.
 
-            La entradilla baja de max-w-2xl a 58 caracteres por línea. Centrada,
-            una medida de 84 caracteres —lo que da 2xl a este cuerpo— obliga al
-            ojo a saltos largos entre renglones; 58 la mantiene en medida de
-            lectura sin llegar a estrecharla en columna. Con la entradilla más
-            larga de los diez servicios, la de Estrategia de comunicación, salen
-            unas siete líneas, y con la más corta, la de Acompañamiento, algo
-            menos de dos.
+            La entradilla se queda en 58 caracteres por línea y no vuelve al
+            max-w-2xl de partida: a este cuerpo, 2xl da unos 84 caracteres, por
+            encima de la medida de lectura cómoda incluso alineado a la
+            izquierda. Con la entradilla más larga de los diez servicios, la de
+            Estrategia de comunicación, salen unas siete líneas; con la más
+            corta, la de Acompañamiento, algo menos de dos.
           */}
-          <h1 className="font-head mx-auto mt-5 max-w-3xl text-[clamp(2rem,4vw,2.75rem)] font-semibold text-white">
+          <h1 className="font-head mt-5 max-w-3xl text-[clamp(2rem,4vw,2.75rem)] font-semibold text-white">
             {hero.titulo}
           </h1>
-          <p className="font-body mx-auto mt-4 max-w-2xl text-[1.2rem] text-white/90">
+          <p className="font-body mt-4 max-w-2xl text-[1.2rem] text-white/90">
             {hero.subtitulo}
           </p>
-          <p className="font-body mx-auto mt-4 max-w-[58ch] text-white/80">
+          <p className="font-body mt-4 max-w-[58ch] text-white/80">
             {entradilla}
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="mt-8 flex flex-wrap gap-4">
             <ContactButton variant="primary">Solicitar propuesta</ContactButton>
             <a
               href="#proceso"
@@ -425,29 +424,9 @@ export default async function ServicioPage(
               </p>
             </div>
 
-            {/*
-              auto-fit y no un número fijo de columnas: los documentos traen
-              cuatro pasos o cinco, y una retícula de cuatro dejaría el quinto
-              solo en una segunda fila. Así el ancho de columna se reparte entre
-              los pasos que haya, sin clases condicionales.
-            */}
-            <div className="mt-12 rounded bg-white p-8 shadow sm:p-12">
-              <ol className="grid gap-8 [grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr))]">
-                {proceso.pasos.map((paso, indice) => (
-                  <li key={paso.titulo}>
-                    <span className="font-head flex size-11 items-center justify-center rounded-full bg-magenta text-lg font-bold text-white">
-                      {indice + 1}
-                    </span>
-                    <h3 className="font-head mt-4 text-[1.15rem] font-semibold text-navy">
-                      {paso.titulo}
-                    </h3>
-                    <p className="font-body mt-2 text-sm text-ink-soft">
-                      {paso.descripcion}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            </div>
+            {/* Rejilla hasta cuatro pasos, pista deslizable a partir de cinco.
+                La decisión y las dos disposiciones viven en el componente. */}
+            <ProcesoPasos pasos={proceso.pasos} />
           </div>
         </section>
 

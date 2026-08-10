@@ -244,7 +244,12 @@ export default function EstudioDobleMaterialidadPage() {
           <p className="font-body mt-4 max-w-2xl text-[1.2rem] text-white/90">
             Transforme impactos, riesgos y oportunidades en foco estratégico
           </p>
-          <p className="font-body mt-4 max-w-2xl text-white/80">
+          {/* 58 caracteres por línea, la misma medida que la entradilla del hero
+              de las diez páginas de servicio. max-w-2xl daba unos 84 a este
+              cuerpo, por encima de una medida de lectura cómoda. Solo cambia el
+              ancho del párrafo: la alineación inferior y el alto del hero se
+              conservan. */}
+          <p className="font-body mt-4 max-w-[58ch] text-white/80">
             Cuando todos los temas de sostenibilidad parecen importantes,
             priorizar se vuelve difícil. El estudio de doble materialidad ayuda
             a distinguir qué impactos genera la empresa sobre las personas y el
