@@ -1,17 +1,21 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { Newsletter } from "@/components/newsletter";
+import { ContactButton } from "@/components/contact-button";
 
+/* Navegación principal. "Home" se mueve aquí desde "Más Información": es
+   navegación, no información complementaria. */
 const COLUMNA_NOSOTROS = [
+  { label: "Home", href: "/" },
   { label: "Nosotros", href: "/nosotros" },
+  { label: "Centro de Recursos", href: "/recursos" },
   { label: "Informe de Sostenibilidad", href: "/informe-de-sostenibilidad" },
-  { label: "Mapa del Sitio", href: "/" },
-  { label: "Sigamos en contacto", href: "/contacto" },
   { label: "Términos y Condiciones", href: "/legal/terminos-y-condiciones" },
   { label: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
 ];
 
+/* "Mapa del Sitio" estaba en las dos columnas; queda solo en esta. */
 const COLUMNA_INFO = [
-  { label: "Home", href: "/" },
   { label: "Mapa del Sitio", href: "/" },
   { label: "Términos y Condiciones", href: "/legal/terminos-y-condiciones" },
   { label: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
@@ -21,6 +25,15 @@ export function SiteFooter() {
   return (
     <footer className="bg-[#181D3C] px-6 pt-16 pb-8 text-white">
       <div className="mx-auto max-w-[var(--container)]">
+        {/*
+          Ritmo del footer: el newsletter se separa de las columnas con el mismo
+          pb-16 que usa el pt-16 de <footer>, sin borde ni cambio de fondo, para
+          que ambos bloques se lean como una secuencia.
+        */}
+        <div className="pb-16">
+          <Newsletter />
+        </div>
+
         <div className="flex flex-wrap gap-12">
           <div className="max-w-sm basis-full sm:basis-[35%]">
             <Logo className="h-8 w-auto text-white" />
@@ -41,6 +54,14 @@ export function SiteFooter() {
                 <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.86 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12M7.12 20.45H3.56V9h3.56z" />
               </svg>
             </a>
+
+            {/* El footer se queda sin ruta de contacto al desaparecer
+                /contacto/: el botón lo sustituye abriendo el modal. */}
+            <div className="mt-6">
+              <ContactButton variant="primary" size="sm">
+                Contáctanos
+              </ContactButton>
+            </div>
           </div>
 
           <div className="basis-40">

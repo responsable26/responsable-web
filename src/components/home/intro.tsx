@@ -8,8 +8,17 @@ export function Intro() {
           text-balance evita el corte desbalanceado en mobile, donde el título
           pasa a dos o tres líneas.
         */}
-        <h2 className="font-head max-w-[60ch] text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-balance text-navy">
-          La sostenibilidad como decisión de negocio
+        {/*
+          El salto es explícito con <br>, no dependiente del ancho disponible.
+          text-balance se retira: repartiría las líneas por su cuenta y pelearía
+          con el corte fijo. En móvil el salto se mantiene y solo la segunda
+          línea puede plegarse, por palabras; la primera son dos palabras y no
+          se parte a ningún ancho razonable.
+        */}
+        <h2 className="font-head max-w-[60ch] text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-navy">
+          La sostenibilidad
+          <br />
+          como decisión de negocio
         </h2>
         <p className="font-body mt-6 max-w-[60ch] text-[1.15rem] text-ink-soft">
           Transformamos la sostenibilidad en inteligencia estratégica para el

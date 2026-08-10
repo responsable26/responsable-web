@@ -16,7 +16,12 @@ const nextConfig: NextConfig = {
       { source: '/news/:path*', destination: '/recursos/articulos/', permanent: true },
       { source: '/aviso-de-privacidad/', destination: '/legal/aviso-privacidad/', permanent: true },
       { source: '/terminos-y-condiciones/', destination: '/legal/terminos-y-condiciones/', permanent: true },
-      { source: '/sigamos-en-contacto/', destination: '/contacto/', permanent: true },
+      /* /contacto/ dejó de existir: el modal es el único canal. Ambos destinos
+         llevan a la Home con el parámetro que lo abre. El de
+         /sigamos-en-contacto/ ya existía apuntando a /contacto/ y se reapunta
+         aquí en lugar de añadir uno nuevo. */
+      { source: '/contacto/', destination: '/?contacto=1', permanent: true },
+      { source: '/sigamos-en-contacto/', destination: '/?contacto=1', permanent: true },
       { source: '/mapa-del-sitio/', destination: '/', permanent: true },
       { source: '/gracias/', destination: '/', permanent: true },
       { source: '/historia/', destination: '/nosotros/', permanent: true },

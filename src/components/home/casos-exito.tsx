@@ -78,7 +78,9 @@ export function CasosExito() {
               type="button"
               onClick={() => goTo(-1)}
               aria-label="Caso anterior"
-              className="flex size-11 items-center justify-center rounded-full bg-magenta text-white"
+              /* Mismo tratamiento que los controles del carrusel de artículos:
+                 hover #C71268, pulsado #A50E56 y transición de color. */
+              className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56]"
             >
               <ChevronIcon direction="left" className="size-5" />
             </button>
@@ -86,7 +88,7 @@ export function CasosExito() {
               type="button"
               onClick={() => goTo(1)}
               aria-label="Caso siguiente"
-              className="flex size-11 items-center justify-center rounded-full bg-magenta text-white"
+              className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56]"
             >
               <ChevronIcon direction="right" className="size-5" />
             </button>

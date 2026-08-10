@@ -122,6 +122,31 @@ Son **15 rutas distintas** en **38 notas**. La mayoría son páginas de servicio
 del sitio antiguo. Cuando se creen esas rutas los enlaces empiezan a funcionar solos; si alguna no se
 va a recrear, hay que decidir destino o quitar el enlace.
 
+### Enlaces a rutas retiradas del sitio
+
+`/contacto/` dejó de existir: el modal de contacto es el único canal. Los enlaces del cuerpo
+apuntaban a `/sigamos-en-contacto/`, el slug original de WordPress, y se reescriben en el pipeline
+a `/?contacto=1`, que abre el modal en la Home. Hay redirect permanente para ambas rutas, pero
+reescribirlos evita el salto.
+
+| Artículo | Antes | Ahora |
+|---|---|---|
+| `claves-integrar-doble-materialidad` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `como-construir-una-cadena-de-valor-y-guiar-a-las-pymes-hacia-los-ods` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `como-desarrollar-tu-estrategia-de-rse-con-la-metodologia-resilio` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `como-realizar-un-diagnostico-de-impacto-social-efectivo` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `desarrollando-nuevas-estrategias-en-responsabilidad-social-corporativa` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `guia-reporte-de-sustentabilidad` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `guia-sobre-la-doble-materialidad` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `guia-sobre-sostenibilidad-empresarial` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `nuevas-estrategias-para-una-postulacion-exitosa-al-distintivo-esr-2024` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `nuevo-modelo-distintivo-esr-2023-pymes` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `quieres-obtener-el-distintivo-esr-en-2023-conoce-los-cambios-en-la-convocatoria-y-preparate` | `/sigamos-en-contacto/` | `/?contacto=1` |
+| `sostenibilidad-sustentabilidad-responsabilidad-social-misma-cosa` | `/sigamos-en-contacto/` | `/?contacto=1` |
+
+**12 artículos afectados.** La tabla vive en `RUTA_REMAP`, en el pipeline, no en los
+JSON generados, así que sobrevive a una regeneración.
+
 ### Enlaces a artículos que no se migraron
 
 Enlaces del contenido que apuntaban a slugs no publicados y se reasignaron a mano. Los que siguen

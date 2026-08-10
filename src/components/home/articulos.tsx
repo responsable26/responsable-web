@@ -7,10 +7,11 @@ import type { ArticuloMeta } from "@/lib/articulos";
 
 /**
  * Umbral en píxeles por debajo del cual un pointerdown+pointerup se considera
- * clic y no arrastre. Un clic real casi siempre mueve 1-2 px; por encima de
- * esto la intención es deslizar, y la navegación del enlace se cancela.
+ * clic y no arrastre. 8 y no 5: al pulsar con el ratón la mano desplaza unos
+ * pocos píxeles, y con el umbral justo un clic con pulso se leía como arrastre.
+ * Sigue muy por debajo de lo que recorre cualquier arrastre intencionado.
  */
-const DRAG_THRESHOLD = 5;
+const DRAG_THRESHOLD = 8;
 
 export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -43,23 +44,17 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
     const scroller = scrollerRef.current;
     if (!scroller) return;
 
+    /*
+      Aquí solo se anota el punto de partida. Ni se captura el puntero ni se
+      tocan estilos: hasta que el umbral no se supera, esto todavía puede ser
+      un clic y no debe alterarse nada.
+    */
     drag.current = {
       active: true,
       startX: event.clientX,
       scrollLeft: scroller.scrollLeft,
       moved: false,
     };
-    scroller.setPointerCapture(event.pointerId);
-
-    /*
-      Los dos estilos se desactivan durante el arrastre y se restauran al soltar:
-      - scroll-snap-type mandatorio pelearía con cada asignación de scrollLeft y
-        el arrastre saldría a tirones. Al restaurarlo, el navegador encuadra solo.
-      - scroll-behavior: smooth animaría cada asignación, con lo que la pista
-        iría por detrás del cursor.
-    */
-    scroller.style.scrollSnapType = "none";
-    scroller.style.scrollBehavior = "auto";
   }
 
   function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
@@ -72,6 +67,23 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
       if (Math.abs(dx) < DRAG_THRESHOLD) return;
       state.moved = true;
       setDragging(true);
+
+      /*
+        La captura del puntero se toma AQUÍ, al confirmarse el arrastre, y no en
+        pointerdown. Mientras hay captura activa el `click` posterior se despacha
+        al elemento que captura —la pista— y no al <a> de la tarjeta, así que
+        capturar antes de saber si había arrastre anulaba la navegación de todos
+        los clics, superasen o no el umbral.
+
+        Los dos estilos se desactivan también aquí y se restauran al soltar:
+        - scroll-snap-type mandatorio pelearía con cada asignación de scrollLeft
+          y el arrastre saldría a tirones. Al restaurarlo, encuadra solo.
+        - scroll-behavior: smooth animaría cada asignación, con lo que la pista
+          iría por detrás del cursor.
+      */
+      scroller.setPointerCapture(event.pointerId);
+      scroller.style.scrollSnapType = "none";
+      scroller.style.scrollBehavior = "auto";
     }
     scroller.scrollLeft = state.scrollLeft - dx;
   }
@@ -82,6 +94,7 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
 
     drag.current.active = false;
     setDragging(false);
+    // Solo hay algo que deshacer si el arrastre llegó a empezar.
     if (scroller.hasPointerCapture(event.pointerId)) {
       scroller.releasePointerCapture(event.pointerId);
     }
@@ -158,7 +171,7 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
                 icono pasan a magenta. active: no existía en ningún botón del
                 sitio; se añade un fondo magenta al 10% como estado pulsado.
               */
-              className="flex size-11 items-center justify-center rounded-full border border-navy text-navy transition-colors hover:border-magenta hover:text-magenta active:bg-magenta/10 motion-reduce:transition-none"
+              className="flex size-11 items-center justify-center rounded-full border border-navy text-navy transition-colors hover:border-magenta hover:text-magenta active:bg-magenta/10"
             >
               <ChevronIcon direction="left" className="size-5" />
             </button>
@@ -171,7 +184,7 @@ export function Articulos({ articulos }: { articulos: ArticuloMeta[] }) {
                 ContactButton --primary y el CTA del header. El pulsado baja un
                 tono más para que se distinga del hover.
               */
-              className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56] motion-reduce:transition-none"
+              className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56]"
             >
               <ChevronIcon direction="right" className="size-5" />
             </button>

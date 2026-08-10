@@ -1,8 +1,21 @@
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+
 export default function LegalPage() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
-      <h1 className="font-head text-4xl font-semibold text-navy">Legal</h1>
-      <p className="font-body text-ink-soft">Contenido próximamente.</p>
-    </main>
+    <>
+      <SiteHeader />
+
+      <main id="main" className="flex-1 px-6 py-[var(--section-y)]">
+        <div className="mx-auto max-w-[var(--container)]">
+          <h1 className="font-head text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-navy">
+            Legal
+          </h1>
+          <p className="font-body mt-4 text-ink-soft">Contenido próximamente.</p>
+        </div>
+      </main>
+
+      <SiteFooter />
+    </>
   );
 }

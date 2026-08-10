@@ -6,8 +6,11 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ArticuloBody } from "@/components/articulos/articulo-body";
 import { ArticuloCard } from "@/components/articulos/articulo-card";
+import { TablaContenidos } from "@/components/articulos/tabla-contenidos";
+import { CtaArticulo } from "@/components/articulos/cta-articulo";
 import { ARTICULOS, formatFecha, getArticuloMeta } from "@/lib/articulos";
 import { getArticuloBlocks } from "@/lib/articulos-content";
+import { prepararIndice } from "@/lib/indice-articulo";
 
 export function generateStaticParams() {
   return ARTICULOS.map((articulo) => ({ slug: articulo.slug }));
@@ -36,19 +39,34 @@ export async function generateMetadata(
       url: canonical,
       locale: "es_ES",
       publishedTime: articulo.fecha,
-      images: articulo.imagen ? [{ url: articulo.imagen.src, width: articulo.imagen.w, height: articulo.imagen.h }] : undefined,
+      images: articulo.imagen
+        ? [
+            {
+              url: articulo.imagen.src,
+              width: articulo.imagen.w,
+              height: articulo.imagen.h,
+            },
+          ]
+        : undefined,
     },
     twitter: { card: "summary_large_image" },
   };
 }
 
-export default async function ArticuloPage(props: PageProps<"/recursos/articulos/[slug]">) {
+export default async function ArticuloPage(
+  props: PageProps<"/recursos/articulos/[slug]">,
+) {
   const { slug } = await props.params;
   const articulo = getArticuloMeta(slug);
   if (!articulo) notFound();
 
-  const blocks = await getArticuloBlocks(articulo.slug);
-  const relacionadas = ARTICULOS.filter((n) => n.slug !== articulo.slug).slice(0, 3);
+  // Los anclajes se inyectan en el servidor: el HTML llega ya con los id.
+  const { blocks, indice, total } = prepararIndice(
+    await getArticuloBlocks(articulo.slug),
+  );
+  const conIndice = total >= 2;
+  const categoria = articulo.categorias[0];
+  const relacionados = ARTICULOS.filter((a) => a.slug !== articulo.slug).slice(0, 3);
 
   const ARTICLE_JSON_LD = {
     "@context": "https://schema.org",
@@ -56,10 +74,45 @@ export default async function ArticuloPage(props: PageProps<"/recursos/articulos
     headline: articulo.titulo,
     description: articulo.excerpt,
     datePublished: articulo.fecha,
-    image: articulo.imagen ? `https://responsable.net${articulo.imagen.src}` : undefined,
-    author: { "@type": "Organization", name: "ResponSable", url: "https://responsable.net/" },
-    publisher: { "@type": "Organization", name: "ResponSable", url: "https://responsable.net/" },
+    image: articulo.imagen
+      ? `https://responsable.net${articulo.imagen.src}`
+      : undefined,
+    author: {
+      "@type": "Organization",
+      name: "ResponSable",
+      url: "https://responsable.net/",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "ResponSable",
+      url: "https://responsable.net/",
+    },
     mainEntityOfPage: `https://responsable.net/recursos/articulos/${articulo.slug}/`,
+  };
+
+  const BREADCRUMB_JSON_LD = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: "https://responsable.net/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: categoria,
+        item: "https://responsable.net/recursos/articulos/",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: articulo.titulo,
+        item: `https://responsable.net/recursos/articulos/${articulo.slug}/`,
+      },
+    ],
   };
 
   return (
@@ -68,55 +121,103 @@ export default async function ArticuloPage(props: PageProps<"/recursos/articulos
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ARTICLE_JSON_LD) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_JSON_LD) }}
+      />
 
       <SiteHeader />
 
       <main id="main" className="flex-1">
-        <article className="mx-auto max-w-[calc(var(--container)+3rem)] px-6 py-[var(--section-y)]">
-          <nav aria-label="Ruta de navegación" className="font-body text-[0.9rem]">
-            <ol className="flex flex-wrap items-center gap-2 text-ink-soft">
+        {/*
+          Hero a ancho completo con el título encima de la imagen. La capa navy
+          al 90% no es decorativa: sin ella el blanco del título depende de qué
+          imagen destacada tenga cada artículo, y hay 58 distintas.
+        */}
+        <div className="relative flex min-h-[clamp(18rem,42vh,26rem)] items-end overflow-hidden bg-navy">
+          {articulo.imagen ? (
+            <Image
+              src={articulo.imagen.src}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          ) : null}
+          <div className="absolute inset-0 bg-navy-90" />
+
+          <div className="relative mx-auto w-full max-w-[calc(var(--container)+3rem)] px-6 py-12">
+            <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
+              {categoria}
+            </p>
+            <h1 className="font-head mt-3 max-w-[24ch] text-[clamp(1.9rem,4.2vw,2.9rem)] font-semibold text-balance text-white">
+              {articulo.titulo}
+            </h1>
+            <time
+              dateTime={articulo.fecha}
+              className="font-body mt-4 block text-sm text-white/75"
+            >
+              {formatFecha(articulo.fecha)}
+            </time>
+          </div>
+        </div>
+
+        <div className="border-b border-border bg-off-white">
+          <nav
+            aria-label="Ruta de navegación"
+            className="mx-auto max-w-[calc(var(--container)+3rem)] px-6 py-3"
+          >
+            <ol className="font-body flex flex-wrap items-center gap-2 text-sm text-ink-soft">
               <li>
                 <Link href="/" className="hover:text-navy">
-                  Inicio
+                  Home
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
               <li>
                 <Link href="/recursos/articulos/" className="hover:text-navy">
-                  Artículos
+                  {categoria}
                 </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>
+                <span aria-current="page" className="text-navy">
+                  {articulo.titulo}
+                </span>
               </li>
             </ol>
           </nav>
+        </div>
 
-          {/* max-w-[68ch] mantiene la medida de lectura; el header y la imagen
-              destacada van al ancho completo del contenedor. */}
-          <header className="mt-6 max-w-[68ch]">
-            <time dateTime={articulo.fecha} className="font-body text-sm text-ink-soft">
-              {formatFecha(articulo.fecha)}
-            </time>
-            <h1 className="font-head mt-3 text-[clamp(1.9rem,4.2vw,2.9rem)] font-semibold text-balance text-navy">
-              {articulo.titulo}
-            </h1>
-            <p className="font-body mt-4 text-[1.15rem] text-ink-soft">{articulo.excerpt}</p>
-          </header>
+        {/*
+          Dos columnas desde lg. En móvil el grid las apila, así que la columna
+          lateral cae bajo el contenido sin necesidad de reordenar nada.
+        */}
+        <div className="mx-auto max-w-[calc(var(--container)+3rem)] px-6 py-[var(--section-y)]">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
+            <article className="max-w-[68ch]">
+              <p className="font-body text-[1.15rem] text-ink-soft">
+                {articulo.excerpt}
+              </p>
+              <div className="mt-8">
+                <ArticuloBody blocks={blocks} />
+              </div>
+            </article>
 
-          {articulo.imagen ? (
-            <Image
-              src={articulo.imagen.src}
-              alt=""
-              width={articulo.imagen.w}
-              height={articulo.imagen.h}
-              priority
-              sizes="(min-width: 1120px) 1072px, 100vw"
-              className="mt-10 h-auto w-full rounded object-cover"
-            />
-          ) : null}
-
-          <div className="mt-10 max-w-[68ch]">
-            <ArticuloBody blocks={blocks} />
+            {/* El CTA se pinta siempre; el índice solo si hay al menos dos
+                encabezados. En los artículos sin índice la columna queda con la
+                sola tarjeta, alineada arriba por self-start, sin estirarse ni
+                dejar hueco. */}
+            <aside className="flex flex-col gap-8 lg:sticky lg:top-28 lg:self-start">
+              {conIndice ? <TablaContenidos indice={indice} /> : null}
+              <CtaArticulo
+                titulo="¿Este tema le toca de cerca?"
+                apoyo="Acompañamos a empresas a convertir la sostenibilidad en decisiones de negocio."
+              />
+            </aside>
           </div>
-        </article>
+        </div>
 
         <section className="bg-off-white px-6 py-[var(--section-y)]">
           <div className="mx-auto max-w-[var(--container)]">
@@ -124,8 +225,8 @@ export default async function ArticuloPage(props: PageProps<"/recursos/articulos
               Otros artículos
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {relacionadas.map((n, i) => (
-                <ArticuloCard key={n.slug} articulo={n} index={i} />
+              {relacionados.map((a, i) => (
+                <ArticuloCard key={a.slug} articulo={a} index={i} />
               ))}
             </div>
           </div>

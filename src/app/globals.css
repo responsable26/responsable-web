@@ -4,6 +4,12 @@
    se dejan como custom properties listas para usarse (p. ej. max-w-[var(--container)]). */
 :root {
   --container: 1120px;
+  /* Contenedor ancho, solo para composiciones que flanquean un elemento central
+     —hoy la rueda de servicios—. El resto de secciones sigue en --container.
+     1280 es el punto medio entre ese contenedor estándar y los 1440 que se
+     probaron primero: a 1440 las tarjetas quedaban pegadas al borde de la
+     ventana en portátiles y la composición se dispersaba. */
+  --container-ancho: 1280px;
   --section-y: clamp(3.5rem, 8vw, 6.5rem);
 }
 
@@ -11,20 +17,21 @@
   /* §1 Paleta de colores */
   --color-navy: #222955;
   --color-magenta: #ea157a;
-  --color-teal: #17b3a3;
+  --color-teal: #1ab39f;
   --color-off-white: #f7f7fb;
   --color-white: #ffffff;
   --color-ink: #1a1c2e;
   --color-ink-soft: #4a4d63;
   --color-border: #e5e6ef;
   --color-amarillo: #feb80a;
+  --color-lavanda: #738ac8;
 
   /* Tonos derivados (rgba) */
   --color-navy-90: rgba(34, 41, 85, 0.9);
   --color-navy-08: rgba(34, 41, 85, 0.08);
   --color-navy-04: rgba(34, 41, 85, 0.04);
   --color-magenta-10: rgba(234, 21, 122, 0.1);
-  --color-teal-12: rgba(23, 179, 163, 0.12);
+  --color-teal-12: rgba(26, 179, 159, 0.12);
 
   /* §3 Radios y sombras */
   --radius: 16px;
@@ -33,17 +40,28 @@
   --shadow-sm: 0 4px 16px rgba(34, 41, 85, 0.08);
 }
 
-/* §2 Tipografía — referencian las variables inyectadas por next/font/google en layout.tsx */
+/* §2 Tipografía — una sola familia. --font-head y --font-body resuelven ambos a
+   Poppins: se conservan los dos nombres porque siguen marcando el rol del texto
+   en el JSX (titular frente a cuerpo) y evitan tocar las ~40 llamadas que ya los
+   usan, pero no deben divergir. La jerarquía se construye solo con peso, tamaño
+   y color. */
 @theme inline {
   --font-head: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 body {
   background: var(--color-white);
   color: var(--color-ink);
   font-family: var(--font-body);
-  line-height: 1.6;
+  /* El valor anterior era 1.6, calibrado para la familia que se usaba antes en
+     el cuerpo. Poppins es geométrica, de x-height alto y ojo más ancho, así que
+     a igual cuerpo el bloque pesa más y las líneas salen más largas; 1.7
+     devuelve el aire entre renglones que se pierde.
+     El peso del cuerpo se queda en 400 y no baja a 300: buena parte del texto
+     corrido vive sobre navy (footer, hero, casos de éxito) y en claro sobre
+     oscuro un peso 300 pierde definición en cuerpos pequeños. */
+  line-height: 1.7;
 }
 
 /* Headings were inheriting the body's 1.6, which is a body-copy value and left
@@ -77,6 +95,11 @@ body {
   }
   .articulo-prose > * + * {
     margin-top: 1.25rem;
+  }
+  /* Los h2/h3 son destino de anclaje del índice; scroll-margin evita que el
+     header fijo los tape en la navegación directa por hash. */
+  .articulo-prose :is(h2, h3) {
+    scroll-margin-top: 7rem;
   }
   .articulo-prose h2,
   .articulo-prose h3,
@@ -179,5 +202,45 @@ body {
   :where(a, button, [role="button"], [role="tab"], input, select, textarea, summary):focus-visible {
     outline: 2px solid var(--color-magenta);
     outline-offset: 3px;
+  }
+}
+
+/* Entrada del modal de servicio. Se declara como token de animación para poder
+   usarla con la utilidad animate-*; motion-reduce:animate-none la desactiva. */
+@theme {
+  --animate-modal-in: modal-in 200ms ease-out;
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Movimiento reducido, a nivel global.
+
+   Antes vivía repartido en clases motion-reduce: por componente, lo que dejaba
+   sin cubrir todo lo que no se acordó de llevarlas — y eran la mayoría de las
+   transiciones del sitio. Aquí se anula de una vez para cualquier elemento.
+
+   Se conservan las clases motion-reduce: individuales solo donde además hay que
+   neutralizar el estado final (una escala o una traslación), porque esta regla
+   quita la animación pero no el valor al que se anima.
+
+   Los valores no son 0: una duración nula cancela los eventos transitionend y
+   animationend, de los que depende algún componente. 0.01ms termina en el mismo
+   frame sin romper esos eventos. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
