@@ -210,7 +210,7 @@ export function ContactModal() {
                   rows={4}
                   value={values.mensaje}
                   onChange={(e) => updateField("mensaje", e.target.value)}
-                  className="font-body rounded-sm border border-transparent bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-magenta"
+                  className="font-body rounded-sm border border-transparent bg-white px-4 py-2.5 text-sm text-ink transition-colors focus:border-magenta"
                 />
               </div>
 

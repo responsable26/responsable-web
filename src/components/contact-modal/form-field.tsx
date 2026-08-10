@@ -33,7 +33,7 @@ export function FormField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-invalid={invalid || undefined}
-        className={`font-body rounded-sm border bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-magenta ${
+        className={`font-body rounded-sm border bg-white px-4 py-2.5 text-sm text-ink transition-colors focus:border-magenta ${
           invalid ? "is-invalid border-[#ff5a7a]" : "border-transparent"
         }`}
       />

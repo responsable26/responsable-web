@@ -61,3 +61,123 @@ body {
     line-height: 1.2;
   }
 }
+
+/* Cuerpo de los artículos importados de WordPress. El HTML llega como markup suelto
+   (<p>, <h2>, <ul>, <figure>…) desde src/content/articulos/, así que no se le pueden
+   poner clases de utilidad una por una: necesita selectores de descendencia.
+
+   Va en @layer components y no suelto, por la misma razón documentada arriba en
+   @layer base: el CSS sin capa gana a las utilidades de Tailwind, y eso impediría
+   ajustar un caso puntual con una clase en el JSX. */
+@layer components {
+  .articulo-prose {
+    font-family: var(--font-body);
+    color: var(--color-ink-soft);
+    font-size: 1.05rem;
+  }
+  .articulo-prose > * + * {
+    margin-top: 1.25rem;
+  }
+  .articulo-prose h2,
+  .articulo-prose h3,
+  .articulo-prose h4 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    color: var(--color-navy);
+    text-wrap: balance;
+  }
+  .articulo-prose h2 {
+    margin-top: 2.5rem;
+    font-size: clamp(1.5rem, 3.2vw, 1.9rem);
+  }
+  .articulo-prose h3 {
+    margin-top: 2rem;
+    font-size: clamp(1.25rem, 2.6vw, 1.45rem);
+  }
+  .articulo-prose h4 {
+    margin-top: 1.75rem;
+    font-size: 1.1rem;
+  }
+  .articulo-prose a {
+    color: var(--color-magenta);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .articulo-prose strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .articulo-prose ul,
+  .articulo-prose ol {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .articulo-prose ul {
+    list-style: disc;
+  }
+  .articulo-prose ol {
+    list-style: decimal;
+  }
+  .articulo-prose blockquote {
+    border-left: 3px solid var(--color-magenta);
+    padding-left: 1.25rem;
+    font-style: italic;
+    color: var(--color-ink);
+  }
+  /* Las imágenes traen width/height del export; sin esto desbordan la columna
+     en mobile, porque esos atributos son píxeles del original. */
+  .articulo-prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+  }
+  .articulo-prose figure {
+    margin-block: 2rem;
+  }
+  .articulo-prose figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.875rem;
+    color: var(--color-ink-soft);
+    text-align: center;
+  }
+  .articulo-prose hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin-block: 2.5rem;
+  }
+  .articulo-prose iframe {
+    max-width: 100%;
+  }
+}
+
+/* Interactividad: cursor y foco.
+
+   Tailwind v3 traía en su preflight `button, [role="button"] { cursor: pointer }`.
+   v4 la eliminó a propósito para respetar el default del navegador, que en
+   <button> es `default`, no `pointer`. De ahí que ningún botón del sitio cambie
+   el cursor. Se repone aquí en @layer base, una vez y para todo el proyecto, en
+   lugar de repartir `cursor-pointer` clase por clase.
+
+   :not(:disabled) para que un botón deshabilitado no simule ser clicable. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Foco visible para navegación por teclado. No había ninguno declarado fuera
+     de cuatro inputs de formulario, así que tabular por el sitio era invisible.
+
+     :focus-visible y no :focus para que el anillo salga al navegar con teclado
+     pero no al hacer clic con el ratón.
+
+     :where() mantiene la especificidad en 0: cualquier elemento que necesite un
+     foco propio lo sobrescribe con una utilidad sin pelear con esta regla. */
+  :where(a, button, [role="button"], [role="tab"], input, select, textarea, summary):focus-visible {
+    outline: 2px solid var(--color-magenta);
+    outline-offset: 3px;
+  }
+}

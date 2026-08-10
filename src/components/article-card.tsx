@@ -8,9 +8,10 @@ type ArticleCardProps = {
 };
 
 /**
- * The generic ".article-card" pattern: color thumbnail stacked above a
- * separate text body. Kept as-is for future reuse (e.g. a blog listing) —
- * Home uses the overlay variant instead, see home/article-card-home.tsx.
+ * The generic ".article-card" pattern with a colour block instead of a
+ * thumbnail. Superseded for anything note-related by components/articulos/articulo-card,
+ * which renders the real featured image; kept only as the documented base
+ * pattern for a future card that genuinely has no image.
  */
 export function ArticleCard({ href, titulo, excerpt, gradient }: ArticleCardProps) {
   return (

@@ -16,7 +16,8 @@ const DESCRIPTION =
   "Realizamos su estudio de doble materialidad: identificamos impactos, riesgos y oportunidades ASG y los convertimos en decisiones de negocio. Alineado a CSRD y ESRS.";
 
 export const metadata: Metadata = {
-  title: "Estudio de Doble Materialidad para Empresas | ResponSable",
+  // Sin sufijo de marca: el template del layout raíz añade "| ResponSable".
+  title: "Estudio de Doble Materialidad para Empresas",
   description: DESCRIPTION,
   alternates: { canonical: CANONICAL },
   /*

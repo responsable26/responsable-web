@@ -7,6 +7,7 @@ import { CasosExito } from "@/components/home/casos-exito";
 import { Articulos } from "@/components/home/articulos";
 import { CtaImagen } from "@/components/home/cta-imagen";
 import { Newsletter } from "@/components/home/newsletter";
+import { ARTICULOS } from "@/lib/articulos";
 
 export default function Home() {
   return (
@@ -17,7 +18,8 @@ export default function Home() {
         <Intro />
         <Servicios />
         <CasosExito />
-        <Articulos />
+        {/* Los ocho más recientes: ARTICULOS ya viene ordenado descendente. */}
+        <Articulos articulos={ARTICULOS.slice(0, 8)} />
         <CtaImagen />
         <Newsletter />
       </main>

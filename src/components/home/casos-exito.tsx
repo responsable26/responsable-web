@@ -63,7 +63,7 @@ export function CasosExito() {
   return (
     <section className="bg-navy px-6 py-[var(--section-y)]">
       <div className="mx-auto max-w-[var(--container)]">
-        <div className="flex flex-wrap items-start justify-between gap-6">
+        <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
               Casos de Éxito
