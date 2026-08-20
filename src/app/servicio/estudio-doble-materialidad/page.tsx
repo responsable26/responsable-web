@@ -104,8 +104,12 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     question: "¿Qué opciones de alcance existen?",
-    answer:
-      "Estudio completo, modalidad Coach, apoyo con IA o consulta a grupos de interés. La elección depende del presupuesto, la madurez interna y el nivel de evidencia requerido.",
+    answer: {
+      paragraphs: [
+        "Podemos realizar un estudio completo de doble materialidad, guiar a su equipo para desarrollarlo internamente, usar herramientas de IA para acelerar el análisis, incorporar la perspectiva de grupos de interés o enfocar el alcance en materialidad financiera.",
+        "Esta última opción puede ser útil para empresas que necesitan preparar insumos alineados con las NIS o con las NIIF de sostenibilidad, cuando el objetivo principal es identificar riesgos y oportunidades con posibles efectos en el negocio. La elección depende del presupuesto, la madurez interna, el uso esperado de los resultados y el nivel de evidencia requerido.",
+      ],
+    },
   },
   {
     question: "¿Cómo saber qué alcance conviene?",

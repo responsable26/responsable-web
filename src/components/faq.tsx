@@ -4,8 +4,12 @@ import { useId, useState, type ReactNode } from "react";
 
 export type FaqItem = {
   question: string;
-  /** Plain paragraphs, or a bullet list when the answer enumerates options. */
-  answer: string | string[];
+  /**
+   * A single paragraph (string), a bullet list when the answer enumerates
+   * options (string[]), or several flowing paragraphs with a visual break
+   * between them and no bullets ({ paragraphs: string[] }).
+   */
+  answer: string | string[] | { paragraphs: string[] };
 };
 
 /**
@@ -67,6 +71,12 @@ export function Faq({ items }: { items: FaqItem[] }) {
                         <li key={line}>{line}</li>
                       ))}
                     </ul>
+                  ) : typeof item.answer === "object" ? (
+                    <div className="flex flex-col gap-3">
+                      {item.answer.paragraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
                   ) : (
                     <p>{item.answer}</p>
                   )}
@@ -93,7 +103,9 @@ export function FaqJsonLd({ items }: { items: FaqItem[] }): ReactNode {
         "@type": "Answer",
         text: Array.isArray(item.answer)
           ? item.answer.map((l) => `• ${l}`).join(" ")
-          : item.answer,
+          : typeof item.answer === "object"
+            ? item.answer.paragraphs.join("\n\n")
+            : item.answer,
       },
     })),
   };
