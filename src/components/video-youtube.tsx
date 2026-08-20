@@ -38,6 +38,16 @@ type VideoYoutubeProps = {
   className?: string;
   /** Prioridad de carga de la miniatura. Solo para la que se ve de inicio. */
   prioridad?: boolean;
+  /**
+   * Control externo, para cuando varios de estos conviven fuera de vista uno
+   * del otro (el carrusel de Casos de Éxito). Opcional y sin valor por
+   * defecto: quien no lo pase conserva el comportamiento de siempre, donde
+   * solo el propio clic gobierna el estado. Al pasar explícitamente `false`
+   * —nunca al omitirlo ni al pasar `true`— se repliega el iframe y se vuelve
+   * a la miniatura, como si se hubiera pulsado un botón de detener; no es
+   * una pausa, el iframe se desmonta.
+   */
+  activo?: boolean;
 };
 
 export function VideoYoutube({
@@ -46,9 +56,30 @@ export function VideoYoutube({
   sizes,
   className,
   prioridad,
+  activo,
 }: VideoYoutubeProps) {
   const [reproduciendo, setReproduciendo] = useState(false);
   const [miniatura, setMiniatura] = useState(() => maxres(id));
+
+  /*
+    Ajuste de estado durante el render y no en un useEffect: es el patrón que
+    React recomienda para resetear estado en cuanto cambia una prop (evita el
+    round-trip extra de commitear con el estado viejo y solo después, en un
+    efecto, corregirlo). `activoAnterior` es lo que compara si `activo`
+    acaba de cambiar; sin ese guardia, repetir el render sin más volvería a
+    disparar el reset en cada pasada.
+
+    Solo reacciona a `activo === false`: con la prop omitida (undefined) esta
+    comparación nunca es cierta, así que un caller que no la pase se comporta
+    exactamente igual que antes. Repliega desmontando el iframe
+    (setReproduciendo(false)) y no con un pause() sobre él, que lo dejaría
+    montado consumiendo recursos.
+  */
+  const [activoAnterior, setActivoAnterior] = useState(activo);
+  if (activoAnterior !== activo) {
+    setActivoAnterior(activo);
+    if (activo === false) setReproduciendo(false);
+  }
 
   return (
     /*

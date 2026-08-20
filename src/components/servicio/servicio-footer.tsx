@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import {
+  DESCRIPCION_RESPONSABLE,
   ENLACES_LEGALES,
   ENLACES_NAVEGACION,
   LINKEDIN_URL,
@@ -36,8 +37,7 @@ export function ServicioFooter() {
           <div className="max-w-xs">
             <Logo className="h-8 w-auto text-white" />
             <p className="font-body mt-4 text-sm text-white/75">
-              Agencia de sostenibilidad y RSE. Le ayudamos a medir, reportar y
-              mejorar su impacto.
+              {DESCRIPCION_RESPONSABLE}
             </p>
           </div>
 

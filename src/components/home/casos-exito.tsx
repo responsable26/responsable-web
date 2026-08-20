@@ -1,36 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CASOS } from "@/lib/casos";
+import { CASOS, type Caso } from "@/lib/casos";
 import { ChevronIcon } from "@/components/icons";
 import { HojasBanda } from "@/components/home/hojas-banda";
 import { VideoYoutube } from "@/components/video-youtube";
-
-/**
- * Longitud del truncado de la descripción en el carrusel.
- *
- * Sale de la geometría del bloque: con el contenedor a 1120px la imagen ocupa
- * el 45% (504px) y, en aspecto 16:9, mide 284px de alto. La columna de texto
- * queda en 584px y el cliente, el subtítulo y el enlace se llevan unos 110px,
- * así que al párrafo le quedan ~174px. A 27px por línea son algo más de seis
- * líneas, y a ~62 caracteres por línea salen unos 373.
- *
- * Se fija en 340 para dejar margen: así las cinco descripciones ocupan el mismo
- * número de líneas y el bloque no cambia de alto al pasar de un caso a otro.
- *
- * El recorte es solo de presentación: el texto íntegro sigue en casos.ts y se
- * muestra completo en la página de cada caso.
- */
-const LIMITE_DESCRIPCION = 340;
-
-/** Corta en límite de palabra y cierra con elipsis. */
-function truncar(texto: string, limite: number) {
-  if (texto.length <= limite) return texto;
-  const corte = texto.slice(0, limite);
-  return `${corte.slice(0, corte.lastIndexOf(" "))}…`;
-}
+import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
 
 const LOGOS = [
   { nombre: "Heineken México", archivo: "heineken-mexico", w: 512, h: 182 },
@@ -78,8 +55,17 @@ function ListaLogos({ duplicado = false }: { duplicado?: boolean }) {
               que la banda mezclaba azules, rojos y verdes sin criterio.
               grayscale los iguala en reposo; al pasar el cursor el logo
               recupera su color y su opacidad plena.
+
+              La altura es el eje que se fija (h-12) y el ancho queda en auto:
+              los logos no comparten proporción (de 1.5:1 el de Baker M a
+              2.81:1 el de Heineken), así que igualarlos por altura es lo que
+              los alinea ópticamente. Subir esta misma altura para todos —y no
+              una transform:scale por logo, que multiplicaría el desajuste ya
+              existente entre proporciones— es lo que los agranda sin
+              desequilibrarlos entre sí. max-w-full seguiría conteniendo dentro
+              de su hueco a cualquier logo cuya proporción lo desborde.
             */
-            className="h-9 w-auto max-w-full object-contain opacity-60 grayscale transition-[opacity,filter] hover:opacity-100 hover:grayscale-0"
+            className="h-12 w-auto max-w-full object-contain opacity-60 grayscale transition-[opacity,filter] hover:opacity-100 hover:grayscale-0"
           />
         </div>
       ))}
@@ -88,182 +74,131 @@ function ListaLogos({ duplicado = false }: { duplicado?: boolean }) {
 }
 
 /**
- * Recorrido en px por debajo del cual el gesto no es un arrastre sino un clic.
+ * Una tarjeta de caso: video a la izquierda, atribución/titular/descripción y
+ * enlace a la derecha.
  *
- * Es la tolerancia de pulso: nadie suelta el botón exactamente donde lo apretó,
- * y sin este margen reproducir el video o abrir «Ver el caso completo» fallaría
- * cada vez que la mano se mueve un pelo. Por debajo de 8px no se captura el
- * puntero ni se anula el clic, así que ese caso se comporta como antes.
+ * El titular semántico es el servicio (`subtitulo`) y no el cliente: es el
+ * término que alguien podría buscar, y el cliente no. El cliente sigue
+ * presente y legible justo encima, como línea de atribución —prueba
+ * social—, pero ya no es un encabezado: con el servicio ocupando el h3, un
+ * segundo encabezado en la misma tarjeta competiría por la misma jerarquía
+ * sin aportar una sección nueva al esquema de la página.
  */
-const UMBRAL_CLIC = 8;
+function TarjetaCaso({ caso, activo }: { caso: Caso; activo: boolean }) {
+  /*
+    h-full: la pista de fuera estira cada wrapper de tarjeta (items-stretch)
+    al alto del más alto de la fila, así que sin esto el fondo blanco de las
+    tarjetas más cortas se quedaría por debajo del de sus vecinas asomando al
+    lado. items-start dentro del grid conserva la proporción del video pese a
+    la tarjeta ahora más alta.
 
-/**
- * Recorrido necesario para cambiar de caso: el 8% del ancho del bloque, nunca
- * menos de 64px.
- *
- * Proporcional y no fijo porque el mismo gesto tiene que pedir un esfuerzo
- * parecido en un móvil de 360px y en el bloque de 1120px del desktop. El mínimo
- * cubre el extremo estrecho, donde un 8% serían 29px y se cambiaría de caso sin
- * querer.
- */
-const UMBRAL_CAMBIO = 0.08;
-const UMBRAL_CAMBIO_MIN = 64;
+    py separado de px (antes p-* único) para poder subir solo el aire
+    vertical: arriba y abajo del contenido, a partes iguales, sin tocar el
+    margen lateral. El video fija su propia altura por su aspect-ratio, así
+    que este padding no lo estira a él —solo agranda el marco blanco que lo
+    rodea—, y la subida es moderada (+33/+25/+20% por breakpoint) para que la
+    tarjeta no crezca desproporcionada respecto a esa altura.
+  */
+  return (
+    <div className="h-full rounded bg-white px-6 py-8 shadow sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+      <div className="grid items-start gap-8 md:grid-cols-[45%_1fr]">
+        <VideoYoutube
+          id={caso.videoYoutube}
+          titulo={`Testimonio de ${caso.cliente}`}
+          sizes="(min-width: 1024px) 380px, (min-width: 768px) 45vw, 90vw"
+          activo={activo}
+        />
 
-/**
- * Cuánto sigue el bloque al dedo, de 0 a 1.
- *
- * No es 1 a propósito: esto no es una pista con el caso siguiente esperando al
- * lado, sino un slider por estado que muestra uno cada vez. Con seguimiento
- * pleno el bloque se despegaría del centro sin que apareciera nada detrás y el
- * hueco delataría que no hay tal pista. A 0.35 el arrastre se acusa lo justo
- * para saber que el gesto está siendo atendido, y el retorno se lee como un
- * rebote elástico.
- */
-const RESISTENCIA = 0.35;
+        <div>
+          <p className="font-head text-sm font-semibold text-ink-soft">
+            {caso.cliente}
+          </p>
+          <h3 className="font-head mt-1 text-2xl font-semibold text-navy">
+            {caso.subtitulo}
+          </h3>
+          {/*
+            line-clamp y no un recorte por caracteres: el ancho de la columna
+            de texto ya no es un valor fijo de contenedor —cambia con el
+            recorte lateral del carrusel y con el padding de la tarjeta por
+            breakpoint—, así que un límite en caracteres solo sería exacto
+            para un ancho concreto. line-clamp-4 iguala la altura visible de
+            las cinco tarjetas sea cual sea ese ancho. El texto íntegro sigue
+            en casos.ts y se muestra completo en la página de cada caso.
+          */}
+          <p className="font-body mt-4 line-clamp-4 text-ink-soft">
+            {caso.descripcion}
+          </p>
+          <Link
+            href={`/casos-de-exito/${caso.slug}/`}
+            className="font-head mt-6 inline-block text-sm font-semibold text-magenta"
+          >
+            Ver el caso completo →
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function CasosExito() {
-  const [index, setIndex] = useState(0);
-  const [arrastrando, setArrastrando] = useState(false);
-  const pistaRef = useRef<HTMLDivElement>(null);
-  const caso = CASOS[index];
+  /*
+    Mismo mecanismo de arrastre, snap y flechas que el carrusel de artículos y
+    la pista de pasos de las páginas de servicio (usePistaArrastrable): un
+    caso por card, con los adyacentes asomando por los lados.
+  */
+  const { ref, desplazarUnPaso, propsPista, clasesPista } =
+    usePistaArrastrable();
 
-  /**
-   * Estado del gesto en curso. Va en un ref y no en useState porque cambia en
-   * cada pointermove: pasarlo por el estado volvería a renderizar el bloque
-   * —y con él la miniatura del video— decenas de veces por segundo. El
-   * desplazamiento se escribe directamente en el style del nodo; a React solo
-   * llega el arranque y el final del arrastre.
-   */
-  const gesto = useRef({
-    activo: false,
-    /** El eje ya se decidió y el gesto es nuestro, no de la página. */
-    horizontal: false,
-    /** Se superó UMBRAL_CLIC: hay que anular el clic que vendrá al soltar. */
-    movido: false,
-    x0: 0,
-    y0: 0,
-    dx: 0,
-    id: -1,
-  });
+  /*
+    Qué caso es «el activo» —el único al que se le permite seguir
+    reproduciendo su video— se decide por cuánto de su tarjeta es visible
+    dentro de la pista, no por cuál sea el primero en el DOM ni por un cálculo
+    aparte de scrollLeft: un IntersectionObserver con `root` en la propia
+    pista ya recibe ese dato hecho, y sigue siendo válido tras el arrastre,
+    las flechas o un resize, sin duplicar la geometría del carrusel aquí.
 
-  function goTo(delta: number) {
-    setIndex((current) => (current + delta + CASOS.length) % CASOS.length);
-  }
+    ratiosPorIndice guarda el último ratio conocido de cada tarjeta —el
+    observer solo entrega en cada llamada las que cruzaron un umbral, no el
+    conjunto completo— para poder recalcular en cada callback cuál es, de
+    todas, la más visible ahora mismo. La tarjeta activa real siempre llega a
+    ratio 1 (cabe entera en la pista, por diseño del carrusel), así que gana
+    siempre a cualquier vecina asomando por el lado, por ancha que sea esa
+    porción en pantallas muy anchas.
+  */
+  const [indiceActivo, setIndiceActivo] = useState(0);
+  const ratiosPorIndice = useRef(new Map<number, number>());
 
-  function desplazar(px: number) {
-    const pista = pistaRef.current;
-    if (pista) pista.style.transform = px ? `translate3d(${px}px,0,0)` : "";
-  }
+  useEffect(() => {
+    const pista = ref.current;
+    if (!pista) return;
 
-  function alPulsar(e: React.PointerEvent<HTMLDivElement>) {
-    /* Solo el botón principal: con el secundario se abre el menú contextual y
-       el arrastre se quedaría colgado sin pointerup. */
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    gesto.current = {
-      activo: true,
-      horizontal: false,
-      movido: false,
-      x0: e.clientX,
-      y0: e.clientY,
-      dx: 0,
-      id: e.pointerId,
-    };
-  }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const indice = Number(
+            (entry.target as HTMLElement).dataset.indiceCaso,
+          );
+          ratiosPorIndice.current.set(indice, entry.intersectionRatio);
+        }
 
-  function alMover(e: React.PointerEvent<HTMLDivElement>) {
-    const g = gesto.current;
-    if (!g.activo) return;
-    /* Solo atiende al puntero que inició el gesto: un segundo dedo apoyado
-       sobre el bloque no debe tomar el mando a media pasada. */
-    if (e.pointerId !== g.id) return;
-    /* Sin botones pulsados no hay arrastre. Cubre el caso de soltar el ratón
-       fuera de la ventana antes de que el gesto llegue a capturar el puntero:
-       ahí no llega pointerup, el gesto se quedaría abierto y el siguiente
-       movimiento del ratón —ya sin pulsar— arrancaría un arrastre fantasma
-       midiendo desde un origen viejo. */
-    if (e.buttons === 0) {
-      g.activo = false;
-      return;
-    }
+        let mejorIndice = 0;
+        let mejorRatio = -1;
+        ratiosPorIndice.current.forEach((ratio, indice) => {
+          if (ratio > mejorRatio) {
+            mejorRatio = ratio;
+            mejorIndice = indice;
+          }
+        });
+        setIndiceActivo(mejorIndice);
+      },
+      { root: pista, threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
 
-    const dx = e.clientX - g.x0;
-    const dy = e.clientY - g.y0;
+    const tarjetas = pista.querySelectorAll<HTMLElement>("[data-indice-caso]");
+    tarjetas.forEach((tarjeta) => observer.observe(tarjeta));
 
-    if (!g.horizontal) {
-      /* Todavía no se sabe qué gesto es. Mientras no se supere la tolerancia de
-         pulso en algún eje, no se hace nada: sigue pudiendo ser un clic. */
-      if (Math.abs(dx) < UMBRAL_CLIC && Math.abs(dy) < UMBRAL_CLIC) return;
-      /* Predominio vertical: el gesto es el scroll de la página. Se abandona y
-         no se vuelve a mirar hasta el siguiente pointerdown, para no robarlo a
-         media pasada si luego se tuerce. En táctil esto ya lo resuelve antes el
-         touch-action: pan-y del contenedor, que deja el eje Y al navegador y
-         nos manda un pointercancel; esta rama cubre el ratón y los punteros
-         que no pasan por ahí. */
-      if (Math.abs(dy) >= Math.abs(dx)) {
-        g.activo = false;
-        return;
-      }
-      g.horizontal = true;
-      g.movido = true;
-      pistaRef.current?.setPointerCapture(g.id);
-      /* Si el pulso empezó sobre el párrafo, el navegador ya habrá pintado unos
-         píxeles de selección antes de que supiéramos que esto era un arrastre.
-         El select-none que entra ahora impide que crezca, pero no borra lo ya
-         seleccionado. */
-      window.getSelection()?.removeAllRanges();
-      setArrastrando(true);
-    }
-
-    g.dx = dx;
-    desplazar(dx * RESISTENCIA);
-  }
-
-  function alSoltar() {
-    const g = gesto.current;
-    if (!g.activo) return;
-    g.activo = false;
-
-    if (g.horizontal) {
-      const ancho = pistaRef.current?.offsetWidth ?? 0;
-      const umbral = Math.max(UMBRAL_CAMBIO_MIN, ancho * UMBRAL_CAMBIO);
-      if (pistaRef.current?.hasPointerCapture(g.id)) {
-        pistaRef.current.releasePointerCapture(g.id);
-      }
-      setArrastrando(false);
-      /* Arrastrar a la izquierda avanza: el bloque se va por donde saldría el
-         caso actual, igual que al pasar una página. */
-      if (Math.abs(g.dx) >= umbral) goTo(g.dx < 0 ? 1 : -1);
-    }
-
-    /* Siempre vuelve a cero, se haya cambiado de caso o no: por debajo del
-       umbral es el retorno al caso actual, y por encima es el nuevo caso
-       asentándose en su sitio. */
-    desplazar(0);
-  }
-
-  /** El navegador se quedó con el gesto (scroll vertical, gesto del sistema). */
-  function alCancelar() {
-    const g = gesto.current;
-    if (!g.activo) return;
-    g.activo = false;
-    if (g.horizontal) setArrastrando(false);
-    desplazar(0);
-  }
-
-  /**
-   * Anula el clic que el navegador dispara al soltar tras un arrastre. En fase
-   * de captura y en el contenedor, así que da igual sobre qué haya terminado el
-   * puntero: corta antes de llegar al enlace del caso o al botón del video.
-   *
-   * La bandera se levanta solo al superar UMBRAL_CLIC, de modo que un clic
-   * normal no pasa nunca por aquí.
-   */
-  function alHacerClic(e: React.MouseEvent) {
-    if (!gesto.current.movido) return;
-    gesto.current.movido = false;
-    e.preventDefault();
-    e.stopPropagation();
-  }
+    return () => observer.disconnect();
+  }, [ref]);
 
   return (
     /*
@@ -275,7 +210,7 @@ export function CasosExito() {
       el bloque del caso, este overflow-hidden es además lo que impide que ese
       desplazamiento asome por el borde de la ventana.
     */
-    <section className="relative overflow-hidden bg-navy px-6 py-[var(--section-y)]">
+    <section className="relative overflow-hidden bg-navy py-[var(--section-y)]">
       {/*
         Va antes que el contenido en el DOM y sin z-index: los dos son elementos
         posicionados, así que el orden de pintado lo decide el orden del árbol y
@@ -285,7 +220,15 @@ export function CasosExito() {
       */}
       <HojasBanda className="pointer-events-none absolute inset-x-0 bottom-0 h-[clamp(11rem,26vw,20rem)] w-full" />
 
-      <div className="relative mx-auto max-w-[var(--container)]">
+      {/*
+        La sección ya no lleva px-6: la pista de tarjetas, más abajo, tiene que
+        poder sangrar hasta el borde del viewport. Este bloque y el de la
+        píldora/marquesina reproducen ese gutter por su cuenta con el mismo
+        truco que articulos.tsx (max-w del contenedor + 3rem, con px-6): con
+        box-sizing:border-box el contenido queda en min(1120px, 100%-48px),
+        igual que antes.
+      */}
+      <div className="relative mx-auto max-w-[calc(var(--container)+3rem)] px-6">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
@@ -299,7 +242,7 @@ export function CasosExito() {
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={() => goTo(-1)}
+              onClick={() => desplazarUnPaso(-1)}
               aria-label="Caso anterior"
               /* Mismo tratamiento que los controles del carrusel de artículos:
                  hover #C71268, pulsado #A50E56 y transición de color. */
@@ -309,7 +252,7 @@ export function CasosExito() {
             </button>
             <button
               type="button"
-              onClick={() => goTo(1)}
+              onClick={() => desplazarUnPaso(1)}
               aria-label="Caso siguiente"
               className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56]"
             >
@@ -317,85 +260,50 @@ export function CasosExito() {
             </button>
           </div>
         </div>
+      </div>
 
-        {/*
-          Zona de arrastre. Cubre el bloque del caso —video y texto— y no los
-          botones, que siguen siendo pulsaciones normales.
+      {/*
+        El eyebrow, el título y las flechas quedan fuera de esta pista, en el
+        bloque de arriba con su propio gutter (mx-auto max-w+px-6); esta pista
+        en cambio es hija directa de la sección —que ya no lleva px-6— para
+        poder sangrar de lado a lado del viewport.
 
-          touch-action: pan-y deja el eje vertical al navegador: el scroll de la
-          página nunca pasa por este código, así que el gesto no puede comérselo.
-          Del eje horizontal nos ocupamos nosotros.
+        El recorte lateral —lo que deja asomar a los casos vecinos, cortados
+        contra el borde de la pantalla y no contra el contenedor de 1120px—
+        es el propio ancho de tarjeta (lg:w-[var(--caso-card)], definida en
+        globals.css) más el padding horizontal de la pista
+        (lg:px-[calc((100%-var(--caso-card))/2)]): con scroll-snap-align:center,
+        ese padding es lo que centra la tarjeta activa dejando el resto
+        repartido a partes iguales a los lados. .caso-carrusel es el marco
+        estático que además atenúa esas tarjetas vecinas con un fundido hacia
+        el navy de la sección (ver globals.css): no compite por lectura con la
+        tarjeta activa, pero conserva su silueta como pista de que hay más
+        contenido.
 
-          onDragStart cortado: la miniatura del video es un <img> y arrastrarla
-          con el ratón dispararía el arrastre nativo de HTML, con su imagen
-          fantasma, en mitad del gesto.
-
-          La transición solo existe fuera del arrastre: mientras el dedo manda,
-          el bloque tiene que ir pegado a él y no persiguiéndolo. El retorno a
-          cero sí se anima, y con movimiento reducido lo neutraliza la regla
-          global de globals.css, que anula cualquier transition-duration del
-          sitio sin necesidad de una clase aquí.
-
-          El cursor grabbing se fuerza también en los descendientes: sin eso, el
-          botón del video conservaría su cursor pointer —la regla base lo pone en
-          todos los botones— y el puntero cambiaría de forma en mitad del
-          arrastre. En reposo se queda como está: sobre el botón, pointer.
-
-          select-none solo mientras se arrastra, para no perder la selección del
-          párrafo el resto del tiempo.
-        */}
+        Por debajo de lg no hay recorte: la tarjeta pasa a w-full y solo queda
+        el px-6 del gutter general, porque con un caso ya en dos columnas
+        (desde md) o en una sola (antes de md) no queda ancho de sobra para
+        asomar nada sin dejar la tarjeta activa demasiado angosta.
+      */}
+      <div className="caso-carrusel mt-10">
         <div
-          ref={pistaRef}
-          onPointerDown={alPulsar}
-          onPointerMove={alMover}
-          onPointerUp={alSoltar}
-          onPointerCancel={alCancelar}
-          onDragStart={(e) => e.preventDefault()}
-          onClickCapture={alHacerClic}
-          className={`mt-10 grid touch-pan-y items-start gap-8 md:grid-cols-[45%_1fr] ${
-            arrastrando
-              ? "cursor-grabbing select-none [&_*]:cursor-grabbing"
-              : "cursor-grab transition-transform duration-300"
-          }`}
+          ref={ref}
+          {...propsPista}
+          className={`${clasesPista} items-stretch gap-8 px-6 lg:gap-10 lg:px-[calc((100%-var(--caso-card))/2)]`}
         >
-          {/*
-            key por slug: sin él, al cambiar de caso con el reproductor abierto
-            React reutilizaría el componente, conservaría su estado y el iframe
-            arrancaría solo con el video siguiente. Remontarlo devuelve la
-            miniatura y deja la reproducción siempre en manos del usuario.
-
-            items-start en la rejilla: por defecto las celdas se estiran al alto
-            de la fila y el 16:9 del video se perdería si la columna de texto
-            fuese más alta. Anclado arriba, el video conserva su proporción y
-            queda alineado con el borde superior del texto, que es donde estaba
-            el bloque anterior.
-          */}
-          <VideoYoutube
-            key={caso.slug}
-            id={caso.videoYoutube}
-            titulo={`Testimonio de ${caso.cliente}`}
-            sizes="(min-width: 1120px) 504px, (min-width: 768px) 45vw, 100vw"
-          />
-
-          <div>
-            <h3 className="font-head text-2xl font-semibold text-white">
-              {caso.cliente}
-            </h3>
-            <p className="font-head mt-1 text-sm font-medium text-white/70">
-              {caso.subtitulo}
-            </p>
-            <p className="font-body mt-4 text-white/85">
-              {truncar(caso.descripcion, LIMITE_DESCRIPCION)}
-            </p>
-            <Link
-              href={`/casos-de-exito/${caso.slug}/`}
-              className="font-head mt-6 inline-block text-sm font-semibold text-magenta"
+          {CASOS.map((caso, indice) => (
+            <div
+              key={caso.slug}
+              data-indice-caso={indice}
+              className="w-full shrink-0 snap-center lg:w-[var(--caso-card)]"
             >
-              Ver el caso completo →
-            </Link>
-          </div>
+              <TarjetaCaso caso={caso} activo={indice === indiceActivo} />
+            </div>
+          ))}
         </div>
+      </div>
 
+      <div className="relative mx-auto max-w-[calc(var(--container)+3rem)] px-6">
         <div className="relative mt-16">
           {/*
             La píldora se monta a caballo sobre el borde superior de la tarjeta:
@@ -407,8 +315,17 @@ export function CasosExito() {
             max-w evita el desbordamiento en pantallas estrechas: si no cupiera,
             el texto se pliega dentro de la píldora en vez de salirse. Con la
             cadena actual no llega a plegarse ni a 360px de viewport.
+
+            z-10: mismo caso que la columna sticky de la rueda de servicios
+            (servicios-rueda.tsx) —dos elementos posicionados en el mismo
+            contexto de apilamiento, y sin z-index gana el que va después en
+            el DOM—. Aquí la tarjeta .marquee es position:relative (globals.css,
+            para anclar sus veladuras de borde) y va después que esta píldora
+            absolute, así que sin z-index la tapaba pese a estar "detrás" en
+            la lectura visual del diseño. z-10 la devuelve a su sitio sin
+            tocar el orden del DOM.
           */}
-          <span className="font-head absolute top-0 left-1/2 max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-magenta px-4 py-2 text-center text-sm font-semibold text-white">
+          <span className="font-head absolute top-0 left-1/2 z-10 max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal px-4 py-2 text-center text-sm font-semibold text-white">
             Trabajamos Junto a los Mejores:
           </span>
 

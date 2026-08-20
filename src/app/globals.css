@@ -296,6 +296,71 @@ body {
   }
 }
 
+/* Carrusel de Casos de Éxito (casos-exito.tsx): la pista sangra a todo el
+   ancho del viewport para que las tarjetas vecinas se corten contra el borde
+   de la pantalla y no contra el contenedor de 1120px que envuelve al resto de
+   la sección.
+
+   --caso-card fija el ancho de la tarjeta activa: exactamente la anchura de
+   lectura de siempre —min(1120px, 100vw-3rem), la misma cuenta que
+   var(--container)+3rem en articulos.tsx—, y no un porcentaje reducido de
+   ella. Al ser la misma fórmula que resuelve el max-w+px-6 de los bloques de
+   cabecera y píldora/marquesina (ambos centrados con mx-auto en esta misma
+   sección sin padding propio), la tarjeta activa queda centrada con ese
+   mismo ancho y su borde izquierdo coincide exactamente con el arranque del
+   título de la sección.
+
+   Es la única cifra que debe coincidir en los tres sitios que la usan: el
+   ancho de la tarjeta (className en el JSX), el padding que la centra en la
+   pista y el fundido de abajo que atenúa lo que asoma a los lados —los tres
+   reparten en partes iguales el sobrante (100%-tarjeta)/2, así que el
+   fundido termina justo donde empieza la tarjeta activa y nunca la invade—.
+
+   Por debajo de lg no se fija: la tarjeta pasa a w-full y no hay vecina que
+   asome, así que ni el padding ni el fundido tienen nada que hacer ahí. */
+@layer components {
+  .caso-carrusel {
+    position: relative;
+  }
+
+  @media (min-width: 64rem) {
+    .caso-carrusel {
+      --caso-card: min(calc(100vw - 3rem), var(--container));
+    }
+  }
+
+  /* El fundido va en este marco estático y no en la pista: la pista se
+     desplaza por scrollLeft (usePistaArrastrable) y un pseudo-elemento
+     posicionado sobre el propio elemento que se desplaza se desplaza con él.
+     Puesto aquí, en el marco que nunca se mueve, queda fijo en el borde pase
+     lo que pase con el scroll. */
+  .caso-carrusel::before,
+  .caso-carrusel::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0px;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .caso-carrusel::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-navy), transparent);
+  }
+  .caso-carrusel::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-navy), transparent);
+  }
+
+  @media (min-width: 64rem) {
+    .caso-carrusel::before,
+    .caso-carrusel::after {
+      width: calc((100% - var(--caso-card)) / 2);
+    }
+  }
+}
+
 /* Interactividad: cursor y foco.
 
    Tailwind v3 traía en su preflight `button, [role="button"] { cursor: pointer }`.
@@ -338,6 +403,27 @@ body {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Indicador de interactividad de la rueda de servicios (Home): sugiere, al
+   entrar en viewport, que un segmento responde al puntero, sin llamar la
+   atención. --indicador-dx/--indicador-dy los fija cada cuadrante por su
+   propio ángulo —dirección radial hacia fuera del centro de la rueda, ver
+   servicios-rueda.tsx— antes de aplicar esta clase; a 0px por defecto para
+   que aplicarla sin esas variables no mueva nada. Vuelve exactamente al punto
+   de partida (0,0) en el 100%, así que quitar la clase a mitad o al final no
+   deja transform residual. */
+@theme {
+  --animate-indicador-flecha: indicador-flecha 900ms ease-in-out;
+}
+@keyframes indicador-flecha {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(var(--indicador-dx, 0px), var(--indicador-dy, 0px));
   }
 }
 

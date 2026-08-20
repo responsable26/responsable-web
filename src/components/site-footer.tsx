@@ -3,10 +3,12 @@ import { Logo } from "@/components/brand/logo";
 import { Newsletter } from "@/components/newsletter";
 import { ContactButton } from "@/components/contact-button";
 import {
+  DESCRIPCION_RESPONSABLE,
   ENLACES_LEGALES,
   ENLACES_NAVEGACION,
   LINKEDIN_URL,
 } from "@/lib/navegacion";
+import { SERVICIOS_FOOTER } from "@/lib/servicios";
 
 export function SiteFooter() {
   return (
@@ -21,14 +23,18 @@ export function SiteFooter() {
           <Newsletter />
         </div>
 
-        <div className="flex flex-wrap gap-12">
-          <div className="max-w-sm basis-full sm:basis-[35%]">
+        {/*
+          Grid y no el flex-wrap anterior: con basis fijo en las columnas, el
+          espacio que el contenido no llenaba se quedaba vacío a la derecha en
+          vez de repartirse. Mismo patrón que ya usa ServicioFooter (columna de
+          marca más ancha, 1.4fr, y el resto a partes iguales), así que las dos
+          plantillas de footer del sitio comparten proporción.
+        */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div className="max-w-sm">
             <Logo className="h-8 w-auto text-white" />
             <p className="font-body mt-4 text-sm text-white/75">
-              ResponSable es una agencia de sostenibilidad que acompaña a las
-              empresas a llevar su estrategia de RSE, la doble materialidad y la
-              gestión social al corazón del negocio, para generar valor real y
-              fortalecer su resiliencia.
+              {DESCRIPCION_RESPONSABLE}
             </p>
             <a
               href={LINKEDIN_URL}
@@ -56,9 +62,9 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="basis-40">
+          <div>
             <h3 className="font-head text-sm font-semibold text-white">
-              Nosotros
+              Compañía
             </h3>
             <ul className="mt-4 flex flex-col gap-3">
               {ENLACES_NAVEGACION.map((link) => (
@@ -74,7 +80,32 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          <div className="basis-40">
+          {/*
+            SERVICIOS_FOOTER es una selección editorial (servicios.ts), no
+            "todos los servicios con página": esos siguen enlazados desde
+            "Servicios relacionados" en cada página de servicio. Aquí van solo
+            los cinco que el footer decide destacar, en el orden que define
+            esa lista.
+          */}
+          <div>
+            <h3 className="font-head text-sm font-semibold text-white">
+              Servicios
+            </h3>
+            <ul className="mt-4 flex flex-col gap-3">
+              {SERVICIOS_FOOTER.map((servicio) => (
+                <li key={servicio.href}>
+                  <Link
+                    href={servicio.href}
+                    className="font-body text-sm text-white/75 transition-colors hover:text-white"
+                  >
+                    {servicio.nombre}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
             <h3 className="font-head text-sm font-semibold text-white">
               Más Información
             </h3>

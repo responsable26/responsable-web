@@ -211,16 +211,16 @@ export const CUADRANTES: Cuadrante[] = [
         ],
       },
       {
-        nombre: "Estrategia de Comunicación en Sostenibilidad",
+        nombre: "Estrategia de Sostenibilidad",
         descripcion:
-          "Definimos qué comunicar, a quién y con qué evidencia detrás. Ordenamos mensajes, públicos y canales, y fijamos los límites que separan un avance bien contado de una afirmación que su empresa no puede sostener.",
+          "Convertimos lo que su empresa ya sabe —materialidad, benchmark, tendencias— en pilares, objetivos y líneas de acción alineados con la visión del negocio, priorizados con criterios de factibilidad y no por orden de llegada.",
         puntos: [
-          "Definimos qué comunicar, a quién y con qué evidencia.",
-          "Comparamos su comunicación con la del sector y la de los líderes.",
-          "Ordenamos mensajes, públicos, canales, riesgos y límites.",
-          "Evitamos exagerar avances u ocultar información relevante.",
+          "Definimos pilares, objetivos y líneas de acción.",
+          "Alineamos la sostenibilidad con la visión del negocio.",
+          "Convertimos estudios de materialidad, benchmark y tendencias en estrategia accionable.",
+          "Priorizamos las acciones con criterios de factibilidad.",
         ],
-        href: "/servicio/estrategia-de-comunicacion-en-sostenibilidad/",
+        href: "/servicio/estrategia-sostenibilidad/",
       },
     ],
   },
@@ -231,6 +231,77 @@ export const CUADRANTES: Cuadrante[] = [
     intro:
       "Tener claridad no basta. Hay que traducirla en acción. Diseñamos la ruta, las capacidades y las herramientas necesarias para que la sostenibilidad se implemente de forma ordenada, creíble y alineada con la realidad de su empresa.",
     servicios: [
+      {
+        nombre: "Acompañamiento en sostenibilidad",
+        descripcion:
+          "Apoyo continuo para ordenar prioridades y hacer avanzar pendientes sin contratar cada proyecto por separado. Se ajusta por horas, por periodo o como iguala mensual, según lo que su operación requiera en cada momento.",
+        puntos: [
+          "Ordenamos sus prioridades y proyectos de sostenibilidad.",
+          "Avanzamos tareas puntuales sin que contrate cada proyecto por separado.",
+          "Damos guía experta, seguimiento y retroalimentación.",
+          "Adaptamos el acompañamiento por horas, por periodo o como iguala mensual.",
+        ],
+        href: "/servicio/acompanamiento-sostenibilidad/",
+      },
+      {
+        nombre: "Capacitación a la Medida",
+        descripcion:
+          "Diseñamos la formación según el rol de cada audiencia, dentro y fuera de su empresa: alta dirección, equipos, clientes y proveedores. El objetivo es que la estrategia deje de depender de unas cuantas personas.",
+        puntos: [
+          "Diseñamos formación alineada al rol de cada audiencia dentro y fuera de la empresa.",
+          "Aterrizamos la sostenibilidad para alta dirección, equipos, clientes y proveedores.",
+          "Fortalecemos capacidades para que la estrategia no dependa de unas cuantas personas.",
+          "Ayudamos a convertir la sostenibilidad en criterio compartido y acción cotidiana.",
+          "Damos herramientas para implementar con mayor claridad y consistencia.",
+        ],
+      },
+      {
+        nombre: "Cursos y talleres de sostenibilidad para empresas",
+        descripcion:
+          "Formación con contenido ajustado a cada nivel jerárquico y ejemplos tomados de las áreas de su empresa. La imparten consultores en ejercicio, en formatos que van de la sensibilización al programa aplicado.",
+        puntos: [
+          "Adaptamos el contenido a cada nivel jerárquico.",
+          "Usamos casos de negocio y ejemplos de sus propias áreas.",
+          "Impartimos con facilitadores que ejercen la consultoría.",
+          "Cubrimos formatos que van de la sensibilización al programa aplicado.",
+        ],
+        href: "/servicio/cursos-talleres-para-empresas/",
+      },
+      {
+        nombre: "Sostenibilidad en Cadena de Valor",
+        descripcion:
+          "Trabajamos con sus equipos y con sus proveedores para que la sostenibilidad llegue a la operación diaria de la cadena. Acompañamos la adopción de la ISO 20400 y de prácticas de compra más consistentes.",
+        puntos: [
+          "Fortalecemos capacidades en la cadena de suministro para integrar la sostenibilidad en la operación diaria.",
+          "Acompañamos la adopción de la ISO 20400 y de mejores prácticas de compras sostenibles.",
+          "Sensibilizamos a equipos internos y proveedores sobre criterios clave de sostenibilidad.",
+          "Ayudamos a traducir la sostenibilidad en decisiones de compra más consistentes y responsables.",
+        ],
+      },
+      {
+        nombre: "Plan de relacionamiento comunitario",
+        descripcion:
+          "Mapeamos a los actores que influyen en su licencia social para operar y estructuramos el vínculo con ellos: objetivos, responsables, indicadores y ritmos. Así la relación deja de depender de quién ocupe el puesto.",
+        puntos: [
+          "Mapeamos a los actores clave que influyen en la licencia social para operar.",
+          "Diseñamos una estrategia de relacionamiento con objetivos, mensajes y canales claros.",
+          "Estructuramos responsables, indicadores y ritmos de interacción sostenibles en el tiempo.",
+          "Alineamos el plan con la gestión de riesgos sociales y la estrategia de negocio.",
+          "Damos continuidad institucional al vínculo con el territorio, más allá de relaciones personales.",
+        ],
+      },
+      {
+        nombre: "Reconocimientos y Certificaciones",
+        descripcion:
+          "No todos los reconocimientos valen lo que cuestan. Analizamos cuáles convienen a su empresa por metodología, reputación e inversión, y ordenamos la evidencia y la participación interna para llegar con solidez.",
+        puntos: [
+          "Lo acompañamos en la obtención de reconocimientos y certificaciones relevantes.",
+          "Analizamos cuáles realmente convienen por metodología, reputación e inversión.",
+          "Ordenamos evidencia, procesos y participación interna para avanzar con solidez.",
+          "Ayudamos a involucrar a distintas áreas en un objetivo común.",
+          "Damos una ruta más estratégica para fortalecer gestión, credibilidad y posicionamiento.",
+        ],
+      },
       {
         nombre: "Distintivo ESR",
         descripcion:
@@ -255,77 +326,6 @@ export const CUADRANTES: Cuadrante[] = [
           "Convertimos la estrategia en una agenda viva dentro de la empresa.",
         ],
       },
-      {
-        nombre: "Reconocimientos y Certificaciones",
-        descripcion:
-          "No todos los reconocimientos valen lo que cuestan. Analizamos cuáles convienen a su empresa por metodología, reputación e inversión, y ordenamos la evidencia y la participación interna para llegar con solidez.",
-        puntos: [
-          "Lo acompañamos en la obtención de reconocimientos y certificaciones relevantes.",
-          "Analizamos cuáles realmente convienen por metodología, reputación e inversión.",
-          "Ordenamos evidencia, procesos y participación interna para avanzar con solidez.",
-          "Ayudamos a involucrar a distintas áreas en un objetivo común.",
-          "Damos una ruta más estratégica para fortalecer gestión, credibilidad y posicionamiento.",
-        ],
-      },
-      {
-        nombre: "Plan de relacionamiento comunitario",
-        descripcion:
-          "Mapeamos a los actores que influyen en su licencia social para operar y estructuramos el vínculo con ellos: objetivos, responsables, indicadores y ritmos. Así la relación deja de depender de quién ocupe el puesto.",
-        puntos: [
-          "Mapeamos a los actores clave que influyen en la licencia social para operar.",
-          "Diseñamos una estrategia de relacionamiento con objetivos, mensajes y canales claros.",
-          "Estructuramos responsables, indicadores y ritmos de interacción sostenibles en el tiempo.",
-          "Alineamos el plan con la gestión de riesgos sociales y la estrategia de negocio.",
-          "Damos continuidad institucional al vínculo con el territorio, más allá de relaciones personales.",
-        ],
-      },
-      {
-        nombre: "Sostenibilidad en Cadena de Valor",
-        descripcion:
-          "Trabajamos con sus equipos y con sus proveedores para que la sostenibilidad llegue a la operación diaria de la cadena. Acompañamos la adopción de la ISO 20400 y de prácticas de compra más consistentes.",
-        puntos: [
-          "Fortalecemos capacidades en la cadena de suministro para integrar la sostenibilidad en la operación diaria.",
-          "Acompañamos la adopción de la ISO 20400 y de mejores prácticas de compras sostenibles.",
-          "Sensibilizamos a equipos internos y proveedores sobre criterios clave de sostenibilidad.",
-          "Ayudamos a traducir la sostenibilidad en decisiones de compra más consistentes y responsables.",
-        ],
-      },
-      {
-        nombre: "Cursos y talleres de sostenibilidad para empresas",
-        descripcion:
-          "Formación con contenido ajustado a cada nivel jerárquico y ejemplos tomados de las áreas de su empresa. La imparten consultores en ejercicio, en formatos que van de la sensibilización al programa aplicado.",
-        puntos: [
-          "Adaptamos el contenido a cada nivel jerárquico.",
-          "Usamos casos de negocio y ejemplos de sus propias áreas.",
-          "Impartimos con facilitadores que ejercen la consultoría.",
-          "Cubrimos formatos que van de la sensibilización al programa aplicado.",
-        ],
-        href: "/servicio/cursos-talleres-para-empresas/",
-      },
-      {
-        nombre: "Capacitación a la Medida",
-        descripcion:
-          "Diseñamos la formación según el rol de cada audiencia, dentro y fuera de su empresa: alta dirección, equipos, clientes y proveedores. El objetivo es que la estrategia deje de depender de unas cuantas personas.",
-        puntos: [
-          "Diseñamos formación alineada al rol de cada audiencia dentro y fuera de la empresa.",
-          "Aterrizamos la sostenibilidad para alta dirección, equipos, clientes y proveedores.",
-          "Fortalecemos capacidades para que la estrategia no dependa de unas cuantas personas.",
-          "Ayudamos a convertir la sostenibilidad en criterio compartido y acción cotidiana.",
-          "Damos herramientas para implementar con mayor claridad y consistencia.",
-        ],
-      },
-      {
-        nombre: "Acompañamiento en sostenibilidad",
-        descripcion:
-          "Apoyo continuo para ordenar prioridades y hacer avanzar pendientes sin contratar cada proyecto por separado. Se ajusta por horas, por periodo o como iguala mensual, según lo que su operación requiera en cada momento.",
-        puntos: [
-          "Ordenamos sus prioridades y proyectos de sostenibilidad.",
-          "Avanzamos tareas puntuales sin que contrate cada proyecto por separado.",
-          "Damos guía experta, seguimiento y retroalimentación.",
-          "Adaptamos el acompañamiento por horas, por periodo o como iguala mensual.",
-        ],
-        href: "/servicio/acompanamiento-sostenibilidad/",
-      },
     ],
   },
   {
@@ -336,16 +336,16 @@ export const CUADRANTES: Cuadrante[] = [
       "Lo que no se comunica con claridad pierde fuerza. Le ayudamos a traducir avances, compromisos y resultados en mensajes sólidos, relevantes y creíbles, que fortalezcan la confianza, la reputación y el valor de su empresa ante sus grupos de interés.",
     servicios: [
       {
-        nombre: "Estrategia de Sostenibilidad",
+        nombre: "Estrategia de Comunicación en Sostenibilidad",
         descripcion:
-          "Convertimos lo que su empresa ya sabe —materialidad, benchmark, tendencias— en pilares, objetivos y líneas de acción alineados con la visión del negocio, priorizados con criterios de factibilidad y no por orden de llegada.",
+          "Definimos qué comunicar, a quién y con qué evidencia detrás. Ordenamos mensajes, públicos y canales, y fijamos los límites que separan un avance bien contado de una afirmación que su empresa no puede sostener.",
         puntos: [
-          "Definimos pilares, objetivos y líneas de acción.",
-          "Alineamos la sostenibilidad con la visión del negocio.",
-          "Convertimos estudios de materialidad, benchmark y tendencias en estrategia accionable.",
-          "Priorizamos las acciones con criterios de factibilidad.",
+          "Definimos qué comunicar, a quién y con qué evidencia.",
+          "Comparamos su comunicación con la del sector y la de los líderes.",
+          "Ordenamos mensajes, públicos, canales, riesgos y límites.",
+          "Evitamos exagerar avances u ocultar información relevante.",
         ],
-        href: "/servicio/estrategia-sostenibilidad/",
+        href: "/servicio/estrategia-de-comunicacion-en-sostenibilidad/",
       },
       {
         nombre: "Informe de Sostenibilidad",
@@ -360,7 +360,7 @@ export const CUADRANTES: Cuadrante[] = [
         href: "/servicio/informe-de-sostenibilidad/",
       },
       {
-        nombre: "Adicionales",
+        nombre: "Soportes de comunicación adicionales",
         descripcion:
           "Materiales complementarios que extienden el alcance de su informe y de su estrategia de comunicación. Adaptamos cada pieza al mensaje, la audiencia y el canal, sin que ganar alcance se pague con una pérdida de rigor.",
         noEnlazable: true,
@@ -375,3 +375,41 @@ export const CUADRANTES: Cuadrante[] = [
     ],
   },
 ];
+
+/**
+ * Selección editorial de la columna de Servicios del footer.
+ *
+ * No es "todos los servicios con página" —esos siguen siendo todos los que
+ * tienen `href` en CUADRANTES, íntegros, y el sitio los sigue enlazando desde
+ * "Servicios relacionados" en cada página de servicio— sino los cinco que el
+ * footer decide destacar, en este orden. Quitar un nombre de aquí no
+ * despublica su página ni le quita sus otros enlaces entrantes: solo decide
+ * si aparece en esta columna.
+ */
+const SERVICIOS_FOOTER_NOMBRES = [
+  "Estudio de Doble Materialidad",
+  "Estrategia de Sostenibilidad",
+  "Cursos y talleres de sostenibilidad para empresas",
+  "Distintivo ESR",
+  "Diagnóstico de Sostenibilidad",
+] as const;
+
+/**
+ * Resuelve la selección de arriba contra el catálogo real de CUADRANTES: el
+ * href de cada uno no se copia a mano, así que no puede quedar desincronizado
+ * si la ruta de un servicio cambia. Si un nombre no existe en CUADRANTES o no
+ * tiene página propia, falla en build en vez de dejar un enlace roto o un
+ * hueco silencioso en el footer.
+ */
+export const SERVICIOS_FOOTER: { nombre: string; href: string }[] =
+  SERVICIOS_FOOTER_NOMBRES.map((nombre) => {
+    const servicio = CUADRANTES.flatMap((cuadrante) => cuadrante.servicios).find(
+      (s) => s.nombre === nombre,
+    );
+    if (!servicio?.href || servicio.noEnlazable) {
+      throw new Error(
+        `SERVICIOS_FOOTER: "${nombre}" no tiene página propia en CUADRANTES.`,
+      );
+    }
+    return { nombre: servicio.nombre, href: servicio.href };
+  });

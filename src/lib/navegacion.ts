@@ -12,10 +12,15 @@ export const ENLACES_NAVEGACION: EnlaceNav[] = [
   { label: "Casos de Éxito", href: "/casos-de-exito" },
   { label: "Nosotros", href: "/nosotros" },
   { label: "Centro de Recursos", href: "/recursos" },
-  // PROVISIONAL: es un servicio, no una página. /informe-de-sostenibilidad/ da
-  // 404, así que apunta al ancla de servicios de la Home. Redirigir a su página
-  // propia cuando exista.
-  { label: "Informe de Sostenibilidad", href: "/#servicios" },
+  /*
+    "Informe de Sostenibilidad" ya no vive aquí: apuntaba a /#servicios (nunca
+    a una página propia) y ese es también el nombre de un servicio real, con
+    página propia en /servicio/informe-de-sostenibilidad/. Ese servicio sigue
+    enlazado desde el bloque de relacionados de las demás páginas de servicio
+    (no entra en SERVICIOS_FOOTER, la selección editorial de la columna de
+    Servicios del footer, en servicios.ts), así que retirar esta entrada no lo
+    deja huérfano.
+  */
 ];
 
 /**
@@ -33,3 +38,13 @@ export const ENLACES_LEGALES: EnlaceNav[] = [
 
 export const LINKEDIN_URL =
   "https://www.linkedin.com/company/responsable-asesoria-sostenibilidad-rse-esg";
+
+/**
+ * Descripción de marca del bloque de logo, compartida por los dos footers.
+ *
+ * Vivía copiada a mano en cada uno y había divergido: el de servicio se quedó
+ * con una variante corta y desactualizada. Una sola fuente evita que vuelva a
+ * pasar.
+ */
+export const DESCRIPCION_RESPONSABLE =
+  "ResponSable es una agencia de sostenibilidad que acompaña a las empresas a llevar su estrategia de RSE, la doble materialidad y la gestión social al corazón del negocio, para generar valor real y fortalecer su resiliencia.";

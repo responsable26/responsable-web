@@ -22,6 +22,31 @@ export function desplazarA(destino: number, suave: boolean) {
   window.scrollTo({ top: destino, behavior: suave ? "smooth" : "auto" });
 }
 
+/**
+ * Desplaza hasta el ancla `id` si ya existe en la página, dejando libre la
+ * altura real del header fijo/sticky (medida en el momento, no cableada: el
+ * header cambia de alto entre su estado normal y el "pill" al desplazarse).
+ * Devuelve false sin hacer nada si el elemento no está en el DOM —un link a
+ * "/#id" pulsado desde otra página, donde toca dejar que la navegación real
+ * ocurra primero y aterrizar por el salto nativo del navegador—.
+ *
+ * `history.replaceState` y no `location.hash`: asignar el hash provoca un
+ * salto nativo que anularía el desplazamiento suave que acabamos de lanzar.
+ */
+export function irAAncla(id: string) {
+  const destino = document.getElementById(id);
+  if (!destino) return false;
+  const header = document.querySelector("header");
+  const margen = (header?.getBoundingClientRect().height ?? 0) + 16;
+  const top = destino.getBoundingClientRect().top + window.scrollY - margen;
+  const sinMovimiento = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  desplazarA(top, !sinMovimiento);
+  history.replaceState(null, "", `#${id}`);
+  return true;
+}
+
 /** Detiene Lenis mientras hay un modal abierto. */
 export function pausarScroll() {
   window.__lenis?.stop();

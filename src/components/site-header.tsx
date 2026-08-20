@@ -1,10 +1,32 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { useContactModal } from "@/context/contact-modal-context";
+import { irAAncla } from "@/lib/scroll-suave";
+
+/**
+ * "Servicios" apunta a "/#servicios". Si el ancla ya existe en la página
+ * (estamos en la Home), se intercepta el salto nativo del navegador y se pasa
+ * por Lenis; si no (se está en otra página), se deja que el <Link> navegue
+ * normal y aterrice por el salto nativo, ya con scroll-margin-top en la
+ * sección para que el header no la tape.
+ */
+function manejarClicNav(
+  event: ReactMouseEvent<HTMLAnchorElement>,
+  href: string,
+) {
+  const id = href.split("#")[1];
+  if (id && irAAncla(id)) event.preventDefault();
+}
 
 /**
  * Navegación principal. Se pinta en la barra desde lg y, por debajo, dentro del
@@ -192,8 +214,15 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
       <div
         className={`mx-auto flex items-center justify-between gap-4 lg:gap-14 transition-[max-width,border-radius,background-color,box-shadow,padding] duration-300 ease-out ${
           scrolled
-            ? "max-w-[24rem] rounded-full bg-navy px-3 py-2.5 shadow lg:max-w-[54rem] lg:px-8"
-            : `max-w-full rounded-none px-[clamp(1rem,4vw,2.5rem)] py-4 ${
+            ? /*
+                pr-3 y no px-3/lg:px-8 simétrico: el hueco a la derecha del
+                CTA debe igualar al que tiene arriba y abajo (py-3), y ese es
+                el mismo en todos los breakpoints porque py-3 tampoco cambia
+                con lg. pl sí crece en lg —conserva el aire que ya tenía el
+                grupo hamburguesa/logo/nav, que no es lo que se está corrigiendo.
+              */
+              "max-w-[24rem] rounded-full bg-navy py-3 pr-3 pl-3 shadow lg:max-w-[54rem] lg:pl-8"
+            : `max-w-full rounded-none px-[clamp(1rem,4vw,2.5rem)] py-5 ${
                 transparent ? "bg-transparent" : "bg-navy"
               }`
         }`}
@@ -250,7 +279,10 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(event) => {
+                      manejarClicNav(event, link.href);
+                      setMenuOpen(false);
+                    }}
                     className="font-head block rounded-sm px-3 py-2 text-sm font-medium text-navy hover:bg-off-white"
                   >
                     {link.label}
@@ -277,6 +309,7 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
                     clicConPuntero.current = true;
                   }}
                   onClick={(event) => {
+                    manejarClicNav(event, link.href);
                     if (!clicConPuntero.current) return;
                     clicConPuntero.current = false;
                     event.currentTarget.blur();
