@@ -66,17 +66,43 @@ export function SiteFooter() {
             <h3 className="font-head text-sm font-semibold text-white">
               Compañía
             </h3>
+            {/*
+              No se usa ENLACES_NAVEGACION tal cual: es la misma fuente que
+              alimenta el "Explore" de ServicioFooter, así que quitar "Home" o
+              añadir aquí un enlace habría cambiado también esa otra columna.
+              Los dos ajustes pedidos para esta columna en concreto —quitar
+              "Home" y añadir el índice de servicios, antes de Casos de
+              Éxito, mismo orden que "Servicios" en la navegación principal
+              del header (NAV_LINKS, site-header.tsx)— se aplican aquí, en
+              local, sin tocar lib/navegacion.ts ni ServicioFooter.
+
+              "Todos los Servicios" y no "Servicios": esta misma fila de
+              columnas ya tiene una columna llamada "Servicios" (los cinco de
+              SERVICIOS_FOOTER), y el rótulo tiene que distinguir con
+              claridad que este enlace va al índice completo, no a otro
+              servicio suelto de esa lista.
+            */}
             <ul className="mt-4 flex flex-col gap-3">
-              {ENLACES_NAVEGACION.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="font-body text-sm text-white/75 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/servicio/"
+                  className="font-body text-sm text-white/75 transition-colors hover:text-white"
+                >
+                  Todos los Servicios
+                </Link>
+              </li>
+              {ENLACES_NAVEGACION.filter((link) => link.label !== "Home").map(
+                (link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="font-body text-sm text-white/75 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
 

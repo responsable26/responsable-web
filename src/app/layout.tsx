@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import { ContactModalProvider } from "@/context/contact-modal-context";
 import { ContactModal } from "@/components/contact-modal/contact-modal";
 import { ScrollSuave } from "@/components/scroll-suave";
+import { HojasFlotantes } from "@/components/hojas-flotantes";
 import "./globals.css";
 
 /*
@@ -39,6 +40,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="es" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ScrollSuave />
+        {/*
+          HojasFlotantes es position:fixed sobre el viewport: no necesita un
+          ancestro "relative" ni participa del flex de body (los elementos
+          fixed salen del flujo), así que puede ir suelta aquí sin tocar el
+          layout de columna con pie de página pegado abajo.
+        */}
+        <HojasFlotantes />
         <ContactModalProvider>
           {children}
           <ContactModal />

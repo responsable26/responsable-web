@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { CASOS, type Caso } from "@/lib/casos";
 import { ChevronIcon } from "@/components/icons";
-import { HojasBanda } from "@/components/home/hojas-banda";
 import { VideoYoutube } from "@/components/video-youtube";
 import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
 
@@ -202,24 +201,13 @@ export function CasosExito() {
 
   return (
     /*
-      overflow-hidden por las hojas: recorta lo que sobresalga por los lados en
-      viewports estrechos, así el dibujo no añade scroll horizontal a la página.
-
-      La banda de logos sí es una pista desplazable y sí sangra, pero la recorta
-      su propia tarjeta, no esta sección: cuando el arrastre del slider desplaza
-      el bloque del caso, este overflow-hidden es además lo que impide que ese
+      overflow-hidden por el carrusel: la banda de logos es una pista
+      desplazable que sangra a ancho completo de su propia tarjeta (no de
+      esta sección), y cuando el arrastre del slider de casos desplaza el
+      bloque activo, este overflow-hidden es lo que impide que ese
       desplazamiento asome por el borde de la ventana.
     */
     <section className="relative overflow-hidden bg-navy py-[var(--section-y)]">
-      {/*
-        Va antes que el contenido en el DOM y sin z-index: los dos son elementos
-        posicionados, así que el orden de pintado lo decide el orden del árbol y
-        las hojas quedan por debajo. El alto crece con el viewport y el anclaje
-        es bottom-0, de modo que el cúmulo inferior de la composición cae en la
-        franja de padding que queda libre bajo la tarjeta.
-      */}
-      <HojasBanda className="pointer-events-none absolute inset-x-0 bottom-0 h-[clamp(11rem,26vw,20rem)] w-full" />
-
       {/*
         La sección ya no lleva px-6: la pista de tarjetas, más abajo, tiene que
         poder sangrar hasta el borde del viewport. Este bloque y el de la

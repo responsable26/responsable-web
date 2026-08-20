@@ -361,6 +361,66 @@ body {
   }
 }
 
+/* Hojas en suspensión (hojas-flotantes.tsx): una sola animación compartida
+   por todas las hojas, parametrizada por variables CSS que fija cada
+   elemento en línea (amplitud horizontal/vertical del vaivén, giro,
+   duración, desfase) para que ninguna se mueva igual ni en el mismo momento.
+
+   Solo anima transform a propósito —nunca left/top, que forzarían recálculo
+   de layout en cada fotograma—: la posición de reposo de cada hoja ya viene
+   fija por left/top en línea (puestos una sola vez, no en esta regla), y
+   esta animación solo añade un vaivén por encima con translate/rotate, que
+   el compositor mueve sin tocar el flujo del documento. La opacidad tampoco
+   se anima: es constante por hoja, fijada también en línea.
+
+   El recorrido —un rombo cerrado que pasa por derecha, abajo, izquierda y
+   arriba de la posición de reposo antes de volver a ella— es lo que hace que
+   el vaivén no se lea como una línea recta de ida y vuelta. Empieza y
+   termina en (0,0) para que el bucle infinite no dé un salto en la costura. */
+@layer components {
+  .hoja-particula {
+    /*
+      Duración y desfase no son variables CSS aquí: llegan como
+      animation-duration/animation-delay en línea (longhand, no en este
+      shorthand) desde el propio componente, que los sobrescribe igual por
+      cascada. Solo ax/ay/rot necesitan ser variables, porque un
+      transform:translate() no tiene equivalente como propiedad suelta.
+    */
+    animation: hoja-derivar 34s ease-in-out infinite;
+    will-change: transform;
+  }
+}
+@keyframes hoja-derivar {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(var(--hoja-ax, 4vw), calc(var(--hoja-ay, 4vh) * -1))
+      rotate(var(--hoja-rot, 8deg));
+  }
+  50% {
+    transform: translate(calc(var(--hoja-ax, 4vw) * -1), calc(var(--hoja-ay, 4vh) * -1))
+      rotate(0deg);
+  }
+  75% {
+    transform: translate(calc(var(--hoja-ax, 4vw) * -1), var(--hoja-ay, 4vh))
+      rotate(calc(var(--hoja-rot, 8deg) * -1));
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* "Bajo prefers-reduced-motion no se muestran": no basta con parar la
+   animación (dejaría cada hoja congelada, visible, a mitad de caída) — hay
+   que quitar la capa entera. display:none además pausa la animación por
+   completo, así que tampoco se malgasta ciclo alguno con la capa oculta. */
+@media (prefers-reduced-motion: reduce) {
+  .hojas-particulas-capa {
+    display: none;
+  }
+}
+
 /* Interactividad: cursor y foco.
 
    Tailwind v3 traía en su preflight `button, [role="button"] { cursor: pointer }`.

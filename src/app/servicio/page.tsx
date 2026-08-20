@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { ServiciosCuadrantes } from "@/components/servicio/servicios-cuadrantes";
+import { Articulos } from "@/components/home/articulos";
+import { ARTICULOS } from "@/lib/articulos";
 
 const DESCRIPCION =
   "Diagnóstico, estrategia, implementación y comunicación en sostenibilidad. Los servicios con los que acompañamos a su empresa en cada etapa.";
@@ -9,6 +13,11 @@ export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.
   title: "Servicios",
   description: DESCRIPCION,
+  /* Igual que casos-de-exito/page.tsx, casos-de-exito/[slug]/page.tsx y
+     servicio/estudio-doble-materialidad/page.tsx: el sitio nuevo aún no está
+     en producción, así que esta página —sin equivalente confirmado en el
+     WordPress viejo o no— tampoco se indexa todavía. */
+  robots: { index: false, follow: false },
   alternates: { canonical: "/servicio/" },
   openGraph: {
     type: "website",
@@ -27,15 +36,86 @@ export default function ServicioPage() {
     <>
       <SiteHeader />
 
-      <main id="main" className="flex-1 px-6 py-[var(--section-y)]">
-        <div className="mx-auto max-w-[var(--container)]">
-          <h1 className="font-head text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-navy">
-            Servicio
-          </h1>
-          <p className="font-body mt-4 text-ink-soft">
-            Contenido próximamente.
-          </p>
+      <main id="main" className="flex-1">
+        {/*
+          Misma estructura nav/ol/li que usan las páginas de servicio
+          individuales (servicio/[slug]/page.tsx), pero con la variante clara
+          —barra bg-off-white con borde inferior, texto ink-soft/navy— que ya
+          usan casos-de-exito/[slug] y recursos/articulos/[slug]: aquellas
+          llevan el breadcrumb en blanco/70 dentro de su hero oscuro con
+          video, y este índice no tiene ese hero, así que ese tratamiento de
+          color quedaría invisible sobre fondo claro.
+        */}
+        <div className="border-b border-border bg-off-white">
+          <nav
+            aria-label="Ruta de navegación"
+            className="mx-auto max-w-[var(--container)] px-6 py-3"
+          >
+            <ol className="font-body flex flex-wrap items-center gap-2 text-sm text-ink-soft">
+              <li>
+                <Link href="/" className="hover:text-navy">
+                  Inicio
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>
+                <span aria-current="page" className="text-navy">
+                  Servicios
+                </span>
+              </li>
+            </ol>
+          </nav>
         </div>
+
+        {/*
+          Encabezado de "Nuestros Servicios": mismo texto que pintaba
+          ServiciosRueda, pero alineado a la izquierda (no centrado, como en
+          el Home) y reescrito aquí porque esta página ya no monta ese
+          componente —la rueda interactiva se sustituye por
+          ServiciosCuadrantes, cuatro secciones desplegadas, una por
+          cuadrante—. py-[var(--section-y)] completo arriba y abajo: el
+          padding superior reducido de ServiciosRueda existía para que la
+          sección de después de Intro, en el Home, no se sintiera con doble
+          separación; aquí la sección anterior es la barra de breadcrumbs, así
+          que ese recorte dejaba el título pegado a ella. Con el espaciado
+          normal de sección queda igual de separado que cualquier otro par de
+          secciones del sitio.
+        */}
+        <section
+          id="servicios"
+          className="scroll-mt-28 bg-off-white px-6 py-[var(--section-y)] lg:px-10"
+        >
+          <div className="mx-auto max-w-[var(--container)]">
+            <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
+              Servicios
+            </p>
+            <h2 className="font-head mt-2 text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy">
+              Nuestros Servicios
+            </h2>
+            <p className="font-body mt-4 max-w-[62ch] text-[1.05rem] text-ink-soft">
+              Cuatro preguntas ordenan cualquier estrategia de sostenibilidad.
+              Cada una abre un grupo de servicios diseñados para responderla
+              con evidencia.
+            </p>
+          </div>
+        </section>
+
+        {/*
+          Cuatro secciones ancladas, una por cuadrante, en el orden del ciclo
+          (CUADRANTES ya viene en ese orden: ¿Dónde Estoy? → ¿Adónde Voy? →
+          ¿Cómo lo Hago? → ¿Cómo Comunico?). Todo visible sin interacción,
+          salvo el modal de cada servicio, que se conserva igual que en el
+          panel de la rueda.
+        */}
+        <ServiciosCuadrantes />
+
+        {/*
+          Mismo componente que el Home y sin ninguna variante: su copia
+          ("Últimos Artículos", el párrafo de eyebrow) ya es genérica y no
+          asume que vive en la Home, así que se reutiliza tal cual. Los ocho
+          más recientes, igual que en la Home.
+        */}
+        <Articulos articulos={ARTICULOS.slice(0, 8)} />
       </main>
 
       <SiteFooter />

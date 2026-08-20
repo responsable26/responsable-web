@@ -46,7 +46,10 @@ const ARROW_VIEWBOX_CY = 376.03;
 const ARROW_VIEWBOX_R = 385.535;
 const ARROW_SCALE = R_OUT / ARROW_VIEWBOX_R;
 /** Lleva los trazados de arrows.svg, sin tocar sus coordenadas, al viewBox de la rueda. */
-const ARROW_TRANSFORM = `translate(${CX} ${CY}) scale(${ARROW_SCALE}) translate(${-ARROW_VIEWBOX_CX} ${-ARROW_VIEWBOX_CY})`;
+/** Exportado: servicios-cuadrantes.tsx lo reutiliza para dibujar el segmento
+ *  de flecha de un solo cuadrante fuera de la rueda, con las mismas
+ *  coordenadas exactas. */
+export const ARROW_TRANSFORM = `translate(${CX} ${CY}) scale(${ARROW_SCALE}) translate(${-ARROW_VIEWBOX_CX} ${-ARROW_VIEWBOX_CY})`;
 
 /*
   Área de hover/clic de cada cuadrante: un sector angular completo, no la
@@ -151,7 +154,9 @@ const CELDA_TARJETA = [
   "lg:col-start-1 lg:row-start-2", // 4 · ¿Cómo Comunico?  abajo-izq
 ];
 
-const CUNAS: Cuna[] = [
+/** Exportado por el mismo motivo que ARROW_TRANSFORM: .arco es el trazado de
+ *  cada segmento de flecha, en el mismo orden que CUADRANTES. */
+export const CUNAS: Cuna[] = [
   {
     // 1 · ¿Dónde Estoy? · arriba-izquierda
     arco: "M436.97,100.46l-80.28-69.94-32.69-28.47c-5.34-4.65-13.68-.86-13.68,6.22v28.11c-3.34.65-6.67,1.35-9.97,2.11C146.2,73.45,31.12,211.3,31.12,376.03c0,1.55,0,3.09.03,4.64l61.8-70.94c3.46-3.98,8.47-6.25,13.74-6.25s10.28,2.28,13.75,6.25l40.02,45.93c7.81-84.28,63.66-154.62,139.91-183.4,3.29-1.24,6.61-2.4,9.97-3.48v36.31c0,7.08,8.34,10.88,13.68,6.22l60.71-52.88h0l52.26-45.53c3.78-3.29,3.78-9.16,0-12.45Z",
@@ -288,7 +293,11 @@ const ISOTIPO_HOJAS = [
    la tarjeta amarilla se quedara sin barra. border-left-color es una propiedad
    distinta y no compite con el contorno.
 */
-const COLORES: Record<
+/** Exportado: servicios-cuadrantes.tsx reutiliza .relleno (fill del segmento
+ *  de flecha) y .acento (borde de identificación de la sección) para que
+ *  ambas vistas usen exactamente los mismos pares de color, sin un segundo
+ *  mapa que pueda desincronizarse de este. */
+export const COLORES: Record<
   Cuadrante["colorToken"],
   { relleno: string; texto: string; trazo: string; acento: string }
 > = {
