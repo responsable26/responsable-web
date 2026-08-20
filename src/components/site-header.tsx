@@ -10,8 +10,17 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { CloseIcon } from "@/components/icons";
 import { useContactModal } from "@/context/contact-modal-context";
-import { irAAncla } from "@/lib/scroll-suave";
+import { irAAncla, pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
+
+/** Selector de lo que puede recibir foco dentro del panel, para el atrapado.
+ *  Mismo criterio que ServicioModal y ContactModal (el patrón ya establecido
+ *  en el sitio para esto), reproducido aquí y no importado: cada uno de los
+ *  tres vive en un módulo distinto sin un punto común que valga la pena
+ *  crear solo para tres líneas de selector. */
+const ENFOCABLES =
+  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
  * "Servicios" apunta a "/#servicios". Si el ancla ya existe en la página
@@ -98,7 +107,15 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navId = useId();
-  const containerRef = useRef<HTMLElement>(null);
+  /* Panel deslizante: refs para el atrapado de foco (panelRef), el primer
+     foco al abrir (cerrarRef, el botón "Cerrar" del propio panel) y la
+     devolución de foco al cerrar (toggleRef, el botón hamburguesa que lo
+     abrió). El panel cubre en pantalla el propio botón hamburguesa —vive en
+     la esquina superior izquierda, donde también arranca el panel—, así que
+     no puede seguir siendo él el control de cierre mientras está abierto. */
+  const panelRef = useRef<HTMLElement>(null);
+  const cerrarRef = useRef<HTMLButtonElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const ruta = usePathname();
   /*
     Las páginas de servicio pasan sus anclas de sección y conservan el patrón
@@ -165,20 +182,59 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the panel on Escape or on a click outside it.
+  /*
+    Cerrar el panel: útil desde Escape, el overlay y cada enlace de la lista.
+    Devuelve el foco al botón hamburguesa —el mismo patrón de
+    disparador/devolución que servicios-rueda.tsx usa con ServicioModal—,
+    salvo que aquí el disparador es un único botón fijo y no hace falta
+    trackearlo por ref aparte.
+  */
+  function cerrarPanel() {
+    setMenuOpen(false);
+    toggleRef.current?.focus();
+  }
+
+  /*
+    Mismo patrón que ServicioModal/ContactModal: overlay fijo, scroll del
+    body bloqueado (más Lenis, que su propio bucle sigue moviendo el
+    documento aunque el body no desborde), foco inicial en "Cerrar" y foco
+    atrapado con Tab mientras esté abierto. Escape cierra; el clic fuera ya
+    no hace falta detectarlo aquí porque lo resuelve el propio onClick del
+    overlay, que cubre todo lo que el panel no cubre.
+  */
   useEffect(() => {
     if (!menuOpen) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setMenuOpen(false);
+
+    document.body.style.overflow = "hidden";
+    pausarScroll();
+    cerrarRef.current?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        cerrarPanel();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const foco = panelRef.current?.querySelectorAll<HTMLElement>(ENFOCABLES);
+      if (!foco || foco.length === 0) return;
+      const primero = foco[0];
+      const ultimo = foco[foco.length - 1];
+
+      if (event.shiftKey && document.activeElement === primero) {
+        event.preventDefault();
+        ultimo.focus();
+      } else if (!event.shiftKey && document.activeElement === ultimo) {
+        event.preventDefault();
+        primero.focus();
+      }
     }
-    function onClick(e: MouseEvent) {
-      if (!containerRef.current?.contains(e.target as Node)) setMenuOpen(false);
-    }
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onClick);
+
+    document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onClick);
+      document.body.style.overflow = "";
+      reanudarScroll();
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, [menuOpen]);
 
@@ -195,10 +251,10 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
 
       z-index: en la Home arranca en z-[15], por debajo del texto del hero (z-20)
       y de la onda (z-30), que es la superposición que ya tenía. Al desplazarse
-      sube a z-50, por encima de todo el contenido y por debajo del modal (z-60).
+      sube a z-50, por encima de todo el contenido y por debajo del modal de
+      contacto y del panel deslizante de este mismo header (los dos en z-60).
     */
     <header
-      ref={containerRef}
       className={`inset-x-0 top-0 transition-[padding] duration-300 ease-out ${
         transparent ? "fixed" : "sticky"
       } ${scrolled ? "z-50 px-4 pt-3" : transparent ? "z-[15]" : "z-50"}`}
@@ -229,6 +285,7 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
       >
         <div className="relative flex min-w-0 items-center gap-2 sm:gap-3">
           <button
+            ref={toggleRef}
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
@@ -266,32 +323,95 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
           >
             <Logo className="h-7 w-auto sm:h-8" />
           </Link>
-
-          {/* Full site navigation, anchored under the toggle. */}
-          <nav
-            id={navId}
-            aria-label="Menú del sitio"
-            hidden={!menuOpen}
-            className="absolute top-full left-0 z-10 mt-2 min-w-60 rounded-sm border border-border bg-white p-2 shadow"
-          >
-            <ul className="flex flex-col">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={(event) => {
-                      manejarClicNav(event, link.href);
-                      setMenuOpen(false);
-                    }}
-                    className="font-head block rounded-sm px-3 py-2 text-sm font-medium text-navy hover:bg-off-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </div>
+
+        {/*
+          Overlay: cubre todo el viewport, no solo los tres cuartos que el
+          panel deja libres —el panel, opaco, tapa por su cuenta el resto—.
+          Un único
+          onClick cierra desde cualquier punto fuera del panel, así que ya no
+          hace falta detectar "clic fuera" comparando con containerRef como
+          antes. Montado siempre (no de forma condicional) para poder animar
+          también su entrada/salida; inert + aria-hidden lo sacan del foco y
+          del árbol de accesibilidad mientras está cerrado, y
+          pointer-events-none evita que un elemento en opacity-0 siga
+          capturando clics.
+        */}
+        <div
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
+          onClick={cerrarPanel}
+          className={`fixed inset-0 z-[60] bg-[rgba(10,12,30,0.6)] transition-opacity duration-300 ${
+            menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+        />
+
+        {/*
+          Panel deslizante: mismos enlaces que el dropdown anterior
+          (NAV_LINKS), en un cajón de un cuarto del viewport (ver el ancho
+          más abajo) que entra desde el borde izquierdo. fixed y no absolute:
+          ya no depende de ningún
+          ancestro relative, y cubre toda la altura de la pantalla en vez de
+          solo anclarse bajo el botón. Montado siempre, igual que el overlay,
+          para poder animar transform; inert lo saca del foco mientras está
+          fuera de vista. El botón hamburguesa que lo abre queda tapado por
+          el propio panel en su esquina superior izquierda mientras está
+          abierto, así que el cierre manual vive en el botón "Cerrar" de
+          dentro, no en volver a pulsar la hamburguesa.
+        */}
+        <nav
+          ref={panelRef}
+          id={navId}
+          aria-label="Menú del sitio"
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
+          /*
+            25vw es la especificación (un cuarto del viewport), pero tomada
+            tal cual sobre un móvil se queda en unos 90-100px: ni entra
+            "Centro de Recursos" sin partirse, ni deja un cajón usable.
+            max(25vw,280px) no es un breakpoint sino una sola fórmula continua:
+            por debajo de los 1120px de ancho de pantalla (280px / 0.25) gana
+            el mínimo fijo de 280px —suficiente para el enlace más largo con
+            aire de sobra, y una anchura de cajón corriente en patrones de
+            navegación móvil—, y a partir de esos 1120px gana el 25vw, que ya
+            es igual o mayor que 280px: el cuarto exacto pedido entra en
+            juego justo en el punto en que ya es usable por sí solo, sin
+            necesidad de fijar el corte a mano en un breakpoint concreto.
+          */
+          className={`fixed inset-y-0 left-0 z-[60] flex w-[max(25vw,280px)] flex-col overflow-y-auto bg-white shadow-lg transition-transform duration-300 ease-out ${
+            menuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between border-b border-border px-4 py-4">
+            <Logo className="h-7 w-auto text-navy" />
+            <button
+              ref={cerrarRef}
+              type="button"
+              onClick={cerrarPanel}
+              aria-label="Cerrar menú del sitio"
+              className="flex size-9 items-center justify-center rounded-full text-navy transition-colors hover:bg-off-white"
+            >
+              <CloseIcon className="size-4" />
+            </button>
+          </div>
+
+          <ul className="flex flex-col p-2">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  onClick={(event) => {
+                    manejarClicNav(event, link.href);
+                    cerrarPanel();
+                  }}
+                  className="font-head block rounded-sm px-3 py-2 text-sm font-medium text-navy hover:bg-off-white"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         {navContextual ? null : (
           <nav
