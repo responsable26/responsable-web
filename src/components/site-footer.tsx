@@ -77,11 +77,12 @@ export function SiteFooter() {
               Trabaja con nosotros— se aplican aquí, en local, sin tocar
               lib/navegacion.ts ni ServicioFooter.
 
-              "Todos los Servicios" y no "Servicios": esta misma fila de
+              "Nuestros Servicios" y no "Servicios": esta misma fila de
               columnas ya tiene una columna llamada "Servicios" (los cinco de
               SERVICIOS_FOOTER), y el rótulo tiene que distinguir con
               claridad que este enlace va al índice completo, no a otro
-              servicio suelto de esa lista.
+              servicio suelto de esa lista. Es además el titular que encabeza
+              esa página.
             */}
             <ul className="mt-4 flex flex-col gap-3">
               <li>
@@ -89,7 +90,7 @@ export function SiteFooter() {
                   href="/servicio/"
                   className="font-body text-sm text-white/75 transition-colors hover:text-white"
                 >
-                  Todos los Servicios
+                  Nuestros Servicios
                 </Link>
               </li>
               {ENLACES_NAVEGACION.filter((link) => link.label !== "Home").map(

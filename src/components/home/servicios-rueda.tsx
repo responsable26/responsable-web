@@ -231,8 +231,10 @@ function punto(r: number, grados: number) {
   return [CX + r * Math.cos(a), CY + r * Math.sin(a)] as const;
 }
 
-/** Arco invisible que sirve de riel a la etiqueta: todo el cuerpo recto del segmento. */
-function trazadoEtiqueta({ textoDesde, textoHasta, invertido, rTextoOriginal }: Cuna) {
+/** Arco invisible que sirve de riel a la etiqueta: todo el cuerpo recto del segmento.
+ *  Exportado por lo mismo que CUNAS y ARROW_TRANSFORM: <RuedaCuadrantes /> pinta
+ *  las mismas etiquetas curvas sobre el mismo riel, no sobre uno recalculado. */
+export function trazadoEtiqueta({ textoDesde, textoHasta, invertido, rTextoOriginal }: Cuna) {
   const r = rTextoOriginal * ARROW_SCALE;
   const [xa, ya] = punto(r, invertido ? textoHasta : textoDesde);
   const [xb, yb] = punto(r, invertido ? textoDesde : textoHasta);

@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
 import { FormField } from "@/components/formulario-contacto/form-field";
@@ -120,7 +113,6 @@ export function FormularioContacto({
   titulo,
   campos,
   etiquetaEnvio = "Enviar Información",
-  pie,
 }: {
   /** Encabezado sobre el formulario. Lo sustituye la confirmación al enviarse. */
   titulo: string;
@@ -133,16 +125,6 @@ export function FormularioContacto({
   campos: readonly CampoConfig[];
   /** Texto del botón, para que cada superficie lo ajuste a su contexto. */
   etiquetaEnvio?: string;
-  /**
-   * Contenido opcional bajo el botón de envío. Es una ranura y no un bloque
-   * fijo porque solo el modal lo usa —para desviar hacia /proveedores/ y
-   * /trabaja-con-nosotros/—, y esas dos páginas, que montan este mismo
-   * formulario, no deben verlo: sería mandarlas a sí mismas.
-   *
-   * Al vivir en la rama del formulario, desaparece solo en la confirmación:
-   * ese estado retorna antes y nunca llega hasta aquí.
-   */
-  pie?: ReactNode;
 }) {
   const [values, setValues] = useState<FormValues>(INITIAL_VALUES);
   const [errores, setErrores] = useState<Record<string, string>>({});
@@ -372,10 +354,6 @@ export function FormularioContacto({
           {status === "submitting" ? "Enviando…" : etiquetaEnvio}
         </button>
       </form>
-
-      {/* Fuera del <form>: no forma parte de lo que se envía, son enlaces a
-          otros destinos. */}
-      {pie}
     </>
   );
 }

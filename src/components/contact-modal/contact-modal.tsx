@@ -85,13 +85,28 @@ export function ContactModal() {
 
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
         {/*
-          justify-center más un bloque de ancho acotado: los tres elementos se
-          leen como una unidad centrada en la columna. Antes la ilustración
-          llevaba mt-auto, que la empujaba al fondo de una columna de
-          min-h-screen y abría un vacío enorme entre el párrafo y ella; ahora la
-          separación es un margen normal y es el conjunto el que se centra.
+          La columna se reparte en dos: arriba el bloque de texto —titular,
+          párrafo y los desvíos a las otras dos superficies de solicitud— y
+          abajo la ilustración, empujada al borde inferior con mt-auto.
+
+          Vuelve el mt-auto que se había retirado por dejar un vacío enorme
+          entre el párrafo y la imagen: ahora ese hueco lo ocupa el bloque de
+          enlaces, así que anclar la ilustración abajo compone en vez de
+          descuadrar.
+
+          pb-16 sm:pb-0: la ilustración solo se pinta desde sm, y es ahí donde
+          el relleno inferior tiene que desaparecer para que toque el borde. Por
+          debajo de sm no hay imagen y el texto sí necesita su aire abajo.
+
+          El pt-12 del envoltorio de la imagen es una separación mínima que
+          mt-auto no puede comerse: cuando la ventana es baja no queda espacio
+          libre que repartir, mt-auto vale 0 y sin ese relleno la ilustración
+          se pegaría al bloque de enlaces. La rejilla usa min-h-screen, un
+          mínimo y no una altura fija, así que en ventanas bajas la columna
+          crece con su contenido y el modal —que ya es overflow-y-auto— se
+          desplaza: la imagen no se comprime ni se recorta.
         */}
-        <div className="modal__media flex flex-col justify-center bg-off-white px-8 py-16 sm:px-12">
+        <div className="modal__media flex flex-col bg-off-white px-8 pt-16 pb-16 sm:px-12 sm:pb-0">
           <div className="mx-auto w-full max-w-md">
             <h2
               id="contact-modal-title"
@@ -103,12 +118,45 @@ export function ContactModal() {
               Agradecemos su interés en ResponSable. Elija entre las siguientes
               opciones, nos comunicaremos con usted tan pronto como sea posible.
             </p>
+
+            {/*
+              Vía alternativa, no acción principal: bloque compacto, tipografía
+              pequeña y enlaces subrayados, nunca botones. Los colores son los
+              del fondo claro de esta columna —tarjeta blanca con borde y
+              enlaces en magenta, la convención del sitio para enlaces sobre
+              claro—, no los que tenía cuando vivía sobre el navy de la derecha.
+
+              close() antes de navegar: sin él, el modal seguiría montado sobre
+              la página de destino, y al volver atrás el usuario se lo
+              encontraría abierto encima. El <Link> de Next ejecuta este onClick
+              antes de navegar, así que el orden está garantizado.
+            */}
+            <div className="mt-8 rounded-lg border border-border bg-white px-4 py-3">
+              <p className="font-body text-xs text-ink-soft">
+                ¿Buscaba otra cosa?
+              </p>
+              <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1">
+                {OTRAS_SOLICITUDES.map((enlace) => (
+                  <Link
+                    key={enlace.href}
+                    href={enlace.href}
+                    onClick={close}
+                    className="font-body text-sm font-medium text-magenta underline underline-offset-4 transition-colors hover:text-[#C71268]"
+                  >
+                    {enlace.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-auto hidden w-full max-w-md pt-12 sm:block">
             <Image
               src="/modal.webp"
               alt=""
               width={1182}
               height={1182}
-              className="mt-8 hidden w-full sm:block"
+              className="w-full"
             />
           </div>
         </div>
@@ -126,37 +174,6 @@ export function ContactModal() {
             <FormularioContacto
               titulo="Completa el formulario"
               campos={CAMPOS}
-              /*
-                Vía alternativa, no acción principal: fondo apenas insinuado
-                sobre el navy, tipografía pequeña y enlaces subrayados en vez
-                de botones, para que a nadie se le confunda con el de enviar.
-                Va como `pie` y no suelto tras el formulario porque así
-                desaparece solo al confirmarse el envío.
-
-                close() antes de navegar: sin él, el modal seguiría montado
-                sobre la página de destino, y al volver atrás el usuario se lo
-                encontraría abierto encima. El <Link> de Next ejecuta este
-                onClick antes de navegar, así que el orden está garantizado.
-              */
-              pie={
-                <div className="mt-8 rounded-lg bg-white/5 px-4 py-3">
-                  <p className="font-body text-xs text-white/60">
-                    ¿Buscaba otra cosa?
-                  </p>
-                  <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1">
-                    {OTRAS_SOLICITUDES.map((enlace) => (
-                      <Link
-                        key={enlace.href}
-                        href={enlace.href}
-                        onClick={close}
-                        className="font-body text-sm text-white/85 underline underline-offset-4 transition-colors hover:text-white"
-                      >
-                        {enlace.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              }
             />
           </div>
         </div>

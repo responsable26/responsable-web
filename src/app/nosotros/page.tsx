@@ -3,6 +3,7 @@ import Image from "next/image";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CtaContacto } from "@/components/cta-contacto";
+import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 
 const DESCRIPCION =
@@ -41,27 +42,67 @@ export default function NosotrosPage() {
       <main id="main" className="flex-1">
         <section className="bg-off-white px-6 py-[var(--section-y)]">
           <div className="mx-auto max-w-[var(--container)]">
-            <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
-              Conócenos
-            </p>
-            <h1 className="font-head mt-3 max-w-[18ch] text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-balance text-navy">
-              Una Historia ResponSable
-            </h1>
-
             {/*
+              El flanco derecho del encabezado lo ocupa la rueda, que antes
+              quedaba vacío. Dos columnas desde md, con la rueda en una columna
+              dimensionada al contenido (auto) y no a una fracción: manda ella
+              su tamaño y el texto se queda con el resto. items-center las
+              equilibra en vertical.
+            */}
+            <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_auto] lg:gap-16">
+              <div>
+                <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
+                  Conócenos
+                </p>
+                <h1 className="font-head mt-3 max-w-[18ch] text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-balance text-navy">
+                  Una Historia ResponSable
+                </h1>
+
+                {/*
               El primer párrafo va como entradilla, a mayor cuerpo, y los ocho
               restantes en dos columnas desde lg, cuatro por columna. El
               original era un bloque corrido a ancho completo, difícil de
               entrar.
             */}
-            <p className="font-body mt-8 max-w-[62ch] text-[1.2rem] text-ink-soft">
-              En ResponSable acompañamos a empresas que quieren dejar atrás una
-              sostenibilidad dispersa, reactiva o difícil de justificar. Les
-              ayudamos a entender mejor su contexto, priorizar con rigor,
-              fortalecer relaciones con sus grupos de interés y traducir la
-              sostenibilidad en decisiones que protegen la operación, generan
-              valor y construyen resiliencia.
-            </p>
+                <p className="font-body mt-8 max-w-[62ch] text-[1.2rem] text-ink-soft">
+                  En ResponSable acompañamos a empresas que quieren dejar atrás
+                  una sostenibilidad dispersa, reactiva o difícil de justificar.
+                  Les ayudamos a entender mejor su contexto, priorizar con
+                  rigor, fortalecer relaciones con sus grupos de interés y
+                  traducir la sostenibilidad en decisiones que protegen la
+                  operación, generan valor y construyen resiliencia.
+                </p>
+              </div>
+
+              {/*
+                La rueda entera con sus cuatro etiquetas: los cuatro segmentos a
+                color pleno —aquí no hay cuadrante elegido que destacar— más el
+                isotipo del centro. Gráfico y nada más: aria-hidden, sin
+                animación y sin interacción, a diferencia de la del Home, que al
+                pulsarla abre el panel de servicios. En esta página no hay panel
+                que abrir.
+
+                24rem (384px) frente a los 420px del Home: menor, como se pidió,
+                y a la vez suficiente para que las etiquetas se lean. El cuerpo
+                del texto va en unidades del viewBox de 400, así que el tamaño
+                real es 14.5 × (ancho/400): 13.9px aquí y 12.8px en el escalón
+                de md. Bajar mucho más de ahí dejaría las preguntas ilegibles,
+                que es lo que decide el suelo de este tamaño.
+
+                hidden md:block, y no apilada bajo el texto en móvil: es
+                decorativa y va aria-hidden, así que no aporta nada que el texto
+                no diga, y allí el encabezado ya lo sigue el banner de video. Dos
+                piezas gráficas grandes seguidas, antes de la primera línea de la
+                historia, empujarían el contenido real fuera de pantalla. A eso
+                se suma que las etiquetas curvas son justo lo que peor se lee a
+                ese tamaño. En pantallas anchas no cuesta nada: ocupa una columna
+                que si no quedaría vacía.
+              */}
+              <RuedaCuadrantes
+                etiquetas
+                className="hidden w-full max-w-[22rem] md:block lg:max-w-[24rem]"
+              />
+            </div>
 
             {/*
               Banner de la historia, a ancho completo del contenedor de

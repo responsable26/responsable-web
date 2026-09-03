@@ -102,9 +102,9 @@ export default function ServicioPage() {
                 Nuestros Servicios
               </h2>
               <p className="font-body mt-4 max-w-[62ch] text-[1.05rem] text-ink-soft">
-                Cuatro preguntas ordenan cualquier estrategia de
-                sostenibilidad. Cada una abre un grupo de servicios diseñados
-                para responderla con evidencia.
+                Cuatro preguntas ordenan cualquier estrategia de sostenibilidad.
+                Cada una abre un grupo de servicios diseñados para responderla
+                con evidencia.
               </p>
             </div>
 
@@ -119,6 +119,13 @@ export default function ServicioPage() {
               principal del encabezado y ninguna de las pequeñas se confunda
               con ella.
 
+              El anillo gira despacio, una vuelta por minuto, y el isotipo del
+              centro se queda fijo. Es la única rueda animada del sitio junto a
+              la del Home: las cuatro de posición de más abajo se quedan
+              estáticas a propósito, porque girando todas a la vez mientras se
+              baja por la página serían un estorbo. Sigue sin interacción y
+              aria-hidden: gira, pero no responde a nada.
+
               hidden md:block, y no apilada bajo el texto en móvil: es
               decorativa y redundante allí. A ancho completo tendría que medir
               casi la pantalla para no verse ridícula, y ese bloque se metería
@@ -128,7 +135,10 @@ export default function ServicioPage() {
               diga. En pantallas anchas no cuesta nada porque ocupa una columna
               que si no quedaría vacía.
             */}
-            <RuedaCuadrantes className="hidden size-64 md:block lg:size-80" />
+            <RuedaCuadrantes
+              girando
+              className="hidden size-64 md:block lg:size-80"
+            />
           </div>
         </section>
 

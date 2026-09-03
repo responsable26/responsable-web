@@ -487,6 +487,38 @@ body {
   }
 }
 
+/* Giro del anillo de flechas de la rueda de servicios en el encabezado de
+   /servicio/. Una vuelta completa por minuto: lento y continuo. `linear` y no
+   una curva de aceite —es la única función de temporización que no introduce
+   aceleración ni frenada—, e `infinite` para que encadene vueltas sin pausa
+   entre ellas. Al ir de 0 a 360 grados, el fotograma final coincide con el
+   inicial, así que el bucle no da tirón y detenerla en cualquier punto no deja
+   la rueda torcida.
+
+   Solo anima transform. El giro se aplica al grupo de las cuatro flechas, no
+   al <svg>: el isotipo del centro vive fuera de ese grupo y se queda quieto.
+
+   El origen es el centro del viewBox y no el de la caja del contenido:
+   transform-box: view-box con 50% 50% da exactamente (200,200), el eje de la
+   rueda. Con fill-box el eje sería el centro de la caja envolvente de las
+   flechas, que no tiene por qué coincidir, y la rueda bambolearía. Ambas
+   propiedades se aplican en el JSX, junto a la clase de animación.
+
+   Bajo prefers-reduced-motion la regla global de más abajo la deja en una sola
+   iteración de 0.01ms; como el estado final es rotate(360deg), idéntico al
+   inicial, la rueda queda estática y en su orientación original. */
+@theme {
+  --animate-rueda-girar: rueda-girar 60s linear infinite;
+}
+@keyframes rueda-girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Movimiento reducido, a nivel global.
 
    Antes vivía repartido en clases motion-reduce: por componente, lo que dejaba
