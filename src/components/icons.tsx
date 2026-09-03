@@ -76,3 +76,22 @@ export function CloseIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/** Palomita del estado de confirmación del modal de contacto. Mismo trazo,
+ *  viewBox y convenciones que el resto de iconos del archivo. */
+export function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m5 13 4.5 4.5L19 7" />
+    </svg>
+  );
+}

@@ -1,4 +1,5 @@
 import { HojasDecorativas } from "@/components/home/hojas-decorativas";
+import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { RotatingWord } from "@/components/home/rotating-word";
 
 /*
@@ -23,10 +24,12 @@ const WAVE_PATH =
 export function HomeHero() {
   return (
     <section className="relative h-screen overflow-hidden bg-navy">
+      {/* autoPlay, muted, loop y playsInline: es un fondo decorativo, no un
+          reproductor. */}
       <video
         className="absolute inset-0 z-0 size-full object-cover"
-        src="/responsable-back.mp4"
-        poster="/responsable-back-poster.jpg"
+        src={VIDEO_HERO}
+        poster={POSTER_HERO}
         autoPlay
         muted
         loop

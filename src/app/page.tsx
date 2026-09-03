@@ -9,6 +9,7 @@ import { Articulos } from "@/components/home/articulos";
 import { CtaContacto } from "@/components/cta-contacto";
 import { AbrirContactoDesdeUrl } from "@/components/abrir-contacto-desde-url";
 import { ARTICULOS } from "@/lib/articulos";
+import { POSTER_HERO } from "@/lib/video-hero";
 
 const DESCRIPCION =
   "Agencia de sostenibilidad y RSE. Desde 2011 acompañamos a su empresa a anticipar riesgos y convertir la estrategia ESG en resultados medibles.";
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     description: DESCRIPCION,
     url: "/",
     locale: "es_ES",
-    images: [{ url: "/responsable-back-poster.jpg", width: 1280, height: 720 }],
+    images: [{ url: POSTER_HERO, width: 1280, height: 720 }],
   },
   twitter: { card: "summary_large_image" },
 };

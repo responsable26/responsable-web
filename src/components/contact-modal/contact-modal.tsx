@@ -1,58 +1,47 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import Image from "next/image";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useContactModal } from "@/context/contact-modal-context";
 import { CloseIcon } from "@/components/icons";
 import { pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
-import { FormField } from "@/components/contact-modal/form-field";
+import {
+  FormularioContacto,
+  type CampoConfig,
+} from "@/components/formulario-contacto/formulario-contacto";
 
-type FormValues = {
-  nombre: string;
-  apellido: string;
-  correo: string;
-  telefono: string;
-  compania: string;
-  cargo: string;
-  mensaje: string;
-  consiento: boolean;
-  hp: string;
-};
+/** Los campos del modal, sin cambios: son los que tenía antes de que el juego
+ *  de campos pasara a ser configurable. Seis, número par, así que la rejilla de
+ *  dos columnas se llena sin huecos. */
+const CAMPOS: readonly CampoConfig[] = [
+  { campo: "nombre", obligatorio: true },
+  { campo: "apellido", obligatorio: true },
+  { campo: "correo", obligatorio: true },
+  { campo: "telefono", obligatorio: true },
+  { campo: "compania", obligatorio: true },
+  { campo: "cargo" },
+];
 
-const INITIAL_VALUES: FormValues = {
-  nombre: "",
-  apellido: "",
-  correo: "",
-  telefono: "",
-  compania: "",
-  cargo: "",
-  mensaje: "",
-  consiento: false,
-  hp: "",
-};
+/** Los dos desvíos del pie del formulario. Van en una constante para que el
+ *  JSX de abajo se lea de un vistazo, igual de corto que la pastilla. */
+const OTRAS_SOLICITUDES = [
+  { label: "Ofrezca sus servicios", href: "/proveedores/" },
+  { label: "Trabaje con nosotros", href: "/trabaja-con-nosotros/" },
+];
 
-const REQUIRED_TEXT_FIELDS = ["nombre", "apellido", "correo", "telefono", "compania"] as const;
-
-type Status = "idle" | "submitting" | "error" | "success";
-
+/**
+ * El formulario en sí —campos, validación, envío y estados— vive en
+ * <FormularioContacto />, compartido con /proveedores/. Aquí queda solo lo
+ * propio del modal: la caja, el bloqueo del scroll, Escape y el foco inicial.
+ *
+ * Al cerrarse, el modal deja de renderizar a su hijo, y con él se va el estado
+ * del formulario: la siguiente apertura arranca vacía sin necesidad de un
+ * reset explícito.
+ */
 export function ContactModal() {
   const { isOpen, close } = useContactModal();
-  const [values, setValues] = useState<FormValues>(INITIAL_VALUES);
-  const [invalidFields, setInvalidFields] = useState<Set<string>>(new Set());
-  const [status, setStatus] = useState<Status>("idle");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  function reset() {
-    setValues(INITIAL_VALUES);
-    setInvalidFields(new Set());
-    setStatus("idle");
-  }
-
-  function handleClose() {
-    close();
-    reset();
-  }
 
   useEffect(() => {
     if (!isOpen) return;
@@ -64,7 +53,7 @@ export function ContactModal() {
     closeButtonRef.current?.focus();
 
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") handleClose();
+      if (e.key === "Escape") close();
     }
     document.addEventListener("keydown", onKeyDown);
 
@@ -73,46 +62,9 @@ export function ContactModal() {
       reanudarScroll();
       document.removeEventListener("keydown", onKeyDown);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, close]);
 
   if (!isOpen) return null;
-
-  function updateField<K extends keyof FormValues>(key: K, value: FormValues[K]) {
-    setValues((v) => ({ ...v, [key]: value }));
-  }
-
-  function validate() {
-    const invalid = new Set<string>();
-    for (const field of REQUIRED_TEXT_FIELDS) {
-      if (!values[field].trim()) invalid.add(field);
-    }
-    if (!values.consiento) invalid.add("consiento");
-    return invalid;
-  }
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-
-    if (values.hp) return; // honeypot tripped — silently drop
-
-    const invalid = validate();
-    setInvalidFields(invalid);
-    if (invalid.size > 0) return;
-
-    setStatus("submitting");
-    try {
-      const res = await fetch("/api/contacto", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      if (!res.ok) throw new Error("Request failed");
-      setStatus("success");
-    } catch {
-      setStatus("error");
-    }
-  }
 
   return (
     <div
@@ -124,7 +76,7 @@ export function ContactModal() {
       <button
         ref={closeButtonRef}
         type="button"
-        onClick={handleClose}
+        onClick={close}
         aria-label="Cerrar"
         className="fixed top-4 right-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/90 text-navy transition-colors hover:bg-white"
       >
@@ -132,159 +84,81 @@ export function ContactModal() {
       </button>
 
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
-        <div className="modal__media flex flex-col bg-off-white px-8 py-16 sm:px-12">
-          <h2 id="contact-modal-title" className="font-head text-4xl font-semibold text-navy">
-            Contáctenos
-          </h2>
-          <p className="font-body mt-4 max-w-md text-ink-soft">
-            Agradecemos su interés en ResponSable. Elija entre las siguientes
-            opciones, nos comunicaremos con usted tan pronto como sea posible.
-          </p>
-          <Image
-            src="/modal.webp"
-            alt=""
-            width={1182}
-            height={1182}
-            className="mt-auto hidden w-full max-w-md self-center pt-12 sm:block"
-          />
+        {/*
+          justify-center más un bloque de ancho acotado: los tres elementos se
+          leen como una unidad centrada en la columna. Antes la ilustración
+          llevaba mt-auto, que la empujaba al fondo de una columna de
+          min-h-screen y abría un vacío enorme entre el párrafo y ella; ahora la
+          separación es un margen normal y es el conjunto el que se centra.
+        */}
+        <div className="modal__media flex flex-col justify-center bg-off-white px-8 py-16 sm:px-12">
+          <div className="mx-auto w-full max-w-md">
+            <h2
+              id="contact-modal-title"
+              className="font-head text-4xl font-semibold text-navy"
+            >
+              Contáctenos
+            </h2>
+            <p className="font-body mt-4 text-ink-soft">
+              Agradecemos su interés en ResponSable. Elija entre las siguientes
+              opciones, nos comunicaremos con usted tan pronto como sea posible.
+            </p>
+            <Image
+              src="/modal.webp"
+              alt=""
+              width={1182}
+              height={1182}
+              className="mt-8 hidden w-full sm:block"
+            />
+          </div>
         </div>
 
-        <div className="modal__panel flex flex-col bg-navy px-8 py-16 sm:px-12">
-          <h2 className="font-head text-2xl font-semibold text-white">
-            Completa el formulario
-          </h2>
+        {/*
+          El contenido va en un bloque de ancho acotado y centrado (mx-auto),
+          no estirado de borde a borde de la columna: con dos campos por fila,
+          dejarlo suelto en una pantalla ancha daba campos larguísimos y el
+          bloque quedaba visualmente descuadrado respecto a la columna. 34rem
+          reparte los márgenes a partes iguales y deja cada campo en unos 16rem,
+          un ancho de lectura y de escritura razonable.
+        */}
+        <div className="modal__panel flex flex-col justify-center bg-navy px-8 py-16 sm:px-12">
+          <div className="mx-auto w-full max-w-[34rem]">
+            <FormularioContacto
+              titulo="Completa el formulario"
+              campos={CAMPOS}
+              /*
+                Vía alternativa, no acción principal: fondo apenas insinuado
+                sobre el navy, tipografía pequeña y enlaces subrayados en vez
+                de botones, para que a nadie se le confunda con el de enviar.
+                Va como `pie` y no suelto tras el formulario porque así
+                desaparece solo al confirmarse el envío.
 
-          <form noValidate onSubmit={handleSubmit} className="form-grid mt-8 flex flex-col gap-6">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField
-                label="Nombre"
-                name="nombre"
-                required
-                value={values.nombre}
-                onChange={(v) => updateField("nombre", v)}
-                invalid={invalidFields.has("nombre")}
-              />
-              <FormField
-                label="Apellido"
-                name="apellido"
-                required
-                value={values.apellido}
-                onChange={(v) => updateField("apellido", v)}
-                invalid={invalidFields.has("apellido")}
-              />
-              <FormField
-                label="Correo Electrónico"
-                name="correo"
-                type="email"
-                required
-                value={values.correo}
-                onChange={(v) => updateField("correo", v)}
-                invalid={invalidFields.has("correo")}
-              />
-              <FormField
-                label="Teléfono"
-                name="telefono"
-                type="tel"
-                required
-                value={values.telefono}
-                onChange={(v) => updateField("telefono", v)}
-                invalid={invalidFields.has("telefono")}
-              />
-              <FormField
-                label="Compañía"
-                name="compania"
-                required
-                value={values.compania}
-                onChange={(v) => updateField("compania", v)}
-                invalid={invalidFields.has("compania")}
-              />
-              <FormField
-                label="Cargo"
-                name="cargo"
-                value={values.cargo}
-                onChange={(v) => updateField("cargo", v)}
-              />
-
-              <div className="field field--full flex flex-col gap-1.5 sm:col-span-2">
-                <label htmlFor="mensaje" className="font-head text-[0.8rem] font-medium text-white/90">
-                  Escriba más información de su solicitud
-                </label>
-                <textarea
-                  id="mensaje"
-                  name="mensaje"
-                  rows={4}
-                  value={values.mensaje}
-                  onChange={(e) => updateField("mensaje", e.target.value)}
-                  className="font-body rounded-sm border border-transparent bg-white px-4 py-2.5 text-sm text-ink transition-colors focus:border-magenta"
-                />
-              </div>
-
-              <label className="field field--full font-body flex items-start gap-2 text-sm text-white/85 sm:col-span-2">
-                <input
-                  type="checkbox"
-                  name="consiento"
-                  checked={values.consiento}
-                  onChange={(e) => updateField("consiento", e.target.checked)}
-                  className={`mt-0.5 size-4 shrink-0 accent-magenta ${
-                    invalidFields.has("consiento")
-                      ? "is-invalid outline-2 outline-offset-2 outline-[#ff5a7a]"
-                      : ""
-                  }`}
-                />
-                <span>
-                  Acepto recibir comunicaciones de ResponSable y he leído el{" "}
-                  <Link
-                    href="/legal/aviso-privacidad"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-white"
-                  >
-                    Aviso de Privacidad
-                  </Link>
-                </span>
-              </label>
-
-              <div className="hp absolute left-[-9999px] size-px overflow-hidden" aria-hidden="true">
-                <label htmlFor="empresa">No llenar este campo</label>
-                <input
-                  type="text"
-                  id="empresa"
-                  name="empresa"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  value={values.hp}
-                  onChange={(e) => updateField("hp", e.target.value)}
-                />
-              </div>
-            </div>
-
-            {status === "error" ? (
-              <div className="modal__form-error rounded-sm border border-[rgba(255,90,122,0.5)] bg-[rgba(255,90,122,0.15)] px-4 py-3 text-sm text-[#ffd5dd]">
-                Ocurrió un error al enviar su información. Por favor, inténtelo de
-                nuevo.
-              </div>
-            ) : null}
-
-            {status === "success" ? (
-              <div className="modal__success flex items-center gap-3 rounded-sm bg-white/5 px-4 py-3">
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-teal text-white">
-                  ✓
-                </span>
-                <p className="font-body text-sm text-white">
-                  ¡Gracias! Su información fue enviada correctamente. Nos
-                  pondremos en contacto con usted pronto.
-                </p>
-              </div>
-            ) : (
-              <button
-                type="submit"
-                disabled={status === "submitting"}
-                className="font-head self-start rounded-full bg-magenta px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#C71268] disabled:opacity-60"
-              >
-                {status === "submitting" ? "Enviando…" : "Enviar Información"}
-              </button>
-            )}
-          </form>
+                close() antes de navegar: sin él, el modal seguiría montado
+                sobre la página de destino, y al volver atrás el usuario se lo
+                encontraría abierto encima. El <Link> de Next ejecuta este
+                onClick antes de navegar, así que el orden está garantizado.
+              */
+              pie={
+                <div className="mt-8 rounded-lg bg-white/5 px-4 py-3">
+                  <p className="font-body text-xs text-white/60">
+                    ¿Buscaba otra cosa?
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1">
+                    {OTRAS_SOLICITUDES.map((enlace) => (
+                      <Link
+                        key={enlace.href}
+                        href={enlace.href}
+                        onClick={close}
+                        className="font-body text-sm text-white/85 underline underline-offset-4 transition-colors hover:text-white"
+                      >
+                        {enlace.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

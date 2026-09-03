@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { ServicioFooter } from "@/components/servicio/servicio-footer";
 import { HeroFramed } from "@/components/hero-framed";
+import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
 import { RelatedCard } from "@/components/related-card";
@@ -214,8 +215,8 @@ export default function EstudioDobleMaterialidadPage() {
       <main id="main">
         {/* ------------------------------- HERO ------------------------------- */}
         <HeroFramed
-          videoSrc="/responsable-back.mp4"
-          videoPoster="/responsable-back-poster.jpg"
+          videoSrc={VIDEO_HERO}
+          videoPoster={POSTER_HERO}
         >
           <nav
             aria-label="Ruta de navegación"

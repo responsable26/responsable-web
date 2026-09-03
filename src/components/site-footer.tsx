@@ -70,11 +70,12 @@ export function SiteFooter() {
               No se usa ENLACES_NAVEGACION tal cual: es la misma fuente que
               alimenta el "Explore" de ServicioFooter, así que quitar "Home" o
               añadir aquí un enlace habría cambiado también esa otra columna.
-              Los dos ajustes pedidos para esta columna en concreto —quitar
-              "Home" y añadir el índice de servicios, antes de Casos de
-              Éxito, mismo orden que "Servicios" en la navegación principal
-              del header (NAV_LINKS, site-header.tsx)— se aplican aquí, en
-              local, sin tocar lib/navegacion.ts ni ServicioFooter.
+              Los ajustes pedidos para esta columna en concreto —quitar
+              "Home", añadir el índice de servicios antes de Casos de Éxito
+              (mismo orden que "Servicios" en la navegación principal del
+              header, NAV_LINKS en site-header.tsx) y cerrar con Proveedores y
+              Trabaja con nosotros— se aplican aquí, en local, sin tocar
+              lib/navegacion.ts ni ServicioFooter.
 
               "Todos los Servicios" y no "Servicios": esta misma fila de
               columnas ya tiene una columna llamada "Servicios" (los cinco de
@@ -103,6 +104,28 @@ export function SiteFooter() {
                   </li>
                 ),
               )}
+              {/*
+                Al final de la columna y no dentro de ENLACES_NAVEGACION:
+                Proveedores y Trabaja con nosotros son destinos de este footer,
+                no de la navegación general, y meterlos en la constante los
+                habría colado también en el "Explore" del footer de servicio.
+              */}
+              <li>
+                <Link
+                  href="/proveedores/"
+                  className="font-body text-sm text-white/75 transition-colors hover:text-white"
+                >
+                  Proveedores
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/trabaja-con-nosotros/"
+                  className="font-body text-sm text-white/75 transition-colors hover:text-white"
+                >
+                  Trabaja con nosotros
+                </Link>
+              </li>
             </ul>
           </div>
 

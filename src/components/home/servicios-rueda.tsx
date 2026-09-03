@@ -256,9 +256,13 @@ const ISOTIPO_ALTO = 474.72;
 /** Altura objetivo en el viewBox de la rueda: cabe en el hueco con aire alrededor. */
 const ISOTIPO_ALTO_OBJETIVO = 120;
 const ISOTIPO_SCALE = ISOTIPO_ALTO_OBJETIVO / ISOTIPO_ALTO;
-const ISOTIPO_TRANSFORM = `translate(${CX} ${CY}) scale(${ISOTIPO_SCALE}) translate(${-ISOTIPO_CX} ${-ISOTIPO_CY})`;
+/** Exportados por el mismo motivo que ARROW_TRANSFORM y CUNAS:
+ *  servicios-cuadrantes.tsx pinta la misma rueda —cuatro segmentos más
+ *  isotipo— como indicador de posición, y debe hacerlo con estos datos y no
+ *  con una copia que pueda desincronizarse. */
+export const ISOTIPO_TRANSFORM = `translate(${CX} ${CY}) scale(${ISOTIPO_SCALE}) translate(${-ISOTIPO_CX} ${-ISOTIPO_CY})`;
 
-const ISOTIPO_HOJAS = [
+export const ISOTIPO_HOJAS = [
   {
     d: "M1782.07,111c-21.55,4.92-82.41,21.79-139.53,65.14-87.26,66.22-128.01,162.08-121.42,285.22,38.98-73.08,88.13-142.11,148.64-197.06,11.63-10.33,23.81-19.97,36.35-29.01-45.71,41.14-81.47,92.13-110.88,145.74-16.64,30.44-31.29,61.88-44.18,94.02,28.66-9.02,70.31-25.94,110.24-56.1,91.79-69.34,132.39-172.9,120.77-307.94Z",
     fill: "#15b09d", // .cls-4
@@ -294,36 +298,56 @@ const ISOTIPO_HOJAS = [
    distinta y no compite con el contorno.
 */
 /** Exportado: servicios-cuadrantes.tsx reutiliza .relleno (fill del segmento
- *  de flecha) y .acento (borde de identificación de la sección) para que
- *  ambas vistas usen exactamente los mismos pares de color, sin un segundo
- *  mapa que pueda desincronizarse de este. */
+ *  de flecha), .acento (borde de identificación de la sección) y .fondo
+ *  (píldora de la pestaña activa de su barra de navegación) para que ambas vistas usen
+ *  exactamente los mismos pares de color, sin un segundo mapa que pueda
+ *  desincronizarse de este.
+ *
+ *  .fondo es el color pleno del cuadrante como fondo: lo usa la píldora que
+ *  marca la pestaña activa en la barra de /servicio/, dentro de una pastilla
+ *  de esquinas redondeadas donde un borde inferior no encajaría. El texto
+ *  sobre esa píldora NO usa .texto: ese campo da el color de contraste de
+ *  cada cuadrante por separado (para el SVG de la rueda), y aquí hace falta
+ *  uno solo que valga para los cuatro, porque el color cambia bajo el mismo
+ *  texto al pasar de sección. Ver la nota de contraste en
+ *  servicios-cuadrantes.tsx. */
 export const COLORES: Record<
   Cuadrante["colorToken"],
-  { relleno: string; texto: string; trazo: string; acento: string }
+  {
+    relleno: string;
+    texto: string;
+    trazo: string;
+    acento: string;
+    fondo: string;
+  }
 > = {
   amarillo: {
     relleno: "fill-amarillo",
     texto: "fill-navy",
     trazo: "stroke-navy",
     acento: "border-l-amarillo",
+    fondo: "bg-amarillo",
   },
   magenta: {
     relleno: "fill-magenta",
     texto: "fill-white",
     trazo: "stroke-white",
     acento: "border-l-magenta",
+    fondo: "bg-magenta",
   },
   lavanda: {
     relleno: "fill-lavanda",
     texto: "fill-ink",
     trazo: "stroke-ink",
     acento: "border-l-lavanda",
+    fondo: "bg-lavanda",
   },
   teal: {
     relleno: "fill-teal",
     texto: "fill-navy",
     trazo: "stroke-navy",
     acento: "border-l-teal",
+    fondo: "bg-teal",
   },
 };
 

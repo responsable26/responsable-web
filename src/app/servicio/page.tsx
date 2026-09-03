@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ServiciosCuadrantes } from "@/components/servicio/servicios-cuadrantes";
+import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { Articulos } from "@/components/home/articulos";
 import { ARTICULOS } from "@/lib/articulos";
 
@@ -85,18 +86,49 @@ export default function ServicioPage() {
           id="servicios"
           className="scroll-mt-28 bg-off-white px-6 py-[var(--section-y)] lg:px-10"
         >
-          <div className="mx-auto max-w-[var(--container)]">
-            <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
-              Servicios
-            </p>
-            <h2 className="font-head mt-2 text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy">
-              Nuestros Servicios
-            </h2>
-            <p className="font-body mt-4 max-w-[62ch] text-[1.05rem] text-ink-soft">
-              Cuatro preguntas ordenan cualquier estrategia de sostenibilidad.
-              Cada una abre un grupo de servicios diseñados para responderla
-              con evidencia.
-            </p>
+          {/*
+            El flanco derecho lo ocupa la rueda completa, que antes quedaba
+            vacío. Rejilla de dos columnas desde md, con el texto pegado a la
+            izquierda y la rueda en su propia columna dimensionada al contenido
+            (auto), no a una fracción: así la rueda manda su tamaño y el texto
+            se queda con el resto.
+          */}
+          <div className="mx-auto grid max-w-[var(--container)] items-center gap-10 md:grid-cols-[minmax(0,1fr)_auto] lg:gap-16">
+            <div>
+              <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
+                Servicios
+              </p>
+              <h2 className="font-head mt-2 text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy">
+                Nuestros Servicios
+              </h2>
+              <p className="font-body mt-4 max-w-[62ch] text-[1.05rem] text-ink-soft">
+                Cuatro preguntas ordenan cualquier estrategia de
+                sostenibilidad. Cada una abre un grupo de servicios diseñados
+                para responderla con evidencia.
+              </p>
+            </div>
+
+            {/*
+              La rueda entera, con los cuatro segmentos a color pleno: en el
+              encabezado todavía no hay cuadrante elegido, así que no hay
+              ninguno que atenuar. Gráfico y nada más —aria-hidden, sin
+              animación y sin interacción—, a diferencia de la rueda del Home.
+
+              size-64/lg:size-80 frente al size-28 de las ruedas que encabezan
+              cada sección: más del doble, para que se lea como la pieza
+              principal del encabezado y ninguna de las pequeñas se confunda
+              con ella.
+
+              hidden md:block, y no apilada bajo el texto en móvil: es
+              decorativa y redundante allí. A ancho completo tendría que medir
+              casi la pantalla para no verse ridícula, y ese bloque se metería
+              justo entre el párrafo de entrada y la pastilla de pestañas,
+              empujando hacia abajo la navegación y el primer cuadrante —que ya
+              trae su propia rueda a la vista— sin aportar nada que el texto no
+              diga. En pantallas anchas no cuesta nada porque ocupa una columna
+              que si no quedaría vacía.
+            */}
+            <RuedaCuadrantes className="hidden size-64 md:block lg:size-80" />
           </div>
         </section>
 
