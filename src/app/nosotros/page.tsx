@@ -26,6 +26,37 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+/**
+ * Los siete pasos de RESILIO, en orden. La inicial va suelta del nombre para
+ * poder pintarla en grande: puestos en fila, los siete iniciales deletrean la
+ * palabra, que es la relación que la sección tiene que dejar evidente.
+ *
+ * No se deriva la inicial con nombre[0] aunque hoy coincida en los siete: si
+ * algún paso cambiara de nombre, una inicial calculada rompería el acrónimo en
+ * silencio, mientras que dos campos separados dejan el desajuste a la vista.
+ */
+const PASOS_RESILIO = [
+  { inicial: "R", nombre: "Reflexionar" },
+  { inicial: "E", nombre: "Estudiar" },
+  { inicial: "S", nombre: "Solicitar" },
+  { inicial: "I", nombre: "Institucionalizar" },
+  { inicial: "L", nombre: "Lograr" },
+  { inicial: "I", nombre: "Informar" },
+  { inicial: "O", nombre: "Optimizar" },
+];
+
+/**
+ * Los cinco puntos de "Lo que hacemos distinto", literales como los entregó el
+ * cliente. Fuera del JSX para que el marcado de la lista se lea de un vistazo.
+ */
+const DIFERENCIALES = [
+  "Integramos sostenibilidad, negocio y grupos de interés en una misma conversación.",
+  "Convertimos temas complejos en prioridades claras, decisiones accionables y rutas viables de implementación.",
+  "Aterrizamos una metodología robusta según el nivel de madurez, los riesgos, las capacidades y los objetivos de cada empresa.",
+  "Combinamos rigor técnico con criterio ejecutivo, para facilitar conversaciones de alto nivel y decisiones bien sustentadas.",
+  "Acompañamos todo el proceso, desde el diagnóstico y la definición de prioridades hasta la implementación y la comunicación.",
+];
+
 /** Cifras de la banda. El valor va suelto del texto para poder darle su escala. */
 const CIFRAS = [
   { valor: "+200", etiqueta: "Compañías Asesoradas" },
@@ -222,6 +253,126 @@ export default function NosotrosPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/*
+          Dos secciones nuevas entre la historia y la banda de cifras. Sus
+          títulos van como h2: el h1 de la página es "Una Historia
+          ResponSable", así que este es el nivel que les corresponde.
+
+          Alternan fondo con lo que tienen alrededor —la historia va en
+          off-white y la banda de cifras en blanco—, de modo que la secuencia
+          queda off-white, blanco, off-white, blanco y cada bloque se lee como
+          una pieza aparte y no como una sola tirada de texto.
+        */}
+        <section
+          aria-labelledby="lo-que-hacemos-distinto"
+          className="bg-white px-6 py-[var(--section-y)]"
+        >
+          <div className="mx-auto max-w-[var(--container)]">
+            <h2
+              id="lo-que-hacemos-distinto"
+              className="font-head text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy"
+            >
+              Lo que hacemos distinto
+            </h2>
+            <p className="font-body mt-6 max-w-[68ch] text-[1.05rem] text-ink-soft">
+              No creemos en recetas genéricas. Cada empresa tiene un contexto,
+              una operación, una cultura y una relación distinta con sus grupos
+              de interés. Por eso partimos de una metodología sólida y la
+              llevamos a la realidad de cada organización, para convertir la
+              sostenibilidad en decisiones útiles para el negocio.
+            </p>
+
+            {/*
+              Lista real, no párrafos con guiones: son cinco elementos de una
+              enumeración y un lector de pantalla debe anunciarlos como tales.
+              El punto es un <span> decorativo con aria-hidden —no un marcador
+              de list-style— para poder alinearlo con la primera línea cuando
+              el texto ocupa varias.
+            */}
+            <ul className="mt-8 flex max-w-[68ch] flex-col gap-4">
+              {DIFERENCIALES.map((punto) => (
+                <li key={punto} className="font-body flex gap-3 text-ink-soft">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.6rem] size-1.5 shrink-0 rounded-full bg-magenta"
+                  />
+                  <span>{punto}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="nuestra-forma-de-trabajar"
+          className="bg-off-white px-6 py-[var(--section-y)]"
+        >
+          <div className="mx-auto max-w-[var(--container)]">
+            <h2
+              id="nuestra-forma-de-trabajar"
+              className="font-head text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy"
+            >
+              Nuestra forma de trabajar
+            </h2>
+
+            <div className="mt-6 flex max-w-[68ch] flex-col gap-4">
+              <p className="font-body text-[1.05rem] text-ink-soft">
+                Acompañamos a las empresas a responder las preguntas clave de su
+                sostenibilidad: dónde están, hacia dónde deben avanzar, cómo
+                implementarlo y cómo comunicarlo con credibilidad.
+              </p>
+              <p className="font-body text-[1.05rem] text-ink-soft">
+                Este enfoque permite reducir dispersión, enfocar prioridades y
+                construir una sostenibilidad más estratégica, medible y útil
+                para el negocio.
+              </p>
+              <p className="font-body text-[1.05rem] text-ink-soft">
+                Lo hacemos a través de RESILIO, una metodología propia que guía
+                el proceso desde la reflexión estratégica y la escucha de grupos
+                de interés, hasta la implementación, la comunicación y la mejora
+                continua.
+              </p>
+            </div>
+
+            {/*
+              Los siete pasos como secuencia, no como lista suelta: <ol>, y una
+              sola tira continua partida por filetes de un píxel —gap-px sobre
+              bg-border, el mismo recurso que la ficha de datos de
+              servicio/[slug]—, de modo que se leen como tramos de un mismo
+              recorrido y no como siete tarjetas independientes.
+
+              La inicial va en grande y en magenta encima de cada nombre: en
+              lg, con las siete celdas en fila, esas iniciales deletrean RESILIO
+              de izquierda a derecha. Por debajo de lg la tira se apila y el
+              acrónimo se lee en vertical, que sigue siendo evidente; se
+              prefiere una columna a dos porque siete celdas en dos columnas
+              dejarían una huérfana y romperían la lectura de las iniciales.
+
+              La inicial es aria-hidden: es un recurso visual, y el nombre
+              completo que va debajo ya la contiene. Sin eso, un lector de
+              pantalla diría "R, Reflexionar" siete veces.
+            */}
+            <ol className="mt-10 grid gap-px overflow-hidden rounded border border-border bg-border lg:grid-cols-7">
+              {PASOS_RESILIO.map((paso, index) => (
+                <li
+                  key={index}
+                  className="flex items-baseline gap-3 bg-white px-5 py-4 lg:flex-col lg:items-center lg:gap-1 lg:py-6 lg:text-center"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="font-head text-2xl leading-none font-semibold text-magenta lg:text-3xl"
+                  >
+                    {paso.inicial}
+                  </span>
+                  <span className="font-head text-sm font-medium text-navy">
+                    {paso.nombre}
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
