@@ -265,26 +265,21 @@ export const CUADRANTES: Cuadrante[] = [
         href: "/servicio/acompanamiento-sostenibilidad/",
       },
       {
-        nombre: "Capacitación a la Medida",
-        descripcion:
-          "Diseñamos la formación según el rol de cada audiencia, dentro y fuera de su empresa: alta dirección, equipos, clientes y proveedores. El objetivo es que la estrategia deje de depender de unas cuantas personas.",
-        puntos: [
-          "Diseñamos formación alineada al rol de cada audiencia dentro y fuera de la empresa.",
-          "Aterrizamos la sostenibilidad para alta dirección, equipos, clientes y proveedores.",
-          "Fortalecemos capacidades para que la estrategia no dependa de unas cuantas personas.",
-          "Ayudamos a convertir la sostenibilidad en criterio compartido y acción cotidiana.",
-          "Damos herramientas para implementar con mayor claridad y consistencia.",
-        ],
-      },
-      {
+        /* Absorbió a "Capacitación a la Medida", que era un servicio aparte de
+           este mismo cuadrante: la adaptación por audiencia dejó de venderse
+           suelta y es ahora uno de los rasgos de este servicio. El redirect de
+           /traje-a-la-medida/, la URL que aquella tenía en WordPress, sigue en
+           next.config.ts apuntando al índice de servicios. */
         nombre: "Cursos y talleres de sostenibilidad para empresas",
         descripcion:
-          "Formación con contenido ajustado a cada nivel jerárquico y ejemplos tomados de las áreas de su empresa. La imparten consultores en ejercicio, en formatos que van de la sensibilización al programa aplicado.",
+          "Diseñamos formación según el rol, nivel y retos reales de cada audiencia. Buscamos aterrizar la sostenibilidad a decisiones y situaciones concretas de la empresa. El objetivo es que la estrategia se entienda, se comparta y pueda implementarse sin depender de unas cuantas personas.",
         puntos: [
-          "Adaptamos el contenido a cada nivel jerárquico.",
+          "Adaptamos el contenido para alta dirección, equipos, personal operativo, clientes y proveedores.",
+          "Partimos de los retos y decisiones de cada audiencia, no de un temario genérico.",
           "Usamos casos de negocio y ejemplos de sus propias áreas.",
-          "Impartimos con facilitadores que ejercen la consultoría.",
-          "Cubrimos formatos que van de la sensibilización al programa aplicado.",
+          "Imparten consultores que trabajan diariamente en proyectos de sostenibilidad.",
+          "Damos herramientas para implementar con mayor claridad y consistencia.",
+          "Diseñamos desde sesiones de sensibilización hasta programas aplicados para desarrollar capacidades y llevarlas a la práctica.",
         ],
         href: "/servicio/cursos-talleres-para-empresas/",
       },

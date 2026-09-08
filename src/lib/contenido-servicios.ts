@@ -790,10 +790,10 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
         "Diseñamos experiencias de aprendizaje que preparan a cada audiencia para cumplir mejor su función, desde supervisar riesgos y oportunidades hasta integrar la estrategia en la operación. Con casos reales, lenguaje cercano y facilitadores que también asesoran empresas, transformamos temas complejos en comprensión útil y capacidad interna.",
       ],
       puntos: [
-        "Contenido adaptado a cada nivel jerárquico",
+        "Contenido por nivel y reto, no un temario genérico",
         "Casos de negocio y ejemplos de sus áreas",
         "Facilitadores con experiencia real en consultoría",
-        "Formatos desde sensibilización hasta programas aplicados",
+        "De la sensibilización a programas llevados a la práctica",
       ],
     },
     paraQueSirve: {
