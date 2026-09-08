@@ -7,10 +7,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { CtaContacto } from "@/components/cta-contacto";
 import { CasoCard } from "@/components/casos/caso-card";
 import { VideoYoutube } from "@/components/video-youtube";
-import { CASOS, getCaso, rutaDeServicio } from "@/lib/casos";
+import { CASOS_PUBLICOS, PLACEHOLDER, getCaso, rutaDeServicio } from "@/lib/casos";
 
 export function generateStaticParams() {
-  return CASOS.map((caso) => ({ slug: caso.slug }));
+  return CASOS_PUBLICOS.map((caso) => ({ slug: caso.slug }));
 }
 
 export async function generateMetadata(
@@ -21,7 +21,13 @@ export async function generateMetadata(
   if (!caso) return {};
 
   const canonical = `/casos-de-exito/${caso.slug}/`;
-  const descripcion = `Caso de éxito de ${caso.cliente}: el reto, el trabajo realizado y los resultados obtenidos con el acompañamiento de ResponSable.`;
+  /* El resumen del caso, que es texto escrito para leerse. La plantilla queda
+     de respaldo para un caso cuyo resumen aún no esté validado: describe el
+     contenido sin prometer nada y, sobre todo, evita publicar un marcador de
+     posición en los metadatos. */
+  const descripcion = caso.resumen.includes(PLACEHOLDER)
+    ? `Caso de éxito de ${caso.cliente}: el reto, el trabajo realizado y los resultados obtenidos con el acompañamiento de ResponSable.`
+    : caso.resumen;
 
   return {
     // Sin sufijo de marca: lo añade el template del layout raíz.
@@ -63,7 +69,10 @@ export default async function CasoPage(
   const caso = getCaso(slug);
   if (!caso) notFound();
 
-  const otros = CASOS.filter((c) => c.slug !== caso.slug).slice(0, 3);
+  const otros = CASOS_PUBLICOS.filter((c) => c.slug !== caso.slug).slice(
+    0,
+    3,
+  );
 
   const CASE_JSON_LD = {
     "@context": "https://schema.org",
@@ -188,29 +197,6 @@ export default async function CasoPage(
           </nav>
         </div>
 
-        {/* Métricas: las cifras van a la escala de un titular porque son el
-            argumento del caso, no un dato al pie. */}
-        <section
-          aria-label="Resultados en cifras"
-          className="px-6 pt-[var(--section-y)]"
-        >
-          <div className="mx-auto grid max-w-[var(--container)] gap-6 sm:grid-cols-3">
-            {caso.metricas.map((metrica) => (
-              <div
-                key={metrica.etiqueta}
-                className="rounded border border-border bg-white p-6 shadow-sm"
-              >
-                <p className="font-head text-[clamp(2.4rem,6vw,3.4rem)] leading-none font-semibold text-magenta">
-                  {metrica.valor}
-                </p>
-                <p className="font-body mt-3 text-sm text-ink-soft">
-                  {metrica.etiqueta}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <div className="px-6 py-[var(--section-y)]">
           <div className="mx-auto flex max-w-[var(--container)] flex-col gap-12 lg:flex-row lg:gap-16">
             <div className="max-w-[68ch] lg:flex-1">
@@ -253,9 +239,14 @@ export default async function CasoPage(
                   <h2 className="font-head text-[clamp(1.5rem,3.5vw,2.1rem)] font-semibold text-navy">
                     {seccion.titulo}
                   </h2>
-                  <p className="font-body mt-4 text-[1.05rem] text-ink-soft">
-                    {seccion.texto}
-                  </p>
+                  {seccion.texto.map((parrafo) => (
+                    <p
+                      key={parrafo}
+                      className="font-body mt-4 text-[1.05rem] text-ink-soft"
+                    >
+                      {parrafo}
+                    </p>
+                  ))}
                 </section>
               ))}
             </div>

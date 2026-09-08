@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CASOS, subtituloDeCaso, type Caso } from "@/lib/casos";
+import { CASOS_PUBLICOS, subtituloDeCaso, type Caso } from "@/lib/casos";
 import { ChevronIcon } from "@/components/icons";
 import { VideoYoutube } from "@/components/video-youtube";
 import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
@@ -279,7 +279,7 @@ export function CasosExito() {
           {...propsPista}
           className={`${clasesPista} items-stretch gap-8 px-6 lg:gap-10 lg:px-[calc((100%-var(--caso-card))/2)]`}
         >
-          {CASOS.map((caso, indice) => (
+          {CASOS_PUBLICOS.map((caso, indice) => (
             <div
               key={caso.slug}
               data-indice-caso={indice}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CasoCard } from "@/components/casos/caso-card";
-import { CASOS } from "@/lib/casos";
+import { CASOS_PUBLICOS } from "@/lib/casos";
 
 const DESCRIPCION =
   "Casos de éxito de ResponSable: cómo acompañamos a empresas de distintos sectores a convertir su estrategia de sostenibilidad en resultados de negocio.";
@@ -54,7 +54,7 @@ export default function CasosPage() {
         <div className="px-6 py-[var(--section-y)]">
           <div className="mx-auto max-w-[var(--container)]">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {CASOS.map((caso, i) => (
+              {CASOS_PUBLICOS.map((caso, i) => (
                 <CasoCard key={caso.slug} caso={caso} index={i} />
               ))}
             </div>

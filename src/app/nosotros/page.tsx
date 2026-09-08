@@ -60,8 +60,7 @@ const DIFERENCIALES = [
 /** Cifras de la banda. El valor va suelto del texto para poder darle su escala. */
 const CIFRAS = [
   { valor: "+250", etiqueta: "Compañías Asesoradas" },
-  { valor: "+8k", etiqueta: "Lectores Mensuales" },
-  { valor: "1,500", etiqueta: "Proyectos Gestionados" },
+  { valor: "600", etiqueta: "Proyectos Gestionados" },
   { valor: "+15", etiqueta: "Años Trabajando" },
 ];
 
@@ -85,8 +84,8 @@ export default function NosotrosPage() {
                 <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
                   Conócenos
                 </p>
-                <h1 className="font-head mt-3 max-w-[18ch] text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-balance text-navy">
-                  Una Historia ResponSable
+                <h1 className="font-head mt-3 max-w-[26ch] text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-balance text-navy">
+                  Desde 2011 hacemos sostenibilidad con sentido de negocio
                 </h1>
 
                 {/*
@@ -388,7 +387,7 @@ export default function NosotrosPage() {
               Sin tarjetas ni bordes: la cifra y su etiqueta se sostienen solas,
               separadas por una divisoria fina entre columnas.
             */}
-            <div className="grid gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-y-10 sm:grid-cols-3">
               {CIFRAS.map((cifra) => (
                 <div
                   key={cifra.etiqueta}
