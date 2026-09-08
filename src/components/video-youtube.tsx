@@ -48,6 +48,14 @@ type VideoYoutubeProps = {
    * una pausa, el iframe se desmonta.
    */
   activo?: boolean;
+  /**
+   * Aviso de que el usuario acaba de pulsar reproducir.
+   *
+   * Existe para el caso inverso de `activo`: quien monta varios de estos
+   * necesita saber cuál arrancó para replegar los demás, y el botón vive aquí
+   * dentro. Opcional, así que quien no lo pase no cambia en nada.
+   */
+  onReproducir?: () => void;
 };
 
 export function VideoYoutube({
@@ -57,6 +65,7 @@ export function VideoYoutube({
   className,
   prioridad,
   activo,
+  onReproducir,
 }: VideoYoutubeProps) {
   const [reproduciendo, setReproduciendo] = useState(false);
   const [miniatura, setMiniatura] = useState(() => maxres(id));
@@ -110,7 +119,10 @@ export function VideoYoutube({
         */
         <button
           type="button"
-          onClick={() => setReproduciendo(true)}
+          onClick={() => {
+            setReproduciendo(true);
+            onReproducir?.();
+          }}
           aria-label={`Reproducir: ${titulo}`}
           className="group absolute inset-0 size-full cursor-pointer"
         >
