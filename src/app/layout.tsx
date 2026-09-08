@@ -3,6 +3,10 @@ import { Poppins } from "next/font/google";
 import { ContactModalProvider } from "@/context/contact-modal-context";
 import { ContactModal } from "@/components/contact-modal/contact-modal";
 import { ScrollSuave } from "@/components/scroll-suave";
+import {
+  GoogleTagManager,
+  GoogleTagManagerNoScript,
+} from "@/components/gtm";
 import { HojasFlotantes } from "@/components/hojas-flotantes";
 import "./globals.css";
 
@@ -39,6 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        {/* Primer elemento del body, como pide GTM. */}
+        <GoogleTagManagerNoScript />
+        <GoogleTagManager />
         <ScrollSuave />
         {/*
           HojasFlotantes es position:fixed sobre el viewport: no necesita un

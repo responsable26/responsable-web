@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
 import { FormField } from "@/components/formulario-contacto/form-field";
+import { eventoFormularioEnviado } from "@/lib/gtm";
 
 /**
  * El formulario de contacto del sitio: campos, validación, envío y los tres
@@ -145,6 +146,18 @@ function contextoNavegacion() {
   };
 }
 
+/* El mismo criterio que aplica /api/contacto. Deliberadamente laxo: lo que se
+   busca es descartar lo que no puede ser una dirección —sin arroba, sin punto
+   en el dominio, con espacios—, no decidir si un buzón existe. Una expresión
+   estricta rechaza direcciones válidas y raras, que es el peor error posible
+   en un formulario de contacto. */
+const FORMATO_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const MENSAJE_OBLIGATORIO = "Este campo es obligatorio.";
+const MENSAJE_CORREO = "Escriba un correo electrónico válido.";
+const MENSAJE_CV =
+  "Escriba una dirección válida, por ejemplo linkedin.com/in/su-perfil";
+
 type Status = "idle" | "submitting" | "error" | "success";
 
 export function FormularioContacto({
@@ -216,7 +229,18 @@ export function FormularioContacto({
     for (const { campo, obligatorio } of campos) {
       const valor = values[campo].trim();
       if (obligatorio && !valor) {
-        invalid[campo] = "Este campo es obligatorio.";
+        invalid[campo] = MENSAJE_OBLIGATORIO;
+        continue;
+      }
+      /*
+        El correo se comprueba de formato y no solo de presencia: sin esto, una
+        dirección mal escrita pasaba el cliente, la rechazaba el servidor y el
+        formulario solo sabía enseñar el error genérico. El <form> va noValidate
+        —los mensajes nativos del navegador no encajan con el diseño—, así que
+        esta comprobación no la hace nadie más.
+      */
+      if (campo === "correo" && valor && !FORMATO_CORREO.test(valor)) {
+        invalid[campo] = MENSAJE_CORREO;
         continue;
       }
       /*
@@ -225,12 +249,44 @@ export function FormularioContacto({
         destinatario se quedaría con una dirección que no abre.
       */
       if (campo === "cv" && valor && !normalizarUrl(valor)) {
-        invalid[campo] =
-          "Escriba una dirección válida, por ejemplo linkedin.com/in/su-perfil";
+        invalid[campo] = MENSAJE_CV;
       }
     }
     if (!values.consiento) invalid.consiento = "";
     return invalid;
+  }
+
+  /**
+   * Mensaje para un campo que el servidor rechazó.
+   *
+   * El 400 dice qué campos fallan pero no por qué —para "correo" no distingue
+   * entre vacío y mal escrito—, así que el motivo se deduce aquí mirando el
+   * valor que se envió. Es la misma tabla de mensajes que usa validate(), de
+   * modo que un rechazo del servidor se ve exactamente igual que uno del
+   * cliente y no hay dos lenguajes de error en la misma pantalla.
+   */
+  function mensajeDeCampo(campo: string, enviado: FormValues): string {
+    if (campo === "consiento") return "";
+    const valor = campo in enviado ? enviado[campo as CampoContacto] : "";
+    if (!valor) return MENSAJE_OBLIGATORIO;
+    if (campo === "correo") return MENSAJE_CORREO;
+    if (campo === "cv") return MENSAJE_CV;
+    return MENSAJE_OBLIGATORIO;
+  }
+
+  /** Los campos que el 400 señala, o lista vacía si la respuesta no trae una
+   *  lista utilizable —un 400 de otra procedencia, un cuerpo que no es JSON—,
+   *  en cuyo caso se cae al error genérico. */
+  async function camposRechazados(res: Response): Promise<string[]> {
+    try {
+      const cuerpo: unknown = await res.json();
+      if (typeof cuerpo !== "object" || cuerpo === null) return [];
+      const { campos } = cuerpo as { campos?: unknown };
+      if (!Array.isArray(campos)) return [];
+      return campos.filter((c): c is string => typeof c === "string");
+    } catch {
+      return [];
+    }
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -259,8 +315,35 @@ export function FormularioContacto({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...envio, origen, ...contextoNavegacion() }),
       });
-      if (!res.ok) throw new Error("Request failed");
-      setStatus("success");
+      if (res.ok) {
+        /* Aquí y no en el submit: la conversión es el envío aceptado por el
+           servidor, no el clic en el botón. */
+        eventoFormularioEnviado(origen);
+        setStatus("success");
+        return;
+      }
+
+      /*
+        Un 400 es el servidor rechazando campos concretos, no un fallo: se
+        marcan igual que los del cliente y se vuelve a "idle" para que el
+        formulario quede otra vez editable y sin el aviso rojo general, que
+        aquí no diría nada útil. El aviso genérico se reserva para lo que de
+        verdad no depende de quien rellena: red caída, 500 o 502.
+      */
+      if (res.status === 400) {
+        const campos = await camposRechazados(res);
+        if (campos.length > 0) {
+          setErrores(
+            Object.fromEntries(
+              campos.map((c) => [c, mensajeDeCampo(c, envio)]),
+            ),
+          );
+          setStatus("idle");
+          return;
+        }
+      }
+
+      throw new Error("Request failed");
     } catch {
       setStatus("error");
     }
