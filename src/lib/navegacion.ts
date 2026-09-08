@@ -13,13 +13,19 @@ export const ENLACES_NAVEGACION: EnlaceNav[] = [
   { label: "Nosotros", href: "/nosotros" },
   { label: "Centro de Recursos", href: "/recursos" },
   /*
-    "Informe de Sostenibilidad" ya no vive aquí: apuntaba a /#servicios (nunca
-    a una página propia) y ese es también el nombre de un servicio real, con
-    página propia en /servicio/informe-de-sostenibilidad/. Ese servicio sigue
-    enlazado desde el bloque de relacionados de las demás páginas de servicio
-    (no entra en SERVICIOS_FOOTER, la selección editorial de la columna de
-    Servicios del footer, en servicios.ts), así que retirar esta entrada no lo
-    deja huérfano.
+    AUSENCIA DELIBERADA: "Informe de Sostenibilidad" no va aquí, y no se debe
+    reañadir.
+
+    Esta lista es navegación institucional —las secciones del sitio— y alimenta
+    dos footers a la vez: la columna "Compañía" de SiteFooter y la columna
+    "Explore" de ServicioFooter. Un servicio individual no pertenece a ese
+    nivel: metería una página de catálogo entre Casos de Éxito, Nosotros y
+    Centro de Recursos, y lo haría por partida doble.
+
+    El servicio sigue publicado en /servicio/informe-de-sostenibilidad/ y vive
+    en CUADRANTES (servicios.ts), desde donde lo enlaza el bloque de "Servicios
+    relacionados" de las demás páginas de servicio. Quitarlo de esta lista no
+    lo deja huérfano.
   */
 ];
 

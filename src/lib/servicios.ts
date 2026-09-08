@@ -30,16 +30,37 @@ export type Servicio = {
 
 export type Cuadrante = {
   numero: number;
+  /** Rótulo del cuadrante. Mayúscula solo en la primera palabra, como pide el
+   *  español: no es un título en inglés. Es texto visible en la rueda, en las
+   *  pestañas de /servicio/ y en el footer; no se usa como clave en ninguno. */
   pregunta: string;
   colorToken: "amarillo" | "magenta" | "lavanda" | "teal";
   intro: string;
   servicios: Servicio[];
 };
 
+/**
+ * Id del ancla de cada cuadrante en /servicio/, en el mismo orden que
+ * CUADRANTES (numero 1→4).
+ *
+ * Vivía dentro de servicios-cuadrantes.tsx, que es quien pinta las secciones.
+ * Se sube aquí, junto al catálogo con el que va emparejado, porque el footer
+ * también necesita enlazarlas y el componente es "use client": importarlo
+ * desde un componente de servidor solo para leer cuatro cadenas arrastraría
+ * todo ese árbol. Los rótulos salen de CUADRANTES[i].pregunta, así que ningún
+ * consumidor escribe a mano ni el texto ni el id.
+ */
+export const ANCLAS_CUADRANTES = [
+  "donde-estoy",
+  "adonde-voy",
+  "como-lo-hago",
+  "como-comunico",
+] as const;
+
 export const CUADRANTES: Cuadrante[] = [
   {
     numero: 1,
-    pregunta: "¿Dónde Estoy?",
+    pregunta: "¿Dónde estoy?",
     colorToken: "amarillo",
     intro:
       "Ya sea que su empresa apenas comience en sostenibilidad o lleve años trabajando en ella, siempre vale la pena detenerse y mirar con rigor dónde está hoy. Evaluamos lo que se está haciendo, qué tan bien está funcionando y qué impacto está generando.",
@@ -144,7 +165,7 @@ export const CUADRANTES: Cuadrante[] = [
   },
   {
     numero: 2,
-    pregunta: "¿Adónde Voy?",
+    pregunta: "¿Adónde voy?",
     colorToken: "magenta",
     intro:
       "Cuando el punto de partida es claro, el siguiente paso es definir el rumbo. Le ayudamos a visualizar hacia dónde debe avanzar su empresa, qué ambición tiene sentido plantear y qué prioridades estratégicas pueden generar mayor valor para el negocio y su entorno.",
@@ -226,7 +247,7 @@ export const CUADRANTES: Cuadrante[] = [
   },
   {
     numero: 3,
-    pregunta: "¿Cómo lo Hago?",
+    pregunta: "¿Cómo lo hago?",
     colorToken: "lavanda",
     intro:
       "Tener claridad no basta. Hay que traducirla en acción. Diseñamos la ruta, las capacidades y las herramientas necesarias para que la sostenibilidad se implemente de forma ordenada, creíble y alineada con la realidad de su empresa.",
@@ -330,7 +351,7 @@ export const CUADRANTES: Cuadrante[] = [
   },
   {
     numero: 4,
-    pregunta: "¿Cómo Comunico?",
+    pregunta: "¿Cómo comunico?",
     colorToken: "teal",
     intro:
       "Lo que no se comunica con claridad pierde fuerza. Le ayudamos a traducir avances, compromisos y resultados en mensajes sólidos, relevantes y creíbles, que fortalezcan la confianza, la reputación y el valor de su empresa ante sus grupos de interés.",
@@ -375,41 +396,3 @@ export const CUADRANTES: Cuadrante[] = [
     ],
   },
 ];
-
-/**
- * Selección editorial de la columna de Servicios del footer.
- *
- * No es "todos los servicios con página" —esos siguen siendo todos los que
- * tienen `href` en CUADRANTES, íntegros, y el sitio los sigue enlazando desde
- * "Servicios relacionados" en cada página de servicio— sino los cinco que el
- * footer decide destacar, en este orden. Quitar un nombre de aquí no
- * despublica su página ni le quita sus otros enlaces entrantes: solo decide
- * si aparece en esta columna.
- */
-const SERVICIOS_FOOTER_NOMBRES = [
-  "Estudio de Doble Materialidad",
-  "Estrategia de Sostenibilidad",
-  "Cursos y talleres de sostenibilidad para empresas",
-  "Distintivo ESR",
-  "Diagnóstico de Sostenibilidad",
-] as const;
-
-/**
- * Resuelve la selección de arriba contra el catálogo real de CUADRANTES: el
- * href de cada uno no se copia a mano, así que no puede quedar desincronizado
- * si la ruta de un servicio cambia. Si un nombre no existe en CUADRANTES o no
- * tiene página propia, falla en build en vez de dejar un enlace roto o un
- * hueco silencioso en el footer.
- */
-export const SERVICIOS_FOOTER: { nombre: string; href: string }[] =
-  SERVICIOS_FOOTER_NOMBRES.map((nombre) => {
-    const servicio = CUADRANTES.flatMap((cuadrante) => cuadrante.servicios).find(
-      (s) => s.nombre === nombre,
-    );
-    if (!servicio?.href || servicio.noEnlazable) {
-      throw new Error(
-        `SERVICIOS_FOOTER: "${nombre}" no tiene página propia en CUADRANTES.`,
-      );
-    }
-    return { nombre: servicio.nombre, href: servicio.href };
-  });

@@ -11,7 +11,11 @@ import { ServicioModal } from "@/components/home/servicio-modal";
 import { COLORES } from "@/components/home/servicios-rueda";
 import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { irAAncla } from "@/lib/scroll-suave";
-import { CUADRANTES, type Servicio } from "@/lib/servicios";
+import {
+  ANCLAS_CUADRANTES as ANCLAS,
+  CUADRANTES,
+  type Servicio,
+} from "@/lib/servicios";
 
 /**
  * Los cuatro cuadrantes del Home, desplegados en vertical y siempre visibles,
@@ -25,12 +29,6 @@ import { CUADRANTES, type Servicio } from "@/lib/servicios";
  * acento del título y la píldora de la pestaña activa: así ambas vistas usan
  * los mismos pares de color, sin un segundo mapa que pueda desincronizarse.
  */
-
-/**
- * Anclas de cada cuadrante, en el mismo orden que CUADRANTES (numero 1→4):
- * permiten enlazar directo a "/servicio/#donde-estoy" desde otra página.
- */
-const ANCLAS = ["donde-estoy", "adonde-voy", "como-lo-hago", "como-comunico"];
 
 /**
  * Separación visible entre el header y la pastilla de pestañas, en px. Es el

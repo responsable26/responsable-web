@@ -32,8 +32,18 @@ export type Caso = {
   slug: string;
   /** Real: sale del carrusel de la Home. */
   cliente: string;
-  /** Servicio aplicado. Se usa como subtítulo en el carrusel. Real. */
-  subtitulo: string;
+  /**
+   * Rótulo del titular del carrusel, cuando difiere del nombre oficial del
+   * servicio.
+   *
+   * Opcional: sin él, subtituloDeCaso() resuelve el nombre verbatim desde el
+   * catálogo (CUADRANTES) a partir de serviciosAplicados[0], que es la fuente
+   * de los nombres oficiales. Solo se escribe aquí mientras el cliente no haya
+   * confirmado que el titular debe ser el nombre completo del servicio; en
+   * cuanto lo confirma, se borra la línea y el nombre pasa a venir del
+   * catálogo, sin copiarlo.
+   */
+  subtitulo?: string;
   sector: string;
   resumen: string;
   /**
@@ -83,7 +93,6 @@ export const CASOS: Caso[] = [
   },
   {
     slug: "la-esperanza",
-    subtitulo: "Acompañamiento",
     cliente: "La Esperanza",
     sector: `${PLACEHOLDER} Sector por confirmar`,
     resumen: `${PLACEHOLDER} Frase de resumen del caso, pendiente de redacción y validación con el cliente.`,
@@ -103,7 +112,6 @@ export const CASOS: Caso[] = [
   },
   {
     slug: "bmw",
-    subtitulo: "SROI",
     cliente: "BMW",
     sector: `${PLACEHOLDER} Sector por confirmar`,
     resumen: `${PLACEHOLDER} Frase de resumen del caso, pendiente de redacción y validación con el cliente.`,
@@ -165,6 +173,30 @@ export const CASOS: Caso[] = [
 
 export function getCaso(slug: string): Caso | undefined {
   return CASOS.find((c) => c.slug === slug);
+}
+
+/**
+ * Titular del caso en el carrusel: el nombre oficial del servicio aplicado.
+ *
+ * El nombre no se copia, se resuelve contra CUADRANTES y se devuelve la cadena
+ * del propio catálogo. Así, renombrar un servicio en servicios.ts o cambia
+ * también este titular o rompe el build —la función lanza si el nombre dejó de
+ * existir—, en vez de dejar dos nombres distintos para el mismo servicio en
+ * dos pantallas del sitio.
+ *
+ * `subtitulo` sigue ganando cuando está: es el rótulo provisional de los casos
+ * cuyo titular el cliente todavía no ha confirmado.
+ */
+export function subtituloDeCaso(caso: Caso): string {
+  if (caso.subtitulo) return caso.subtitulo;
+  const nombre = caso.serviciosAplicados[0];
+  for (const cuadrante of CUADRANTES) {
+    const servicio = cuadrante.servicios.find((s) => s.nombre === nombre);
+    if (servicio) return servicio.nombre;
+  }
+  throw new Error(
+    `subtituloDeCaso: el caso "${caso.slug}" declara el servicio "${nombre}", que no existe en CUADRANTES.`,
+  );
 }
 
 /**

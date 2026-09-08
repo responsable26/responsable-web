@@ -8,7 +8,7 @@ import {
   ENLACES_NAVEGACION,
   LINKEDIN_URL,
 } from "@/lib/navegacion";
-import { SERVICIOS_FOOTER } from "@/lib/servicios";
+import { ANCLAS_CUADRANTES, CUADRANTES } from "@/lib/servicios";
 
 export function SiteFooter() {
   return (
@@ -78,11 +78,10 @@ export function SiteFooter() {
               lib/navegacion.ts ni ServicioFooter.
 
               "Nuestros Servicios" y no "Servicios": esta misma fila de
-              columnas ya tiene una columna llamada "Servicios" (los cinco de
-              SERVICIOS_FOOTER), y el rótulo tiene que distinguir con
-              claridad que este enlace va al índice completo, no a otro
-              servicio suelto de esa lista. Es además el titular que encabeza
-              esa página.
+              columnas ya tiene una columna llamada "Servicios" (los cuatro
+              cuadrantes), y el rótulo tiene que distinguir con claridad que
+              este enlace va al índice completo y no a una de sus secciones.
+              Es además el titular que encabeza esa página.
             */}
             <ul className="mt-4 flex flex-col gap-3">
               <li>
@@ -131,24 +130,28 @@ export function SiteFooter() {
           </div>
 
           {/*
-            SERVICIOS_FOOTER es una selección editorial (servicios.ts), no
-            "todos los servicios con página": esos siguen enlazados desde
-            "Servicios relacionados" en cada página de servicio. Aquí van solo
-            los cinco que el footer decide destacar, en el orden que define
-            esa lista.
+            Los cuatro cuadrantes de /servicio/ y no una selección de servicios
+            sueltos: la columna lleva a las cuatro puertas de entrada del
+            catálogo, y desde cada una se llega a los servicios que contiene.
+            Los servicios individuales siguen enlazados desde "Servicios
+            relacionados" de cada página de servicio.
+
+            Rótulo e id salen los dos de servicios.ts —pregunta y
+            ANCLAS_CUADRANTES, emparejados por posición—, así que renombrar un
+            cuadrante o su ancla se refleja aquí sin tocar este archivo.
           */}
           <div>
             <h3 className="font-head text-sm font-semibold text-white">
               Servicios
             </h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {SERVICIOS_FOOTER.map((servicio) => (
-                <li key={servicio.href}>
+              {CUADRANTES.map((cuadrante, index) => (
+                <li key={ANCLAS_CUADRANTES[index]}>
                   <Link
-                    href={servicio.href}
+                    href={`/servicio/#${ANCLAS_CUADRANTES[index]}`}
                     className="font-body text-sm text-white/75 transition-colors hover:text-white"
                   >
-                    {servicio.nombre}
+                    {cuadrante.pregunta}
                   </Link>
                 </li>
               ))}

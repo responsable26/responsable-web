@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CASOS, type Caso } from "@/lib/casos";
+import { CASOS, subtituloDeCaso, type Caso } from "@/lib/casos";
 import { ChevronIcon } from "@/components/icons";
 import { VideoYoutube } from "@/components/video-youtube";
 import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
@@ -76,7 +76,7 @@ function ListaLogos({ duplicado = false }: { duplicado?: boolean }) {
  * Una tarjeta de caso: video a la izquierda, atribución/titular/descripción y
  * enlace a la derecha.
  *
- * El titular semántico es el servicio (`subtitulo`) y no el cliente: es el
+ * El titular semántico es el servicio (subtituloDeCaso) y no el cliente: es el
  * término que alguien podría buscar, y el cliente no. El cliente sigue
  * presente y legible justo encima, como línea de atribución —prueba
  * social—, pero ya no es un encabezado: con el servicio ocupando el h3, un
@@ -113,7 +113,7 @@ function TarjetaCaso({ caso, activo }: { caso: Caso; activo: boolean }) {
             {caso.cliente}
           </p>
           <h3 className="font-head mt-1 text-2xl font-semibold text-navy">
-            {caso.subtitulo}
+            {subtituloDeCaso(caso)}
           </h3>
           {/*
             line-clamp y no un recorte por caracteres: el ancho de la columna
