@@ -9,21 +9,44 @@ type HeroFramedProps = {
    * Colocación VERTICAL del contenido dentro de la tarjeta. No toca el eje
    * horizontal: el bloque se alinea a la izquierda en las dos variantes.
    *
-   * `bottom` —el valor por defecto— es la composición original: el bloque se
-   * apoya en el borde inferior y la tarjeta ocupa casi el alto de la ventana.
-   * La conserva Estudio de Doble Materialidad, que se diseñó así.
+   * `abajo` —el valor por defecto— apoya el bloque en el borde inferior.
+   * `centrado` lo reparte en el alto disponible.
    *
-   * `center` lo centra en el alto y baja el techo de la tarjeta. Las dos cosas
-   * van juntas: centrar el bloque dentro de un alto de casi toda la ventana
-   * repartiría a los lados el vacío que antes quedaba arriba, así que el tope
-   * de 34rem es lo que hace que el centrado se note. Sigue siendo un mínimo, de
-   * modo que la tarjeta crece cuando el contenido no cabe.
-   *
-   * Es una prop y no un cambio del valor por defecto para que la página que ya
-   * existía no se vea afectada: sin pasarla, el componente se comporta igual que
-   * antes hasta el último píxel.
+   * Es independiente de `altoTarjeta`: antes las dos cosas venían juntas en una
+   * sola prop y eso obligaba a aceptar el tope de altura para poder centrar,
+   * que es justo lo que no le servía a Doble Materialidad.
    */
-  align?: "bottom" | "center";
+  contenido?: "abajo" | "centrado";
+  /**
+   * Alto mínimo de la tarjeta.
+   *
+   * `ventana` —el valor por defecto— la deja en el alto visible menos el header
+   * y los márgenes: un hero que llena la pantalla.
+   *
+   * `contenido` aplica además un tope de 34rem, así que la tarjeta se ajusta a
+   * lo que lleva dentro en vez de estirarse hasta la ventana.
+   *
+   * CUÁNDO USAR CADA UNO. El tope existe para que el centrado se note: con un
+   * bloque corto dentro de una tarjeta de casi toda la ventana, centrarlo deja
+   * franjas enormes arriba y abajo y el hero se lee como texto flotando en un
+   * campo vacío; recortando el alto, el bloque vuelve a tener peso. Ese es el
+   * caso de las diez páginas de servicio, cuya entradilla ocupa dos o tres
+   * líneas.
+   *
+   * Pero el tope se vuelve contraproducente cuando el bloque es largo. En
+   * Doble Materialidad la descripción son siete líneas y el contenido mide unos
+   * 536px con su relleno, contra los 544px del tope: el centrado se quedaría
+   * en 4px por lado —invisible— y a cambio la tarjeta encogería de 944 a 544px
+   * a 1080p. Ahí lo que hace falta es el alto de ventana, que deja unos 200px
+   * de aire a cada lado y centra de verdad.
+   *
+   * La regla práctica: mida el bloque. Si ronda o supera los 544px, el tope no
+   * centra nada y solo acorta el hero; use `ventana`.
+   *
+   * En los dos casos es un mínimo, así que la tarjeta crece si el contenido no
+   * cabe.
+   */
+  altoTarjeta?: "ventana" | "contenido";
 };
 
 /**
@@ -39,19 +62,41 @@ export function HeroFramed({
   children,
   videoSrc,
   videoPoster,
-  align = "bottom",
+  contenido = "abajo",
+  altoTarjeta = "ventana",
 }: HeroFramedProps) {
-  const centrado = align === "center";
+  const centrado = contenido === "centrado";
+  const conTope = altoTarjeta === "contenido";
 
   return (
-    <section className="px-4 py-4 sm:px-7">
-      {/* Viewport height minus the in-flow header (4.5rem) and the margins
-          above and below (1.75rem each). */}
+    /* Los cuatro lados con el mismo valor, el que ya tenían los laterales: la
+       tarjeta queda centrada en su marco en vez de empujada contra el header.
+       Antes el eje vertical iba en 1rem y el horizontal en 1.75rem desde sm, y
+       ese desajuste se leía como que el hero colgaba de la barra. */
+    <section id="hero" className="p-4 sm:p-7">
+      {/*
+        Alto de la ventana menos el header, que está en el flujo, y menos los
+        márgenes de esta sección. El descuento es distinto en cada tramo porque
+        los dos sumandos cambian:
+
+          < 640px   header 5.25rem (py-5 + los 44px del botón hamburguesa, la
+                    pieza más alta de la fila) + p-4, 1rem por lado → 7.25rem
+          640-1023  mismo header + p-7, 1.75rem por lado            → 8.75rem
+          ≥ 1024px  header 5rem: desde lg la hamburguesa se oculta y la pieza
+                    más alta pasa a ser el botón de contacto, 2.5rem
+                    (py-2.5 + text-sm) + p-7                        → 8.5rem
+
+        Los 5rem de lg son consecuencia del cambio de navegación: antes las
+        páginas de servicio forzaban la hamburguesa visible en todos los anchos
+        y el header medía 5.25rem también en escritorio.
+      */}
       <div
         className={`relative flex flex-col overflow-hidden rounded-[22px] bg-navy ${
-          centrado
-            ? "min-h-[min(calc(100svh-8rem),34rem)] justify-center"
-            : "min-h-[calc(100svh-8rem)] justify-end"
+          centrado ? "justify-center" : "justify-end"
+        } ${
+          conTope
+            ? "min-h-[min(calc(100svh-7.25rem),34rem)] sm:min-h-[min(calc(100svh-8.75rem),34rem)] lg:min-h-[min(calc(100svh-8.5rem),34rem)]"
+            : "min-h-[calc(100svh-7.25rem)] sm:min-h-[calc(100svh-8.75rem)] lg:min-h-[calc(100svh-8.5rem)]"
         }`}
         style={
           videoSrc
@@ -79,7 +124,7 @@ export function HeroFramed({
           </>
         ) : null}
 
-        {/* El padding se conserva en la variante centrada: cuando el contenido
+        {/* El padding se conserva al centrar: cuando el contenido
             supera el alto mínimo deja de haber holgura que centrar, y es lo
             único que impide entonces que el texto toque el borde de la tarjeta.
 

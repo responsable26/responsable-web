@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { BarraAnclas } from "@/components/servicio/barra-anclas";
 import { ServicioFooter } from "@/components/servicio/servicio-footer";
 import { HeroFramed } from "@/components/hero-framed";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
@@ -203,13 +204,17 @@ export default function EstudioDobleMaterialidadPage() {
       />
       <FaqJsonLd items={FAQ_ITEMS} />
 
-      <SiteHeader anchors={ANCHORS} />
+      <SiteHeader />
+      {/* Fuera del header a propósito: aparece al salir el hero y se retira
+          al volver arriba, mientras el header mantiene el menú principal. */}
+      <BarraAnclas anclas={ANCHORS} />
 
       <main id="main">
         {/* ------------------------------- HERO ------------------------------- */}
         <HeroFramed
           videoSrc={VIDEO_HERO}
           videoPoster={POSTER_HERO}
+          contenido="centrado"
         >
           <nav
             aria-label="Ruta de navegación"
@@ -314,7 +319,13 @@ export default function EstudioDobleMaterialidadPage() {
         {/* ---------------------- TEMAS MATERIALES CLAROS ---------------------- */}
         <section
           id="por-que-importa"
-          className="bg-off-white py-[var(--section-y)]"
+          /* scroll-mt-36 (9rem = 144px): el aterrizaje por hash desde otra
+             página, y el salto nativo sin JS, no pasan por irAAncla y no miden
+             nada, así que el margen tiene que estar en la sección. 144px cubre
+             el header (80px desde lg), los 12px de separación y los 48px de la
+             barra de anclajes. Mismo valor que las secciones de /servicio/, que
+             resuelven el mismo solapamiento. */
+          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <div className="grid items-center gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[2fr_1fr]">
@@ -360,7 +371,8 @@ export default function EstudioDobleMaterialidadPage() {
         <section
           id="proceso"
           aria-labelledby="proceso-title"
-          className="bg-navy py-[var(--section-y)]"
+          /* Ver la nota de scroll-mt en la primera sección con ancla. */
+          className="scroll-mt-36 bg-navy py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             {/* Title then intro stacked and left-aligned, intro ~60% wide —
@@ -406,7 +418,8 @@ export default function EstudioDobleMaterialidadPage() {
         <section
           id="faq"
           aria-labelledby="faq-title"
-          className="bg-off-white py-[var(--section-y)]"
+          /* Ver la nota de scroll-mt en la primera sección con ancla. */
+          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <p className="font-head text-center text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">

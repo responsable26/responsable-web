@@ -53,16 +53,9 @@ const NAV_LINKS: {
   },
 ];
 
-export type AnchorLink = { label: string; href: string };
-
 type SiteHeaderProps = {
   /** Overlay style for the Home hero video. The only per-page variation. */
   transparent?: boolean;
-  /**
-   * In-page section shortcuts for pages that have them. Purely additive: the
-   * toggle, logo and CTA are identical whether or not these are passed.
-   */
-  anchors?: AnchorLink[];
 };
 
 /*
@@ -73,7 +66,7 @@ type SiteHeaderProps = {
 const SCROLL_ENTER = 80;
 const SCROLL_EXIT = 40;
 
-export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
+export function SiteHeader({ transparent = false }: SiteHeaderProps) {
   const { open } = useContactModal();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -88,13 +81,6 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
   const cerrarRef = useRef<HTMLButtonElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const ruta = usePathname();
-  /*
-    Las páginas de servicio pasan sus anclas de sección y conservan el patrón
-    anterior —botón desplegable siempre visible— porque su barra ya va llena con
-    esa navegación contextual. El resto de páginas estrena la navegación
-    principal a la vista.
-  */
-  const navContextual = Boolean(anchors?.length);
 
   /*
     Origen del último clic, para que el anillo de foco no aparezca con ratón.
@@ -237,9 +223,11 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
             }
             /* El anillo de foco global es magenta; sobre el navy del pill y
                sobre el CTA magenta se lee mal, así que aquí pasa a blanco. */
-            className={`size-11 shrink-0 flex-col items-center justify-center gap-[5px] rounded-sm text-white transition-colors hover:bg-white/10 focus-visible:outline-white ${
-              navContextual ? "flex" : "flex lg:hidden"
-            }`}
+            /* Solo por debajo de lg: desde ahí el menú principal se ve
+               entero y la hamburguesa no tiene nada que abrir que no esté ya
+               a la vista. Las páginas de servicio ya no son excepción; sus
+               secciones viven ahora en BarraAnclas, fuera del header. */
+            className="flex size-11 shrink-0 flex-col items-center justify-center gap-[5px] rounded-sm text-white transition-colors hover:bg-white/10 focus-visible:outline-white lg:hidden"
           >
             <span
               className={`block h-0.5 w-5 bg-current transition-transform ${
@@ -352,89 +340,46 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
           </ul>
         </nav>
 
-        {navContextual ? null : (
-          <nav
-            aria-label="Navegación principal"
-            className="hidden items-center gap-6 lg:flex"
-          >
-            {NAV_LINKS.map((link) => {
-              const activa = link.activa(ruta);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-current={activa ? "page" : undefined}
-                  onPointerDown={() => {
-                    clicConPuntero.current = true;
-                  }}
-                  onClick={(event) => {
-                    if (!clicConPuntero.current) return;
-                    clicConPuntero.current = false;
-                    event.currentTarget.blur();
-                  }}
-                  className={`font-head rounded-sm text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-white ${
-                    activa
-                      ? "text-white underline decoration-magenta decoration-2 underline-offset-8"
-                      : "text-white/80 hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-        )}
 
-        {/* Contextual anchors only — the middle slot is simply empty on pages
-            that do not pass any. */}
-        {/* El pill solo contiene hamburguesa, logo y CTA: los anclas de sección
-            se retiran al desplazarse, en las dos maquetaciones. */}
-        <div className="flex items-center gap-6">
-          {anchors?.length && !scrolled ? (
-            <nav
-              aria-label="Secciones de la página"
-              /* Documented reflow: below 860px this drops to its own row and
-                 scrolls horizontally instead of wrapping. */
-              className="hidden items-center gap-6 min-[861px]:flex"
-            >
-              {anchors.map((a) => (
-                <a
-                  key={a.href}
-                  href={a.href}
-                  className="font-head text-sm font-medium whitespace-nowrap text-white/80 transition-colors hover:text-white"
-                >
-                  {a.label}
-                </a>
-              ))}
-            </nav>
-          ) : null}
-
-          <button
-            type="button"
-            onClick={open}
-            className="font-head shrink-0 rounded bg-magenta px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#C71268] focus-visible:outline-white sm:px-5"
-          >
-            Contáctenos
-          </button>
-        </div>
-      </div>
-
-      {anchors?.length && !scrolled ? (
-        <nav aria-label="Secciones de la página" className="min-[861px]:hidden">
-          <ul className="flex gap-5 overflow-x-auto px-[clamp(1rem,4vw,2.5rem)] pb-3">
-            {anchors.map((a) => (
-              <li key={a.href}>
-                <a
-                  href={a.href}
-                  className="font-head text-sm font-medium whitespace-nowrap text-white/80 transition-colors hover:text-white"
-                >
-                  {a.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <nav
+          aria-label="Navegación principal"
+          className="hidden items-center gap-6 lg:flex"
+        >
+          {NAV_LINKS.map((link) => {
+            const activa = link.activa(ruta);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={activa ? "page" : undefined}
+                onPointerDown={() => {
+                  clicConPuntero.current = true;
+                }}
+                onClick={(event) => {
+                  if (!clicConPuntero.current) return;
+                  clicConPuntero.current = false;
+                  event.currentTarget.blur();
+                }}
+                className={`font-head rounded-sm text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-white ${
+                  activa
+                    ? "text-white underline decoration-magenta decoration-2 underline-offset-8"
+                    : "text-white/80 hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
-      ) : null}
+
+        <button
+          type="button"
+          onClick={open}
+          className="font-head shrink-0 rounded bg-magenta px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#C71268] focus-visible:outline-white sm:px-5"
+        >
+          Contáctenos
+        </button>
+      </div>
     </header>
   );
 }

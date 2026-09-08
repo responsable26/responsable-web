@@ -12,6 +12,12 @@ import { COLORES } from "@/components/home/servicios-rueda";
 import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { irAAncla } from "@/lib/scroll-suave";
 import {
+  SEPARACION,
+  useAltoHeader,
+  usePegada,
+  useSeccionActiva,
+} from "@/components/servicio/use-barra-anclas";
+import {
   ANCLAS_CUADRANTES as ANCLAS,
   CUADRANTES,
   type Servicio,
@@ -30,15 +36,6 @@ import {
  * los mismos pares de color, sin un segundo mapa que pueda desincronizarse.
  */
 
-/**
- * Separación visible entre el header y la pastilla de pestañas, en px. Es el
- * mismo hueco (12px, pt-3) con el que el header despega su propio pill del
- * borde de la pantalla. Va como número y no como clase porque entra en dos
- * cuentas: el `top` de la pastilla sticky y el margen que se reserva al
- * desplazarse a una sección.
- */
-const SEPARACION = 12;
-
 export function ServiciosCuadrantes() {
   const [servicioModal, setServicioModal] = useState<Servicio | null>(null);
   /* Botón que abrió el modal, para devolverle el foco al cerrar. Mismo
@@ -54,16 +51,13 @@ export function ServiciosCuadrantes() {
   /* Centinela invisible en la posición de flujo de la pastilla: dice si ya
      está pegada bajo el header. Ver el efecto que lo observa. */
   const centinelaRef = useRef<HTMLDivElement>(null);
-  const [pegada, setPegada] = useState(false);
-  /* Alto real del header, para el `top` de la barra sticky. El header del
-     sitio también es sticky y cambia de alto al desplazarse (fila py-5 →
-     pill py-3 con pt-3 por fuera), así que un valor fijo dejaría hueco en un
-     estado y solapamiento en el otro. */
-  const [altoHeader, setAltoHeader] = useState(0);
-  /* Cuadrante que ocupa la franja de lectura del viewport. Arranca en 0: por
-     encima de la primera sección la barra aún no está pegada al header, y la
-     primera pestaña es la lectura correcta de "por dónde vas". */
-  const [activo, setActivo] = useState(0);
+
+  /* Las tres piezas viven en use-barra-anclas.ts, compartidas con la barra de
+     secciones de las páginas de servicio (barra-anclas.tsx): alto real del
+     header, estado pegado por centinela y cuadrante en la franja de lectura. */
+  const altoHeader = useAltoHeader();
+  const pegada = usePegada(centinelaRef, altoHeader);
+  const activo = useSeccionActiva(ANCLAS);
 
   useEffect(() => {
     if (servicioModal === null && disparador.current) {
@@ -71,88 +65,6 @@ export function ServiciosCuadrantes() {
       disparador.current = null;
     }
   }, [servicioModal]);
-
-  /*
-    ResizeObserver y no el evento de scroll: lo que importa es el alto del
-    header, no la posición de la página. Observando su caja de borde se
-    recogen tanto el cambio de estado normal↔pill como los fotogramas
-    intermedios de su transición de 300ms —así la barra acompaña al header en
-    vez de saltar al final— y también los reflows por cambio de ancho de
-    ventana, que ningún listener de scroll vería.
-  */
-  useEffect(() => {
-    const header = document.querySelector("header");
-    if (!header) return;
-    const medir = () => setAltoHeader(header.getBoundingClientRect().height);
-    medir();
-    const observador = new ResizeObserver(medir);
-    observador.observe(header, { box: "border-box" });
-    return () => observador.disconnect();
-  }, []);
-
-  /*
-    ¿Está la pastilla ya pegada bajo el header? Con IntersectionObserver sobre
-    un centinela y no leyendo posiciones en cada scroll: el centinela ocupa la
-    posición de flujo de la pastilla, y el recorte superior del root —el alto
-    real del header más la separación— es exactamente la línea a la que la
-    pastilla se pega. Mientras el centinela quede por debajo de esa línea, la
-    pastilla está suelta; en cuanto la cruza, está pegada.
-
-    El margen inferior desmesurado extiende el root muy por debajo del
-    viewport: sin él, un centinela que aún no ha entrado en pantalla tampoco
-    intersecaría y se leería como "pegada" desde lo alto de la página.
-
-    Depende de altoHeader porque el header cambia de alto: el observador se
-    recrea con cada valor nuevo, que son un puñado durante su transición y
-    ninguno el resto del tiempo.
-  */
-  useEffect(() => {
-    const centinela = centinelaRef.current;
-    if (!centinela) return;
-    const observador = new IntersectionObserver(
-      ([entrada]) => setPegada(!entrada.isIntersecting),
-      { rootMargin: `-${Math.round(altoHeader) + SEPARACION}px 0px 9999px 0px` },
-    );
-    observador.observe(centinela);
-    return () => observador.disconnect();
-  }, [altoHeader]);
-
-  /*
-    Pestaña activa por IntersectionObserver y no por cálculos atados al scroll:
-    el navegador ya sabe qué secciones cruzan la franja y avisa solo cuando
-    eso cambia.
-
-    rootMargin recorta el viewport a una banda fina alrededor de su 45% —la
-    altura de lectura—, no a la línea justo bajo la barra: en porcentaje no
-    hay que recalcularla cada vez que el header cambia de alto, y con cuatro
-    secciones largas siempre hay exactamente una cruzándola. El conjunto
-    `visibles` existe para el instante en que dos se solapan en la banda (el
-    borde entre secciones): gana la primera en orden de documento, que es la
-    que se está dejando atrás, en vez de depender del orden en que lleguen
-    las entradas. Si no cruza ninguna —por encima de la primera sección o por
-    debajo de la última— se conserva la última marcada.
-  */
-  useEffect(() => {
-    const secciones = ANCLAS.map((id) => document.getElementById(id)).filter(
-      (nodo): nodo is HTMLElement => nodo !== null,
-    );
-    if (secciones.length === 0) return;
-
-    const visibles = new Set<string>();
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        for (const entrada of entradas) {
-          if (entrada.isIntersecting) visibles.add(entrada.target.id);
-          else visibles.delete(entrada.target.id);
-        }
-        const indice = ANCLAS.findIndex((id) => visibles.has(id));
-        if (indice !== -1) setActivo(indice);
-      },
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    secciones.forEach((seccion) => observador.observe(seccion));
-    return () => observador.disconnect();
-  }, []);
 
   /*
     Las pestañas son navegación dentro de la página, no un conmutador: las
