@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.
   title: "Legal",
   description: DESCRIPCION,
+  /* Esta página es todavía un índice sin contenido: solo anuncia «Contenido
+     próximamente» y enlaza los dos documentos, que llevan su propio noindex.
+     No hay nada que posicionar. Retirar cuando tenga contenido real, y añadir
+     entonces la ruta al sitemap. */
+  robots: { index: false, follow: false },
   alternates: { canonical: "/legal/" },
   openGraph: {
     type: "website",

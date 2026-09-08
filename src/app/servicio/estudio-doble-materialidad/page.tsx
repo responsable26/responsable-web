@@ -22,13 +22,6 @@ export const metadata: Metadata = {
   title: "Estudio de Doble Materialidad para Empresas",
   description: DESCRIPTION,
   alternates: { canonical: CANONICAL },
-  /*
-    The WordPress original at responsable.net/servicio/estudio-doble-materialidad/
-    is still live and indexed. Without this, both versions compete for the same
-    keyword and cannibalise each other. REMOVE once WordPress is switched off and
-    this build serves that URL.
-  */
-  robots: { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: "ResponSable",

@@ -14,11 +14,6 @@ export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.
   title: "Servicios",
   description: DESCRIPCION,
-  /* Igual que casos-de-exito/page.tsx, casos-de-exito/[slug]/page.tsx y
-     servicio/estudio-doble-materialidad/page.tsx: el sitio nuevo aún no está
-     en producción, así que esta página —sin equivalente confirmado en el
-     WordPress viejo o no— tampoco se indexa todavía. */
-  robots: { index: false, follow: false },
   alternates: { canonical: "/servicio/" },
   openGraph: {
     type: "website",
