@@ -47,4 +47,4 @@ export const LINKEDIN_URL =
  * pasar.
  */
 export const DESCRIPCION_RESPONSABLE =
-  "ResponSable es una agencia de sostenibilidad que acompaña a las empresas a llevar su estrategia de RSE, la doble materialidad y la gestión social al corazón del negocio, para generar valor real y fortalecer su resiliencia.";
+  "ResponSable es una consultoría en sostenibilidad que acompaña a las empresas a llevar su estrategia de RSE, la doble materialidad y la gestión social al corazón del negocio, para generar valor real y fortalecer su resiliencia.";

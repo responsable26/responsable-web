@@ -54,6 +54,7 @@ export default function TrabajaConNosotrosPage() {
       etiquetaFormulario="Formulario para candidaturas"
       tituloFormulario="Cuéntenos sobre usted"
       campos={CAMPOS}
+      origen="trabaja-con-nosotros"
       etiquetaEnvio="Enviar Solicitud"
     />
   );

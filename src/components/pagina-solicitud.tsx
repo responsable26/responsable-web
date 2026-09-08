@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import {
   FormularioContacto,
   type CampoConfig,
+  type OrigenContacto,
 } from "@/components/formulario-contacto/formulario-contacto";
 
 /**
@@ -24,6 +25,7 @@ export function PaginaSolicitud({
   etiquetaFormulario,
   tituloFormulario,
   campos,
+  origen,
   etiquetaEnvio,
 }: {
   /** Último tramo de la ruta de navegación, el de la página actual. */
@@ -36,6 +38,8 @@ export function PaginaSolicitud({
   /** Encabezado visible sobre los campos. */
   tituloFormulario: string;
   campos: readonly CampoConfig[];
+  /** Se pasa tal cual a FormularioContacto: esta página no lo interpreta. */
+  origen: OrigenContacto;
   etiquetaEnvio: string;
 }) {
   return (
@@ -126,6 +130,7 @@ export function PaginaSolicitud({
                   <FormularioContacto
                     titulo={tituloFormulario}
                     campos={campos}
+                    origen={origen}
                     etiquetaEnvio={etiquetaEnvio}
                   />
                 </div>

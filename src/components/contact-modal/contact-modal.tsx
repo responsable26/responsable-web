@@ -173,6 +173,7 @@ export function ContactModal() {
           <div className="mx-auto w-full max-w-[34rem]">
             <FormularioContacto
               titulo="Completa el formulario"
+              origen="modal-contacto"
               campos={CAMPOS}
             />
           </div>

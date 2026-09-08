@@ -12,7 +12,7 @@ import { ARTICULOS } from "@/lib/articulos";
 import { POSTER_HERO } from "@/lib/video-hero";
 
 const DESCRIPCION =
-  "Agencia de sostenibilidad y RSE. Desde 2011 acompañamos a su empresa a anticipar riesgos y convertir la estrategia ESG en resultados medibles.";
+  "Consultoría en sostenibilidad y RSE. Desde 2011 acompañamos a su empresa a anticipar riesgos y convertir la estrategia ESG en resultados medibles.";
 
 export const metadata: Metadata = {
   /*

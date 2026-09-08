@@ -45,7 +45,11 @@ export function HomeHero() {
       */}
       <div className="pointer-events-none relative z-20 flex h-full w-full flex-col justify-center px-6 sm:px-[8%]">
         <p className="font-body text-sm text-white/80 sm:text-base">
-          Agencia de Sostenibilidad y Responsabilidad Social Empresarial
+          {/* Salto forzado solo desde sm: por debajo el eyebrow ya cae en dos
+              líneas por su cuenta, y ahí el <br> sobra. El {" "} mantiene el
+              espacio cuando el <br> está oculto, que JSX se comería. */}
+          Consultoría en Sostenibilidad{" "}
+          <br className="hidden sm:inline" />y Responsabilidad Social Empresarial
         </p>
         {/*
           Breaks are explicit so the three lines stay put no matter which

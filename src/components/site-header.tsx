@@ -1,18 +1,12 @@
 "use client";
 
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type MouseEvent as ReactMouseEvent,
-} from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { CloseIcon } from "@/components/icons";
 import { useContactModal } from "@/context/contact-modal-context";
-import { irAAncla, pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
+import { pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
 
 /** Selector de lo que puede recibir foco dentro del panel, para el atrapado.
  *  Mismo criterio que ServicioModal y ContactModal (el patrón ya establecido
@@ -21,21 +15,6 @@ import { irAAncla, pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
  *  crear solo para tres líneas de selector. */
 const ENFOCABLES =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-/**
- * "Servicios" apunta a "/#servicios". Si el ancla ya existe en la página
- * (estamos en la Home), se intercepta el salto nativo del navegador y se pasa
- * por Lenis; si no (se está en otra página), se deja que el <Link> navegue
- * normal y aterrice por el salto nativo, ya con scroll-margin-top en la
- * sección para que el header no la tape.
- */
-function manejarClicNav(
-  event: ReactMouseEvent<HTMLAnchorElement>,
-  href: string,
-) {
-  const id = href.split("#")[1];
-  if (id && irAAncla(id)) event.preventDefault();
-}
 
 /**
  * Navegación principal. Se pinta en la barra desde lg y, por debajo, dentro del
@@ -48,21 +27,13 @@ function manejarClicNav(
 const NAV_LINKS: {
   label: string;
   href: string;
-  /**
-   * `seccion` es el id de la sección que ocupa el centro del viewport, o null.
-   * Hace falta porque "Servicios" apunta a un ancla dentro de la Home: por ruta
-   * siempre sería "/" y nunca se marcaría.
-   */
-  activa: (ruta: string, seccion: string | null) => boolean;
+  activa: (ruta: string) => boolean;
 }[] = [
   {
     label: "Servicios",
-    // PROVISIONAL: /servicio/ es todavía un stub sin contenido, así que apunta
-    // al ancla de la sección de servicios de la Home. Cambiar a "/servicio/"
-    // en cuanto esa página exista.
-    href: "/#servicios",
-    activa: (r, seccion) =>
-      r.startsWith("/servicio") || seccion === "servicios",
+    href: "/servicio/",
+    // Cubre el índice y cada página de servicio, que cuelgan de /servicio/.
+    activa: (r) => r.startsWith("/servicio"),
   },
   {
     label: "Casos de Éxito",
@@ -124,35 +95,6 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
     principal a la vista.
   */
   const navContextual = Boolean(anchors?.length);
-
-  /*
-    Sección que ocupa la franja central del viewport. Solo existe #servicios y
-    solo en la Home; en el resto de páginas el observador no encuentra nada y el
-    estado se queda en null, que es lo correcto.
-  */
-  const [seccionVisible, setSeccionVisible] = useState<string | null>(null);
-
-  useEffect(() => {
-    const seccion = document.getElementById("servicios");
-    if (!seccion) return;
-    const observador = new IntersectionObserver(
-      ([entrada]) =>
-        setSeccionVisible(entrada.isIntersecting ? "servicios" : null),
-      // Banda central: la sección se marca cuando el lector la tiene delante,
-      // no cuando asoma por un borde.
-      { rootMargin: "-35% 0px -35% 0px" },
-    );
-    observador.observe(seccion);
-    /*
-      El reinicio va en la limpieza y no en el cuerpo del efecto: al navegar a
-      una página sin #servicios, la limpieza del efecto anterior corre antes que
-      el nuevo, así que el estado no se queda colgado del último marcado.
-    */
-    return () => {
-      observador.disconnect();
-      setSeccionVisible(null);
-    };
-  }, [ruta]);
 
   /*
     Origen del último clic, para que el anillo de foco no aparezca con ratón.
@@ -400,10 +342,7 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  onClick={(event) => {
-                    manejarClicNav(event, link.href);
-                    cerrarPanel();
-                  }}
+                  onClick={cerrarPanel}
                   className="font-head block rounded-sm px-3 py-2 text-sm font-medium text-navy hover:bg-off-white"
                 >
                   {link.label}
@@ -419,7 +358,7 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
             className="hidden items-center gap-6 lg:flex"
           >
             {NAV_LINKS.map((link) => {
-              const activa = link.activa(ruta, seccionVisible);
+              const activa = link.activa(ruta);
               return (
                 <Link
                   key={link.href}
@@ -429,7 +368,6 @@ export function SiteHeader({ transparent = false, anchors }: SiteHeaderProps) {
                     clicConPuntero.current = true;
                   }}
                   onClick={(event) => {
-                    manejarClicNav(event, link.href);
                     if (!clicConPuntero.current) return;
                     clicConPuntero.current = false;
                     event.currentTarget.blur();

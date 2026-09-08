@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | ResponSable",
   },
   description:
-    "ResponSable es una agencia de sostenibilidad y RSE. Desde 2011 acompaña a su empresa a convertir la estrategia ESG en decisiones y resultados medibles.",
+    "ResponSable es una consultoría en sostenibilidad y RSE. Desde 2011 acompaña a su empresa a convertir la estrategia ESG en decisiones y resultados medibles.",
   icons: {
     icon: "/brand/isotipo.png",
   },

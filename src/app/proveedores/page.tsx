@@ -44,6 +44,7 @@ export default function ProveedoresPage() {
       etiquetaFormulario="Formulario para proveedores"
       tituloFormulario="Cuéntenos sobre su empresa"
       campos={CAMPOS}
+      origen="proveedores"
       etiquetaEnvio="Enviar Propuesta"
     />
   );

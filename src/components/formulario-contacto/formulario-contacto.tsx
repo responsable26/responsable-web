@@ -82,6 +82,21 @@ const CATALOGO: Record<
 export type CampoConfig = { campo: CampoContacto; obligatorio?: boolean };
 
 /**
+ * De qué superficie sale el envío. Viaja en el cuerpo del POST y es lo que
+ * /api/contacto usa para el asunto del correo.
+ *
+ * Es un dato explícito y no algo que el servidor deduzca del juego de campos:
+ * esa deducción se rompía en silencio en cuanto una superficie cambiaba sus
+ * campos —un envío de proveedores sin teléfono se clasificaba como solicitud
+ * de trabajo—. Los valores repiten la ruta de cada superficie para que un
+ * asunto en el buzón se pueda rastrear hasta su página sin traducir nada.
+ */
+export type OrigenContacto =
+  | "modal-contacto"
+  | "proveedores"
+  | "trabaja-con-nosotros";
+
+/**
  * Da por buena una dirección escrita a mano y la devuelve completa, o null si
  * no tiene forma de URL.
  *
@@ -107,15 +122,46 @@ function normalizarUrl(valor: string): string | null {
   }
 }
 
+/**
+ * Contexto de navegación que acompaña al envío.
+ *
+ * Lo captura el cliente porque el servidor no puede saberlo: la página real
+ * solo la conoce el navegador —el modal se abre desde cualquier ruta, así que
+ * no se deduce del `origen`—, y el referrer y el gclid viven en el documento y
+ * en la URL, no en la petición.
+ *
+ * Se lee en el momento de enviar y no al montar: entre una cosa y otra el
+ * visitante puede haber navegado con el modal abierto, y lo que interesa es
+ * dónde estaba al pulsar el botón.
+ */
+function contextoNavegacion() {
+  if (typeof window === "undefined") return {};
+  return {
+    pagina: window.location.href,
+    /* Solo el de la URL actual. Si el visitante llegó con ?gclid= y después
+       navegó, ya no está: persistirlo entre páginas sería otra decisión. */
+    gclid: new URLSearchParams(window.location.search).get("gclid") ?? "",
+    referrer: document.referrer,
+  };
+}
+
 type Status = "idle" | "submitting" | "error" | "success";
 
 export function FormularioContacto({
   titulo,
+  origen,
   campos,
   etiquetaEnvio = "Enviar Información",
 }: {
   /** Encabezado sobre el formulario. Lo sustituye la confirmación al enviarse. */
   titulo: string;
+  /**
+   * Superficie desde la que se envía. Sin valor por defecto y obligatorio, por
+   * el mismo motivo que `campos`: si una superficie nueva se olvida de
+   * declararlo, tiene que fallar de compilación y no heredar en silencio el de
+   * otra ni acabar en un asunto equivocado.
+   */
+  origen: OrigenContacto;
   /**
    * Campos de texto a pintar, en este orden, y cuáles son obligatorios. Sin
    * valor por defecto a propósito: el juego de campos lo define el cliente y es
@@ -211,7 +257,7 @@ export function FormularioContacto({
       const res = await fetch("/api/contacto", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(envio),
+        body: JSON.stringify({ ...envio, origen, ...contextoNavegacion() }),
       });
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");

@@ -629,8 +629,9 @@ export function ServiciosRueda() {
   }
 
   return (
-    /* id="servicios" es el destino del enlace «Servicios» del header y del
-       «Conozca más» de Intro. Vivía en la sección de pestañas, hoy eliminada. */
+    /* id="servicios" es el destino del «Conozca más» de Intro. Vivía en la
+       sección de pestañas, hoy eliminada. El enlace «Servicios» del header ya
+       no apunta aquí sino a /servicio/, que tiene contenido propio. */
     <section
       id="servicios"
       /*

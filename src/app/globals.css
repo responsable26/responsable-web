@@ -259,7 +259,7 @@ body {
 
   .marquee-hueco {
     flex: none;
-    width: calc(100cqw / var(--marquee-visibles, 5));
+    width: calc(100cqw / var(--marquee-visibles, 4));
     display: flex;
     align-items: center;
     justify-content: center;

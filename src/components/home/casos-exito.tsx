@@ -55,7 +55,7 @@ function ListaLogos({ duplicado = false }: { duplicado?: boolean }) {
               grayscale los iguala en reposo; al pasar el cursor el logo
               recupera su color y su opacidad plena.
 
-              La altura es el eje que se fija (h-12) y el ancho queda en auto:
+              La altura es el eje que se fija (h-16) y el ancho queda en auto:
               los logos no comparten proporción (de 1.5:1 el de Baker M a
               2.81:1 el de Heineken), así que igualarlos por altura es lo que
               los alinea ópticamente. Subir esta misma altura para todos —y no
@@ -64,7 +64,7 @@ function ListaLogos({ duplicado = false }: { duplicado?: boolean }) {
               desequilibrarlos entre sí. max-w-full seguiría conteniendo dentro
               de su hueco a cualquier logo cuya proporción lo desborde.
             */
-            className="h-12 w-auto max-w-full object-contain opacity-60 grayscale transition-[opacity,filter] hover:opacity-100 hover:grayscale-0"
+            className="h-16 w-auto max-w-full object-contain opacity-60 grayscale transition-[opacity,filter] hover:opacity-100 hover:grayscale-0"
           />
         </div>
       ))}
@@ -314,7 +314,7 @@ export function CasosExito() {
             tocar el orden del DOM.
           */}
           <span className="font-head absolute top-0 left-1/2 z-10 max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal px-4 py-2 text-center text-sm font-semibold text-white">
-            Trabajamos Junto a los Mejores:
+            Empresas que Confían en Nosotros
           </span>
 
           {/*
@@ -329,11 +329,16 @@ export function CasosExito() {
             pegados. Que la tarjeta recorte no afecta a la píldora, que es
             hermana suya y no hija.
 
-            Cuántos logos se ven a la vez: 2 en móvil, 3 en tablet y 5 en
-            desktop. Con los cinco de desktop en un móvil cada logo caería por
-            debajo de 60px de ancho útil y no se leería la marca.
+            Cuántos logos se ven a la vez. El número sale de la geometría, no
+            de un gusto: cada hueco mide 100cqw/visibles y descuenta 40px de
+            padding, y dentro tiene que caber el logo más apaisado —Heineken,
+            2.81:1— a la altura fijada arriba. Con h-16 eso son 180px de ancho,
+            así que el hueco no puede bajar de 220px. De ahí 1.4 en móvil, 2
+            desde 640px, 3 en tablet y 4 en desktop: con los 5 de antes el hueco
+            caía a 155px a 1024px de ventana y max-w-full encogía el Heineken,
+            que es justo lo que rompe la igualación por altura.
           */}
-          <div className="marquee rounded bg-white pt-10 pb-6 [--marquee-visibles:2] md:[--marquee-visibles:3] lg:[--marquee-visibles:5]">
+          <div className="marquee rounded bg-white pt-10 pb-6 [--marquee-visibles:1.4] sm:[--marquee-visibles:2] md:[--marquee-visibles:3] lg:[--marquee-visibles:4]">
             <div className="marquee-pista">
               {/*
                 Dos pasadas de la misma secuencia. La primera es la real; la
