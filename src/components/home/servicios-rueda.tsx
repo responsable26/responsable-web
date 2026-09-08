@@ -661,7 +661,7 @@ export function ServiciosRueda() {
         en ~286px. Todo el ancho extra va a esas dos columnas; la rueda y el
         hueco central no cambian.
       */}
-      <div className="mx-auto max-w-[var(--container-ancho)]">
+      <div className="mx-auto max-w-[var(--container)]">
         <div className="text-center">
           <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
             Servicios
@@ -671,7 +671,7 @@ export function ServiciosRueda() {
           </h2>
           {/* Medida de lectura en ch y no en % del contenedor: este es el
               contenedor ancho, y a 1280px el párrafo se iría de borde a borde. */}
-          <p className="font-body mx-auto mt-4 max-w-[62ch] text-[1.05rem] text-ink-soft">
+          <p className="font-body mx-auto mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
             Cuatro preguntas ordenan cualquier estrategia de sostenibilidad.
             Cada una abre un grupo de servicios diseñados para responderla con
             evidencia.

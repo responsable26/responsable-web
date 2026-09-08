@@ -199,7 +199,12 @@ export default async function ArticuloPage(
         */}
         <div className="mx-auto max-w-[calc(var(--container)+3rem)] px-6 py-[var(--section-y)]">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
-            <article className="max-w-[68ch]">
+            {/* 717px = 68 caracteres a los 16.8px de .articulo-prose, que es
+                el texto corrido de la página (ver §2 de globals.css). La
+                entradilla que va justo debajo es de 1.15rem y con este ancho
+                lee a 62, más corta a propósito por ser entradilla. En px y no
+                en ch: el ch resolvería contra los 16px heredados del cuerpo. */}
+            <article className="max-w-[717px]">
               <p className="font-body text-[1.15rem] text-ink-soft">
                 {articulo.excerpt}
               </p>
@@ -227,7 +232,7 @@ export default async function ArticuloPage(
             <h2 className="font-head text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-navy">
               Otros artículos
             </h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,380px))] lg:justify-center">
               {relacionados.map((a, i) => (
                 <ArticuloCard key={a.slug} articulo={a} index={i} />
               ))}

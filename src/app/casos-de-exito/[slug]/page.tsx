@@ -199,7 +199,10 @@ export default async function CasoPage(
 
         <div className="px-6 py-[var(--section-y)]">
           <div className="mx-auto flex max-w-[var(--container)] flex-col gap-12 lg:flex-row lg:gap-16">
-            <div className="max-w-[68ch] lg:flex-1">
+            {/* 786px = 68 caracteres a los 18.4px de estos párrafos, la
+                medida de lectura única del sitio (ver §2 de globals.css). En px
+                y no en ch: el ch resolvería contra los 16px heredados. */}
+            <div className="max-w-[786px] lg:flex-1">
               {/* Descripción completa, sin truncar: el recorte del carrusel es
                   solo de presentación. */}
               <p className="font-body text-[1.15rem] text-ink-soft">
@@ -292,7 +295,7 @@ export default async function CasoPage(
             <h2 className="font-head text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-navy">
               Otros casos
             </h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,380px))] lg:justify-center">
               {otros.map((c, i) => (
                 <CasoCard key={c.slug} caso={c} index={i} />
               ))}

@@ -104,7 +104,7 @@ function TarjetaCaso({ caso, activo }: { caso: Caso; activo: boolean }) {
         <VideoYoutube
           id={caso.videoYoutube}
           titulo={`Testimonio de ${caso.cliente}`}
-          sizes="(min-width: 1024px) 380px, (min-width: 768px) 45vw, 90vw"
+          sizes="(min-width: 1024px) 540px, (min-width: 768px) 45vw, 90vw"
           activo={activo}
         />
 

@@ -28,7 +28,7 @@ export function ArticuloCard({ articulo, index = 0 }: { articulo: ArticuloMeta; 
             src={articulo.imagen.src}
             alt=""
             fill
-            sizes="(min-width: 1024px) 340px, (min-width: 640px) 45vw, 90vw"
+            sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 90vw"
             className="object-cover transition-transform duration-200 group-hover:scale-[1.03]"
           />
         ) : null}

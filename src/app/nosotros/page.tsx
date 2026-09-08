@@ -94,7 +94,10 @@ export default function NosotrosPage() {
               original era un bloque corrido a ancho completo, difícil de
               entrar.
             */}
-                <p className="font-body mt-8 max-w-[62ch] text-[1.2rem] text-ink-soft">
+                {/* 820px = 68 caracteres a los 19.2px de este párrafo, la medida de
+                  lectura única del sitio. En px y no en ch: el ch resolvería
+                  contra los 16px heredados del cuerpo. */}
+                <p className="font-body mt-8 max-w-[820px] text-[1.2rem] text-ink-soft">
                   En ResponSable acompañamos a empresas que quieren dejar atrás
                   una sostenibilidad dispersa, reactiva o difícil de justificar.
                   Les ayudamos a entender mejor su contexto, priorizar con

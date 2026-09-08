@@ -149,7 +149,21 @@ function BloqueTexto({
         </h2>
       </div>
 
-      <div className="flex max-w-[62ch] flex-col gap-4">
+      {/*
+        786px = 68 caracteres a los 18.4px del párrafo. 68 es la medida de
+        lectura única del sitio: la misma que usa el cuerpo de los artículos,
+        para que las dos superficies de texto largo lean igual.
+
+        En px y no en ch a propósito: el tope tiene que vivir en este
+        contenedor —también acota la tabla opcional de más abajo—, y el
+        contenedor hereda los 16px del cuerpo mientras el texto se pinta a
+        text-[1.15rem]. Un `max-w-[59ch]` aquí resolvería contra 16px y daría
+        593px, y el `max-w-[62ch]` que había antes daba 623px, o sea 54
+        caracteres reales y no los 62 que anunciaba. El número de una clase en
+        ch solo dice la verdad si el elemento que la lleva tiene el tamaño de
+        letra del texto que mide.
+      */}
+      <div className="flex max-w-[786px] flex-col gap-4">
         {bloque.descripcion.map((parrafo) => (
           <p key={parrafo} className="font-body text-[1.15rem] text-ink-soft">
             {parrafo}
@@ -363,8 +377,10 @@ export default async function ServicioPage(
               En qué consiste el servicio
             </h2>
 
+            {/* 786px = 68 caracteres a los 18.4px de estos párrafos, el mismo
+                tope que BloqueTexto más abajo. Ver §2 de globals.css. */}
             {restoDescripcion.length > 0 ? (
-              <div className="flex max-w-[62ch] flex-col gap-4">
+              <div className="flex max-w-[786px] flex-col gap-4">
                 {restoDescripcion.map((parrafo) => (
                   <p
                     key={parrafo}
@@ -515,7 +531,7 @@ export default async function ServicioPage(
               Servicios relacionados
             </h2>
 
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,380px))] lg:justify-center">
               {relacionados(contenido.slug).map((otro) => (
                 <RelatedCard
                   key={otro.slug}

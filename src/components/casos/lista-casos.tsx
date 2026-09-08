@@ -37,7 +37,7 @@ export function ListaCasos({ casos }: { casos: Caso[] }) {
             titulo={`Testimonio de ${caso.cliente}`}
             /* A partir de lg la columna es la mitad del contenedor menos el
                gap. Por debajo ocupa el ancho del viewport menos su gutter. */
-            sizes="(min-width: 1024px) 528px, calc(100vw - 3rem)"
+            sizes="(min-width: 1024px) 608px, calc(100vw - 3rem)"
             activo={enReproduccion === caso.slug}
             onReproducir={() => setEnReproduccion(caso.slug)}
           />

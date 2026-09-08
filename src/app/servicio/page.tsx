@@ -96,7 +96,11 @@ export default function ServicioPage() {
               <h2 className="font-head mt-2 text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy">
                 Nuestros Servicios
               </h2>
-              <p className="font-body mt-4 max-w-[62ch] text-[1.05rem] text-ink-soft">
+              {/* 717px = 68 caracteres a los 16.8px de este párrafo, la misma medida
+                de lectura que BloqueTexto y el cuerpo de los artículos. En px y
+                no en ch porque el ch resolvería contra los 16px heredados del
+                cuerpo y daría otro número: ver la nota de BloqueTexto. */}
+              <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
                 Cuatro preguntas ordenan cualquier estrategia de sostenibilidad.
                 Cada una abre un grupo de servicios diseñados para responderla
                 con evidencia.

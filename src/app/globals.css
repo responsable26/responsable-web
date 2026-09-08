@@ -3,13 +3,16 @@
 /* §3 Espaciado y layout — sin namespace de utilidad equivalente en Tailwind v4,
    se dejan como custom properties listas para usarse (p. ej. max-w-[var(--container)]). */
 :root {
-  --container: 1120px;
-  /* Contenedor ancho, solo para composiciones que flanquean un elemento central
-     —hoy la rueda de servicios—. El resto de secciones sigue en --container.
-     1280 es el punto medio entre ese contenedor estándar y los 1440 que se
-     probaron primero: a 1440 las tarjetas quedaban pegadas al borde de la
-     ventana en portátiles y la composición se dispersaba. */
-  --container-ancho: 1280px;
+  --container: 1280px;
+  /* Aquí vivía --container-ancho, un contenedor aparte para las composiciones
+     que flanquean un elemento central —solo lo usaba la rueda de servicios de
+     la Home—. Valía 1280px, y dejó de ser una excepción cuando --container
+     subió de 1120 a ese mismo valor: dos tokens con el mismo número solo
+     invitan a que alguien suba uno para diferenciarlo sin saber por qué
+     existían. La rueda pasó a --container.
+     Subirlo en vez de retirarlo tampoco valía: 1440 ya se probó y se descartó
+     porque las tarjetas quedaban pegadas al borde de la ventana en portátiles
+     y la composición se dispersaba. */
   --section-y: clamp(3.5rem, 8vw, 6.5rem);
 }
 
@@ -40,7 +43,31 @@
   --shadow-sm: 0 4px 16px rgba(34, 41, 85, 0.08);
 }
 
-/* §2 Tipografía — una sola familia. --font-head y --font-body resuelven ambos a
+/* §2 MEDIDA DE LECTURA — 68 caracteres.
+
+   Toda superficie de TEXTO CORRIDO (varios párrafos seguidos que se leen de
+   principio a fin) va topada a 68 caracteres. Las entradillas, los resúmenes de
+   hero y los rótulos van más cortos a propósito: se leen de un vistazo, no
+   sostienen párrafos, y a mayor cuerpo una línea larga cansa antes.
+
+   EL TOPE SE ESCRIBE EN PÍXELES, NO EN ch. La unidad ch resuelve contra el
+   tamaño de letra del elemento que lleva la clase, y en este proyecto el tope
+   suele ir en un contenedor que hereda los 16px del cuerpo mientras el texto va
+   dentro a 1.05, 1.15 o 1.2rem. Un `max-w-[68ch]` en esa posición anuncia 68 y
+   entrega entre 54 y 65 según el cuerpo; ya pasó y hubo que corregirlo en seis
+   sitios. Calcule contra el cuerpo REAL del texto:
+
+     1.05rem (16.8px) → 717px
+     1.15rem (18.4px) → 786px
+     1.20rem (19.2px) → 820px
+
+   (68 × 0.6284em × cuerpo, donde 0.6284em es el avance del "0" en Poppins.)
+
+   Al añadir una página: si el bloque lleva varios párrafos, use el valor de su
+   cuerpo de esta tabla y deje una nota diciendo a cuántos caracteres equivale.
+   Si es una entradilla, no lo aplique. */
+
+/* §2b Tipografía — una sola familia. --font-head y --font-body resuelven ambos a
    Poppins: se conservan los dos nombres porque siguen marcando el rol del texto
    en el JSX (titular frente a cuerpo) y evitan tocar las ~40 llamadas que ya los
    usan, pero no deben divergir. La jerarquía se construye solo con peso, tamaño

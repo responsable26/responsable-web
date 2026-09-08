@@ -493,7 +493,7 @@ export default function EstudioDobleMaterialidadPage() {
               Servicios relacionados
             </h2>
 
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,380px))] lg:justify-center">
               {RELACIONADOS.map((servicio) => (
                 <RelatedCard
                   key={servicio.title}
