@@ -115,8 +115,9 @@ export function ContactModal() {
               Contáctenos
             </h2>
             <p className="font-body mt-4 text-ink-soft">
-              Agradecemos su interés en ResponSable. Elija entre las siguientes
-              opciones, nos comunicaremos con usted tan pronto como sea posible.
+              Quince años acompañando a empresas en Latinoamérica a convertir
+              la sostenibilidad en decisiones que el consejo aprueba. Cuéntenos
+              qué tiene sobre la mesa y le decimos por dónde empezaríamos.
             </p>
 
             {/*
