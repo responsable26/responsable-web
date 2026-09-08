@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
 import { BarraAnclas } from "@/components/servicio/barra-anclas";
+import { TestimoniosServicio } from "@/components/servicio/testimonios-servicio";
+import { testimoniosDe } from "@/lib/testimonios";
 import { ServicioFooter } from "@/components/servicio/servicio-footer";
 import { HeroFramed } from "@/components/hero-framed";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
@@ -82,12 +84,15 @@ export async function generateMetadata(
   };
 }
 
-const ANCLAS = [
+/* Los anclajes se componen en el render y no como una constante única: el de
+   Testimonios solo entra si esa página tiene testimonios, para no dejar un
+   enlace apuntando a un id que no existe. */
+const ANCLAS_ANTES = [
   { label: "Para qué sirve", href: "#para-que-sirve" },
   { label: "Beneficios", href: "#beneficios" },
   { label: "El proceso", href: "#proceso" },
-  { label: "Preguntas frecuentes", href: "#faq" },
 ];
+const ANCLAS_FAQ = { label: "Preguntas frecuentes", href: "#faq" };
 
 /**
  * Los tres servicios siguientes en el catálogo, en círculo.
@@ -197,6 +202,14 @@ export default async function ServicioPage(
   if (!contenido) notFound();
 
   const { hero, paraQueSirve, beneficios, proceso, faq, cta } = contenido;
+  const testimonios = testimoniosDe(contenido.slug);
+  const anclas = [
+    ...ANCLAS_ANTES,
+    ...(testimonios.length > 0
+      ? [{ label: "Testimonios", href: "#testimonios" }]
+      : []),
+    ANCLAS_FAQ,
+  ];
   const canonical = `${BASE}/servicio/${contenido.slug}/`;
   const descripcion = metaDescripcion(contenido);
 
@@ -267,7 +280,7 @@ export default async function ServicioPage(
       <SiteHeader />
       {/* Fuera del header a propósito: aparece al salir el hero y se retira
           al volver arriba, mientras el header mantiene el menú principal. */}
-      <BarraAnclas anclas={ANCLAS} />
+      <BarraAnclas anclas={anclas} />
 
       <main id="main">
         {/* ------------------------------- HERO ------------------------------- */}
@@ -443,6 +456,9 @@ export default async function ServicioPage(
             <ProcesoPasos pasos={proceso.pasos} />
           </div>
         </section>
+
+        {/* ---------------------------- TESTIMONIOS ---------------------------- */}
+        <TestimoniosServicio testimonios={testimonios} />
 
         {/* -------------------------------- FAQ -------------------------------- */}
         <section

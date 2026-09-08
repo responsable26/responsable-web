@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { BarraAnclas } from "@/components/servicio/barra-anclas";
+import { TestimoniosServicio } from "@/components/servicio/testimonios-servicio";
+import { testimoniosDe } from "@/lib/testimonios";
 import { ServicioFooter } from "@/components/servicio/servicio-footer";
 import { HeroFramed } from "@/components/hero-framed";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
@@ -34,11 +36,14 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-const ANCHORS = [
+/* Los anclajes se componen en el render y no como una constante única: el de
+   Testimonios solo entra si esa página tiene testimonios, para no dejar un
+   enlace apuntando a un id que no existe. */
+const ANCHORS_ANTES = [
   { label: "Por qué importa", href: "#por-que-importa" },
   { label: "El proceso", href: "#proceso" },
-  { label: "Preguntas frecuentes", href: "#faq" },
 ];
+const ANCHORS_FAQ = { label: "Preguntas frecuentes", href: "#faq" };
 
 const BENEFICIOS: Beneficio[] = [
   { num: "01", from: "De muchos temas", to: "a prioridades claras" },
@@ -192,6 +197,15 @@ const BREADCRUMB_JSON_LD = {
 };
 
 export default function EstudioDobleMaterialidadPage() {
+  const testimonios = testimoniosDe("estudio-doble-materialidad");
+  const anclas = [
+    ...ANCHORS_ANTES,
+    ...(testimonios.length > 0
+      ? [{ label: "Testimonios", href: "#testimonios" }]
+      : []),
+    ANCHORS_FAQ,
+  ];
+
   return (
     <>
       <script
@@ -207,7 +221,7 @@ export default function EstudioDobleMaterialidadPage() {
       <SiteHeader />
       {/* Fuera del header a propósito: aparece al salir el hero y se retira
           al volver arriba, mientras el header mantiene el menú principal. */}
-      <BarraAnclas anclas={ANCHORS} />
+      <BarraAnclas anclas={anclas} />
 
       <main id="main">
         {/* ------------------------------- HERO ------------------------------- */}
@@ -413,6 +427,9 @@ export default function EstudioDobleMaterialidadPage() {
             </div>
           </div>
         </section>
+
+        {/* ---------------------------- TESTIMONIOS ---------------------------- */}
+        <TestimoniosServicio testimonios={testimonios} />
 
         {/* -------------------------------- FAQ -------------------------------- */}
         <section

@@ -93,7 +93,14 @@ export function BarraAnclas({ anclas }: { anclas: readonly Ancla[] }) {
       <nav
         ref={pastillaRef}
         aria-label="Secciones de la página"
-        className="pointer-events-auto mx-auto max-w-[36rem] overflow-x-auto rounded-full bg-white p-1.5 shadow-sm"
+        /* 38rem (608px) y no 36: con la entrada de Testimonios las páginas
+           dinámicas pasan a cinco pestañas, 560px medidos sobre los avances
+           reales de Poppins Medium a 12px más el px-3 de cada pestaña, el gap-1
+           y el p-1.5 de la pastilla. Sobre 576px quedaban 16px, y mientras la
+           webfont carga se compone con la de respaldo, de métricas parecidas
+           pero no idénticas: con ese margen podía asomar la barra de
+           desplazamiento durante ese intervalo. Con 608px sobran 48px. */
+        className="pointer-events-auto mx-auto max-w-[38rem] overflow-x-auto rounded-full bg-white p-1.5 shadow-sm"
       >
         <ul className="flex items-center gap-1">
           {anclas.map((ancla, index) => {
