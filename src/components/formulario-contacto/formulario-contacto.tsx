@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
 import { FormField } from "@/components/formulario-contacto/form-field";
 import { eventoFormularioEnviado } from "@/lib/gtm";
+import { leerGclid } from "@/lib/gclid";
 
 /**
  * El formulario de contacto del sitio: campos, validación, envío y los tres
@@ -139,9 +140,10 @@ function contextoNavegacion() {
   if (typeof window === "undefined") return {};
   return {
     pagina: window.location.href,
-    /* Solo el de la URL actual. Si el visitante llegó con ?gclid= y después
-       navegó, ya no está: persistirlo entre páginas sería otra decisión. */
-    gclid: new URLSearchParams(window.location.search).get("gclid") ?? "",
+    /* El de la URL o, si el visitante ya navegó, el que CapturaGclid guardó al
+       aterrizar (ver lib/gclid.ts). La página y el referrer sí salen del
+       momento del envío. */
+    gclid: leerGclid(),
     referrer: document.referrer,
   };
 }

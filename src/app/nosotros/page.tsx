@@ -7,7 +7,7 @@ import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 
 const DESCRIPCION =
-  "Desde 2011 hemos acompañado a más de 150 empresas en México e Iberoamérica a construir estrategias de RSE que protegen su reputación y generan valor real.";
+  "Consultoría en sostenibilidad y RSE desde 2011. Acompañamos a más de 250 empresas en México y Latinoamérica a convertir la sostenibilidad en decisiones de negocio.";
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.
@@ -59,7 +59,7 @@ const DIFERENCIALES = [
 
 /** Cifras de la banda. El valor va suelto del texto para poder darle su escala. */
 const CIFRAS = [
-  { valor: "+200", etiqueta: "Compañías Asesoradas" },
+  { valor: "+250", etiqueta: "Compañías Asesoradas" },
   { valor: "+8k", etiqueta: "Lectores Mensuales" },
   { valor: "1,500", etiqueta: "Proyectos Gestionados" },
   { valor: "+15", etiqueta: "Años Trabajando" },
@@ -223,7 +223,7 @@ export default function NosotrosPage() {
               </div>
               <div className="flex flex-col gap-8">
                 <p className="font-body text-ink-soft">
-                  Desde entonces, hemos acompañado a más de 200 empresas en
+                  Desde entonces, hemos acompañado a más de 250 empresas en
                   México y Latinoamérica, en distintos niveles de madurez y
                   sectores. Algunas apenas empiezan a ordenar su sostenibilidad.
                   Otras buscan elevar la sofisticación de su estrategia,
