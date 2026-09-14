@@ -14,6 +14,11 @@ export type Servicio = {
    * Resumen de 2-3 líneas para la ficha del servicio. Se deriva estrictamente
    * de `puntos`: no introduce capacidades, metodologías, plazos, cifras,
    * estándares ni entregables que no estén en esas viñetas.
+   *
+   * Excepción: "E-learning en sostenibilidad: Universidad ResponSable". Su
+   * descripción es texto aprobado por el cliente y va verbatim, aunque sea más
+   * larga que el resto y mencione cosas que no están en sus viñetas. No se
+   * recorta ni se alinea con esta regla.
    */
   descripcion: string;
   /** Viñetas de detalle. Se muestran al desplegar la fila. */
@@ -282,6 +287,22 @@ export const CUADRANTES: Cuadrante[] = [
           "Diseñamos desde sesiones de sensibilización hasta programas aplicados para desarrollar capacidades y llevarlas a la práctica.",
         ],
         href: "/servicio/cursos-talleres-para-empresas/",
+      },
+      {
+        /* Sin href: todavía no tiene página. Su URL del WordPress,
+           /servicio/cursos-online-universidad-responsable/, redirige de forma
+           provisional a cursos y talleres (ver next.config.ts) hasta que se
+           publique. Descripción y viñetas verbatim, aprobadas por el cliente. */
+        nombre: "E-learning en sostenibilidad: Universidad ResponSable",
+        descripcion:
+          "Formación en línea para desarrollar capacidades en sostenibilidad de forma flexible y escalable. Convertimos nuestra experiencia de consultoría en cursos prácticos para equipos de sostenibilidad, áreas clave y cadena de valor. Sirven para incorporar nuevas personas, actualizar conocimientos y profesionalizar la gestión sin depender siempre de capacitaciones en vivo.",
+        puntos: [
+          "Contenidos claros y aplicables, basados en situaciones reales de empresas",
+          "Cursos para distintos niveles de experiencia y necesidades de aprendizaje",
+          "Acceso flexible para avanzar al propio ritmo y volver a consultar los contenidos",
+          "Una solución costo-eficiente para capacitar equipos y cadenas de valor",
+          "Opción de mentoría con consultores para resolver dudas y aterrizar lo aprendido a la realidad de la empresa",
+        ],
       },
       {
         nombre: "Sostenibilidad en Cadena de Valor",

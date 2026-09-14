@@ -139,12 +139,14 @@ const nextConfig: NextConfig = {
       { source: '/estrategia-de-comunicacion-en-rse/', destination: '/servicio/estrategia-de-comunicacion-en-sostenibilidad/', permanent: true },
       { source: '/cursos-y-talleres-de-rse-en-mexico/', destination: '/servicio/cursos-talleres-para-empresas/', permanent: true },
       /* PROVISIONAL. Esta URL es la del servicio de formación en línea
-         "Universidad ResponSable", que no se migró al catálogo: no está en
-         CUADRANTES ni en contenido-servicios.ts, así que su ruta servía un 404
-         pese a seguir recibiendo tráfico en Search Console. Va al servicio de
-         formación vivo, que es el destino más cercano, no porque sean el mismo
-         servicio. RETIRAR si Universidad ResponSable se da de alta y recupera
-         su ruta propia: entonces este redirect la secuestraría.
+         "E-learning en sostenibilidad: Universidad ResponSable". El servicio
+         ya existe en el catálogo (CUADRANTES, sin href), pero todavía no tiene
+         página: no está en contenido-servicios.ts, así que sin este redirect
+         su ruta serviría un 404 pese a seguir recibiendo tráfico en Search
+         Console. Va al servicio de formación vivo, que es el destino más
+         cercano, no porque sean el mismo servicio. RETIRAR en el mismo cambio
+         en que se publique la página del servicio: a partir de ahí este
+         redirect la secuestraría.
 
          Es además el único origen de esta lista que ya cuelga de /servicio/,
          porque en el WordPress esa página vivía bajo ese mismo prefijo. */
