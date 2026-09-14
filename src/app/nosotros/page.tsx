@@ -57,6 +57,27 @@ const DIFERENCIALES = [
   "Acompañamos todo el proceso, desde el diagnóstico y la definición de prioridades hasta la implementación y la comunicación.",
 ];
 
+/**
+ * Imagen de la sección "Lo que hacemos distinto". Tres estados:
+ *
+ * - "provisional" (HOY): la imagen no se ha entregado. En su lugar se pinta un
+ *   bloque navy sólido, sin texto ni imagen y con las mismas medidas que la
+ *   imagen real, para que el cliente vea la maqueta a dos columnas. PROVISIONAL: sustituir por la imagen real en cuanto llegue.
+ * - { src, alt }: la imagen real. Sustituye al bloque sin tocar nada más.
+ * - null: sin columna de imagen; la sección vuelve a una sola columna.
+ *
+ * QUÉ ENTREGAR: 4:5, 1200×1500, con el motivo centrado. En escritorio la caja
+ * se estira a la altura del texto (en torno a 4:5) y en móvil y tablet se
+ * recorta a 16:10, así que lo importante tiene que caber en la franja central.
+ * El archivo va en /public y `src` es su ruta absoluta; `alt` vacío si la
+ * imagen es decorativa y no aporta nada que el texto no diga.
+ *
+ * Declarada con `as` y no con anotación: con una anotación TypeScript la
+ * estrecharía al valor asignado y las otras ramas no compilarían.
+ */
+type ImagenDiferenciales = { src: string; alt: string } | "provisional" | null;
+const IMAGEN_DIFERENCIALES = "provisional" as ImagenDiferenciales;
+
 /** Cifras de la banda. El valor va suelto del texto para poder darle su escala.
  *  Cifras y rótulos salen del documento de credenciales del cliente, que es la
  *  fuente: si cambian, se cambian allí primero. */
@@ -182,12 +203,14 @@ export default function NosotrosPage() {
             </div>
 
             {/*
-              Reparto 4 y 4: en una rejilla de dos columnas la lectura baja por
+              Reparto 3 y 3: en una rejilla de dos columnas la lectura baja por
               la izquierda y sigue por la derecha, así que el orden del cliente
-              se conserva. El corte va por la mitad del conteo y no del alto
-              —los párrafos 3 y 4 son los más largos y caen en la primera
-              columna—, con lo que las dos quedan de alto parecido sin alterar
-              la secuencia.
+              se conserva. El corte va por la mitad del conteo, que con este
+              texto es también el reparto más parejo en alto: los dos párrafos
+              largos, el 2 y el 6, caen uno en cada columna, y la izquierda
+              queda solo un par de líneas por encima. Cualquier otro corte que
+              respete el orden (2 y 4, o 4 y 2) deja una columna al doble de la
+              otra.
             */}
             <div className="mt-10 grid gap-8 lg:grid-cols-2 lg:gap-12">
               <div className="flex flex-col gap-8">
@@ -198,41 +221,35 @@ export default function NosotrosPage() {
                 </p>
                 <p className="font-body text-ink-soft">
                   Durante años, muchas empresas entendieron la responsabilidad
-                  social empresarial como un conjunto de acciones valiosas, pero
-                  dispersas. Programas comunitarios, voluntariado, donativos,
-                  reportes o iniciativas ambientales que demostraban compromiso,
-                  pero que no siempre estaban conectados con prioridades
-                  estratégicas, riesgos, grupos de interés o resultados
-                  medibles.
+                  social como un conjunto de acciones valiosas, pero dispersas:
+                  programas comunitarios, voluntariado, donativos, reportes,
+                  iniciativas ambientales. Demostraban compromiso, pero rara vez
+                  estaban conectadas con prioridades estratégicas, riesgos,
+                  grupos de interés o resultados medibles. Después el entorno se
+                  volvió exigente. Clientes, inversionistas, cadenas de
+                  suministro, comunidades, autoridades y equipos internos
+                  empezaron a pedir más. Ya no bastaba con hacer cosas buenas:
+                  había que demostrar por qué importaban.
                 </p>
                 <p className="font-body text-ink-soft">
-                  Con el tiempo, el entorno se volvió más exigente. Las empresas
-                  empezaron a enfrentar mayores exigencias de clientes,
-                  inversionistas, cadenas de suministro, comunidades,
-                  autoridades y equipos internos. Ya no bastaba con hacer cosas
-                  buenas. Había que demostrar por qué importaban, qué valor
-                  generaban y cómo contribuían a proteger la operación,
-                  fortalecer relaciones y construir resiliencia.
-                </p>
-                <p className="font-body text-ink-soft">
-                  Desde 2011, cuando muchas empresas aún trataban la RSE como un
-                  conjunto de programas aislados, ResponSable ha construido una
-                  forma distinta de acompañarlas. Una forma que combina
-                  estrategia, escucha, análisis, gestión social y comunicación
-                  clara. No para hacer más sostenibilidad, sino para hacer la
-                  sostenibilidad correcta: la que ayuda a priorizar, anticipar
-                  riesgos, cuidar la licencia social para operar y enfocar
-                  recursos donde realmente pueden generar valor.
+                  Desde 2011, cuando muchas empresas aún trataban la RSE como
+                  programas aislados, ResponSable construyó una forma distinta
+                  de acompañarlas. Una forma que combina estrategia, escucha,
+                  análisis, gestión social y comunicación clara. No para hacer
+                  más sostenibilidad, sino para hacer la sostenibilidad
+                  correcta: la que ayuda a priorizar, anticipar riesgos, cuidar
+                  la licencia social para operar y enfocar recursos donde
+                  realmente generan valor.
                 </p>
               </div>
               <div className="flex flex-col gap-8">
                 <p className="font-body text-ink-soft">
-                  Desde entonces, hemos acompañado a más de 200 empresas en
-                  México y Latinoamérica, en distintos niveles de madurez y
-                  sectores. Algunas apenas empiezan a ordenar su sostenibilidad.
-                  Otras buscan elevar la sofisticación de su estrategia,
-                  responder a mayores exigencias o demostrar con más claridad el
-                  valor de lo que ya hacen.
+                  Hemos acompañado a más de 200 empresas en México y
+                  Latinoamérica, en distintos niveles de madurez y sectores.
+                  Algunas apenas empiezan a ordenar su sostenibilidad. Otras
+                  buscan elevar la sofisticación de su estrategia, responder a
+                  mayores exigencias o demostrar con más claridad el valor de lo
+                  que ya hacen.
                 </p>
                 <p className="font-body text-ink-soft">
                   Nuestro papel no es sustituir a quienes lideran la
@@ -242,18 +259,14 @@ export default function NosotrosPage() {
                   avanzar con mayor solidez.
                 </p>
                 <p className="font-body text-ink-soft">
-                  Creemos que la sostenibilidad bien gestionada deja de ser
-                  gasto y se convierte en inversión: una inversión que protege
-                  la operación, fortalece relaciones, construye reputación y
-                  genera valor real para el negocio. Y creemos también que lo
-                  que se hace con rigor debe comunicarse con claridad, para
-                  construir confianza y credibilidad ante los grupos de interés.
-                </p>
-                <p className="font-body text-ink-soft">
-                  Porque al final, nuestro trabajo no se trata solo de entregar
-                  estudios, estrategias o reportes. Se trata de construir
-                  claridad para decidir, resiliencia para operar y valor real
-                  para el negocio.
+                  Porque la sostenibilidad bien gestionada deja de ser un gasto
+                  y se vuelve una inversión: protege la operación, fortalece
+                  relaciones y sostiene la reputación. Y lo que se hace con
+                  rigor tiene que comunicarse con claridad, o no construye
+                  confianza. Al final, lo que entregamos no son estudios ni
+                  reportes: es la capacidad de una empresa para decidir con
+                  criterio propio, sostener esas decisiones ante quien las
+                  cuestione y seguir operando cuando el entorno se pone difícil.
                 </p>
               </div>
             </div>
@@ -274,39 +287,89 @@ export default function NosotrosPage() {
           aria-labelledby="lo-que-hacemos-distinto"
           className="bg-white px-6 py-[var(--section-y)]"
         >
-          <div className="mx-auto max-w-[var(--container)]">
-            <h2
-              id="lo-que-hacemos-distinto"
-              className="font-head text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy"
-            >
-              Lo que hacemos distinto
-            </h2>
-            <p className="font-body mt-6 max-w-[68ch] text-[1.05rem] text-ink-soft">
-              No creemos en recetas genéricas. Cada empresa tiene un contexto,
-              una operación, una cultura y una relación distinta con sus grupos
-              de interés. Por eso partimos de una metodología sólida y la
-              llevamos a la realidad de cada organización, para convertir la
-              sostenibilidad en decisiones útiles para el negocio.
-            </p>
+          {/*
+            Con imagen, dos columnas desde lg: 5fr para la imagen y 7fr para el
+            texto, que con el contenedor a 1280px deja la columna en ~709px,
+            unos 67 caracteres del párrafo a 16.8px; las viñetas conservan su
+            tope de 68ch. Sin imagen, el contenedor no lleva rejilla y la
+            sección queda a una columna.
 
-            {/*
-              Lista real, no párrafos con guiones: son cinco elementos de una
-              enumeración y un lector de pantalla debe anunciarlos como tales.
-              El punto es un <span> decorativo con aria-hidden —no un marcador
-              de list-style— para poder alinearlo con la primera línea cuando
-              el texto ocupa varias.
-            */}
-            <ul className="mt-8 flex max-w-[68ch] flex-col gap-4">
-              {DIFERENCIALES.map((punto) => (
-                <li key={punto} className="font-body flex gap-3 text-ink-soft">
-                  <span
-                    aria-hidden="true"
-                    className="mt-[0.6rem] size-1.5 shrink-0 rounded-full bg-magenta"
-                  />
-                  <span>{punto}</span>
-                </li>
-              ))}
-            </ul>
+            En el DOM el texto va primero y la imagen después: así se apila en
+            móvil y tablet, con el título abriendo la sección, y el orden de
+            lectura coincide con el visual en esos anchos. Desde lg la imagen
+            pasa a la primera columna con order-first.
+          */}
+          <div
+            className={`mx-auto max-w-[var(--container)] ${
+              IMAGEN_DIFERENCIALES
+                ? "grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16"
+                : ""
+            }`}
+          >
+            <div>
+              <h2
+                id="lo-que-hacemos-distinto"
+                className="font-head text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy"
+              >
+                Lo que hacemos distinto
+              </h2>
+              <p className="font-body mt-6 max-w-[68ch] text-[1.05rem] text-ink-soft">
+                No creemos en recetas genéricas. Cada empresa tiene un contexto,
+                una operación, una cultura y una relación distinta con sus grupos
+                de interés. Por eso partimos de una metodología sólida y la
+                llevamos a la realidad de cada organización, para convertir la
+                sostenibilidad en decisiones útiles para el negocio.
+              </p>
+
+              {/*
+                Lista real, no párrafos con guiones: son cinco elementos de una
+                enumeración y un lector de pantalla debe anunciarlos como tales.
+                El punto es un <span> decorativo con aria-hidden —no un marcador
+                de list-style— para poder alinearlo con la primera línea cuando
+                el texto ocupa varias.
+              */}
+              <ul className="mt-8 flex max-w-[68ch] flex-col gap-4">
+                {DIFERENCIALES.map((punto) => (
+                  <li key={punto} className="font-body flex gap-3 text-ink-soft">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.6rem] size-1.5 shrink-0 rounded-full bg-magenta"
+                    />
+                    <span>{punto}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {IMAGEN_DIFERENCIALES === "provisional" ? (
+              /*
+                PROVISIONAL, ver IMAGEN_DIFERENCIALES. Solo color, con las
+                mismas medidas que la caja de la imagen real para que la
+                maqueta que se aprueba sea la que se publica: 16:10 en móvil y
+                tablet y, desde lg, estirado a la altura de la fila que marca
+                el texto. aria-hidden porque no contiene nada.
+              */
+              <div
+                aria-hidden="true"
+                className="aspect-[16/10] w-full rounded bg-navy lg:order-first lg:aspect-auto lg:h-full"
+              />
+            ) : IMAGEN_DIFERENCIALES ? (
+              /*
+                16:10 en móvil y tablet. Desde lg sin proporción propia: la
+                celda se estira a la altura de la fila, que la marca el texto,
+                y la imagen la cubre con object-cover. Así no queda hueco bajo
+                la imagen ni el texto se estira para igualarla.
+              */
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded bg-navy lg:order-first lg:aspect-auto lg:h-full">
+                <Image
+                  src={IMAGEN_DIFERENCIALES.src}
+                  alt={IMAGEN_DIFERENCIALES.alt}
+                  fill
+                  sizes="(min-width: 1328px) 507px, (min-width: 1024px) calc((100vw - 7rem) * 5 / 12), calc(100vw - 3rem)"
+                  className="object-cover"
+                />
+              </div>
+            ) : null}
           </div>
         </section>
 
@@ -317,12 +380,21 @@ export default function NosotrosPage() {
           <div className="mx-auto max-w-[var(--container)]">
             <h2
               id="nuestra-forma-de-trabajar"
-              className="font-head text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy"
+              className="font-head text-center text-[clamp(1.6rem,4.3vw,2.6rem)] font-semibold text-navy"
             >
               Nuestra forma de trabajar
             </h2>
 
-            <div className="mt-6 flex max-w-[68ch] flex-col gap-4">
+            {/*
+              Centrado, y por eso más estrecho que la medida de lectura del
+              sitio: en texto centrado cada línea empieza en un sitio distinto
+              y el ojo tiene que buscar el arranque de la siguiente, así que
+              conviene una línea más corta que en texto alineado. 632px son
+              unos 60 caracteres a los 16.8px de estos párrafos (68 serían
+              ~717px). En px y no en ch por lo mismo que la entradilla: el ch
+              resolvería contra los 16px heredados y no contra 1.05rem.
+            */}
+            <div className="mx-auto mt-6 flex max-w-[632px] flex-col gap-4 text-center">
               <p className="font-body text-[1.05rem] text-ink-soft">
                 Acompañamos a las empresas a responder las preguntas clave de su
                 sostenibilidad: dónde están, hacia dónde deben avanzar, cómo
