@@ -117,10 +117,10 @@ export default function NosotrosPage() {
               original era un bloque corrido a ancho completo, difícil de
               entrar.
             */}
-                {/* 820px = 68 caracteres a los 19.2px de este párrafo, la medida de
+                {/* 752px = 68 caracteres a los 17.6px de este párrafo, la medida de
                   lectura única del sitio. En px y no en ch: el ch resolvería
                   contra los 16px heredados del cuerpo. */}
-                <p className="font-body mt-8 max-w-[820px] text-[1.2rem] text-ink-soft">
+                <p className="font-body mt-8 max-w-[752px] text-[1.1rem] text-ink-soft">
                   En ResponSable acompañamos a empresas que quieren dejar atrás
                   una sostenibilidad dispersa, reactiva o difícil de justificar.
                   Les ayudamos a entender mejor su contexto, priorizar con
@@ -506,10 +506,10 @@ export default function NosotrosPage() {
                 la alineación de sus líneas.
               */}
               <div className="lg:ml-auto lg:max-w-[34ch]">
-                <h2 className="font-head text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-white">
+                <h2 className="font-head text-[clamp(1.6rem,4vw,2.05rem)] font-semibold text-white">
                   Misión
                 </h2>
-                <p className="font-body mt-4 text-[1.2rem] text-white/85">
+                <p className="font-body mt-4 text-[1.1rem] text-white/85">
                   En ResponSable acompañamos a empresas a transformar su gestión
                   de sostenibilidad en decisiones estratégicas y relaciones
                   sólidas con sus grupos de interés, optimizando recursos,
@@ -530,10 +530,10 @@ export default function NosotrosPage() {
               </div>
 
               <div className="lg:mr-auto lg:max-w-[34ch]">
-                <h2 className="font-head text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-white">
+                <h2 className="font-head text-[clamp(1.6rem,4vw,2.05rem)] font-semibold text-white">
                   Visión
                 </h2>
-                <p className="font-body mt-4 text-[1.2rem] text-white/85">
+                <p className="font-body mt-4 text-[1.1rem] text-white/85">
                   Ser la consultoría líder en México y Centroamérica en
                   transformar la sostenibilidad en ventaja competitiva, mediante
                   metodologías propias, innovación y excelencia.

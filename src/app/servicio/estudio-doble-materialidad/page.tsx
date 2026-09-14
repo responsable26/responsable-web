@@ -1,4 +1,7 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { BarraAnclas } from "@/components/servicio/barra-anclas";
@@ -57,6 +60,21 @@ const BENEFICIOS: Beneficio[] = [
   { num: "05", from: "De una matriz", to: "a una ruta de acción" },
   { num: "06", from: "De comunicar acciones", to: "a explicar prioridades" },
 ];
+
+/*
+  La infografía de "Doble materialidad para decidir", leída del archivo de
+  public al renderizar en el servidor (la página es estática: ocurre en el
+  build). public/servicios/<slug>/<rol> es la fuente única y se inserta tal
+  cual, salvo la declaración <?xml ?>: el archivo la lleva para abrirse bien
+  en editores como Illustrator, pero dentro de HTML no es válida.
+*/
+const INFOGRAFIA_DOBLE_MATERIALIDAD = readFileSync(
+  path.join(
+    process.cwd(),
+    "public/servicios/estudio-doble-materialidad/infografia.svg",
+  ),
+  "utf8",
+).replace(/^<\?xml[^>]*\?>\s*/, "");
 
 const PASOS = [
   {
@@ -258,7 +276,7 @@ export default function EstudioDobleMaterialidadPage() {
           <h1 className="font-head mt-5 max-w-3xl text-[clamp(2rem,4vw,2.75rem)] font-semibold text-white">
             Estudio de Doble Materialidad
           </h1>
-          <p className="font-body mt-4 max-w-2xl text-[1.2rem] text-white/90">
+          <p className="font-body mt-4 max-w-2xl text-[1.1rem] text-white/90">
             Transforme impactos, riesgos y oportunidades en foco estratégico
           </p>
           {/* 58 caracteres por línea, la misma medida que la entradilla del hero
@@ -292,13 +310,32 @@ export default function EstudioDobleMaterialidadPage() {
           aria-labelledby="decidir-title"
           className="py-[var(--section-y)]"
         >
-          <div className="mx-auto grid max-w-[var(--container)] items-center gap-[clamp(2rem,5vw,4rem)] px-[clamp(1rem,4vw,2rem)] md:grid-cols-2">
+          {/*
+            Los párrafos de esta sección y de "Temas materiales claros" van a
+            717px, 68 caracteres a 1.05rem: la medida del sitio, la misma que
+            BloqueTexto en las demás páginas de servicio. En px y no en ch (ver
+            §2 de globals.css).
+
+            Dos columnas desde lg y no desde md: la infografía escala con su
+            columna, y a 768px esa columna mide ~334px, con las preguntas a
+            menos de 8px. Por debajo de lg se apila y la infografía se topa a
+            520px, centrada, donde las preguntas quedan en ~19px.
+          */}
+          <div className="mx-auto grid max-w-[var(--container)] items-center gap-[clamp(2rem,5vw,4rem)] px-[clamp(1rem,4vw,2rem)] lg:grid-cols-2">
             <div>
-              {/* Pending asset: assets/img/doble-materialidad-infografia.svg */}
+              {/*
+                Incrustada en línea y no con next/image, por tres razones: como
+                <img> el SVG no expone su <title> y <desc> —el nombre accesible
+                saldría solo del alt, que duplicaría la descripción—, no puede
+                usar la Poppins de la página y no se podría animar. Sin alt ni
+                role añadidos: el propio SVG trae role="img" y aria-labelledby.
+
+                Fondo off-white y no blanco: la sección es blanca y las cajas de
+                las preguntas del SVG también, con borde de color.
+              */}
               <div
-                role="img"
-                aria-label="Infografía de doble materialidad: materialidad de impacto, materialidad financiera y su integración"
-                className="aspect-[3/4] w-full rounded bg-[#1b2150]"
+                className="mx-auto max-w-[520px] overflow-hidden rounded bg-off-white lg:max-w-none [&_svg]:block [&_svg]:h-auto [&_svg]:w-full"
+                dangerouslySetInnerHTML={{ __html: INFOGRAFIA_DOBLE_MATERIALIDAD }}
               />
             </div>
             <div>
@@ -307,18 +344,18 @@ export default function EstudioDobleMaterialidadPage() {
               </p>
               <h2
                 id="decidir-title"
-                className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy"
+                className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
               >
                 Doble materialidad para decidir
               </h2>
-              <p className="font-body mt-4 max-w-[60ch] text-[1.15rem] text-ink-soft">
+              <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
                 Un estudio de doble materialidad convierte temas dispersos,
                 presiones externas e iniciativas aisladas en una agenda
                 priorizada. Permite identificar qué impactos genera la empresa y
                 qué riesgos y oportunidades pueden afectar su operación,
                 reputación, desempeño financiero o licencia social para operar.
               </p>
-              <p className="font-body mt-4 max-w-[60ch] text-[1.15rem] text-ink-soft">
+              <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
                 Con esa lectura, Dirección y el área de sostenibilidad pueden
                 decidir qué gestionar primero, alinear la estrategia, fortalecer
                 el informe de sostenibilidad y sostener conversaciones más
@@ -347,17 +384,17 @@ export default function EstudioDobleMaterialidadPage() {
                 <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
                   Impactos, riesgos y oportunidades priorizados
                 </p>
-                <h2 className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy">
+                <h2 className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy">
                   Temas materiales claros
                 </h2>
-                <p className="font-body mt-4 max-w-[60ch] text-[1.15rem] text-ink-soft">
+                <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
                   El principal beneficio es dejar de gestionar la sostenibilidad
                   como una lista extensa de temas. La empresa distingue qué
                   asuntos exigen acción inmediata, cuáles pueden afectar su
                   desempeño financiero y dónde existen oportunidades que
                   conviene desarrollar.
                 </p>
-                <p className="font-body mt-4 max-w-[60ch] text-[1.15rem] text-ink-soft">
+                <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
                   Así, puede enfocar recursos, justificar presupuesto, definir
                   responsabilidades e indicadores y sostener sus decisiones con
                   mayor trazabilidad ante Dirección. Cuando se consulta a grupos
@@ -366,12 +403,34 @@ export default function EstudioDobleMaterialidadPage() {
                   exclusivamente interna podría pasar por alto.
                 </p>
               </div>
-              {/* Pending asset: assets/img/mundo_responsable.webp */}
-              <div
-                role="img"
-                aria-label="Ilustración de dos personas frente a un mundo sostenible"
-                className="aspect-square w-full rounded bg-[#1b2150]"
-              />
+              {/*
+                Foto con tratamiento de marca para que no se lea como stock
+                pegado. No es el del hero: allí el video va bajo un velo navy al
+                90%, que funciona como fondo de texto pero aquí dejaría la foto
+                casi invisible. En su lugar, la saturación baja al 55% —las
+                notas adhesivas son de colores fluorescentes y compiten con el
+                magenta y el teal del sitio— y un velo navy en multiply al 25%
+                tiñe los blancos del fondo hacia la paleta sin tapar a nadie.
+
+                La foto es 3:2 y la caja cuadrada: object-cover recorta los
+                laterales y la persona del centro queda entera; el hombre de la
+                derecha queda cortado por el borde.
+              */}
+              <div className="relative aspect-square w-full overflow-hidden rounded bg-navy">
+                <Image
+                  src="/servicios/estudio-doble-materialidad/temas-materiales.webp"
+                  alt="Tres personas colocan notas adhesivas de colores sobre un panel de vidrio durante una sesión de trabajo en una oficina."
+                  fill
+                  /* Columna de 1fr en la rejilla 2fr_1fr desde md: un tercio
+                     del contenedor menos el hueco entre columnas. */
+                  sizes="(min-width: 1280px) 384px, (min-width: 768px) calc((100vw - 8rem) / 3), calc(100vw - 2rem)"
+                  className="object-cover saturate-[0.55]"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-navy opacity-25 mix-blend-multiply"
+                />
+              </div>
             </div>
 
             <BeneficiosCarousel
@@ -392,13 +451,14 @@ export default function EstudioDobleMaterialidadPage() {
             {/* Title then intro stacked and left-aligned, intro ~60% wide —
                 matching the live site, which does not put them side by side. */}
             <div>
+              {/* Al tope de los H2 de sección y en una línea: el salto entre
+                  "Nuestro" y "Proceso" y el interlineado 1.02 eran de cuando
+                  este título iba a tamaño de hero (64px). */}
               <h2
                 id="proceso-title"
-                className="font-head text-[clamp(2.4rem,6vw,4rem)] leading-[1.02] font-semibold text-magenta"
+                className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
               >
-                Nuestro
-                <br />
-                Proceso
+                Nuestro Proceso
               </h2>
               <p className="font-body mt-6 max-w-[62%] min-w-[18rem] text-white/85">
                 Realizamos el estudio de doble materialidad con una metodología
@@ -444,7 +504,7 @@ export default function EstudioDobleMaterialidadPage() {
             </p>
             <h2
               id="faq-title"
-              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy"
+              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
             >
               Preguntas frecuentes
             </h2>
@@ -462,7 +522,7 @@ export default function EstudioDobleMaterialidadPage() {
           <div className="rounded-[22px] bg-magenta py-[var(--section-y)]">
             <div className="mx-auto flex max-w-[var(--container)] flex-wrap items-center justify-between gap-8 px-[clamp(1rem,4vw,2rem)]">
               <div className="max-w-2xl">
-                <h2 className="font-head text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-white">
+                <h2 className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-white">
                   Ordene sus temas materiales con criterio de negocio
                 </h2>
                 <p className="font-body mt-3 text-white/90">
@@ -488,7 +548,7 @@ export default function EstudioDobleMaterialidadPage() {
             </p>
             <h2
               id="related-title"
-              className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy"
+              className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
             >
               Servicios relacionados
             </h2>

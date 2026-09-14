@@ -40,7 +40,7 @@ export function TestimoniosServicio({
         </p>
         <h2
           id="testimonios-title"
-          className="font-head mt-2 max-w-[20ch] text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-navy"
+          className="font-head mt-2 max-w-[20ch] text-[clamp(1.6rem,4vw,2.05rem)] font-semibold text-navy"
         >
           Lo que dicen quienes ya lo hicieron
         </h2>

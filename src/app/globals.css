@@ -28,6 +28,7 @@
   --color-border: #e5e6ef;
   --color-amarillo: #feb80a;
   --color-lavanda: #738ac8;
+  --color-azul: #046ea5;
 
   /* Tonos derivados (rgba) */
   --color-navy-90: rgba(34, 41, 85, 0.9);
@@ -53,13 +54,13 @@
    EL TOPE SE ESCRIBE EN PÍXELES, NO EN ch. La unidad ch resuelve contra el
    tamaño de letra del elemento que lleva la clase, y en este proyecto el tope
    suele ir en un contenedor que hereda los 16px del cuerpo mientras el texto va
-   dentro a 1.05, 1.15 o 1.2rem. Un `max-w-[68ch]` en esa posición anuncia 68 y
+   dentro a 1.05, 1.1 o 1.15rem. Un `max-w-[68ch]` en esa posición anuncia 68 y
    entrega entre 54 y 65 según el cuerpo; ya pasó y hubo que corregirlo en seis
    sitios. Calcule contra el cuerpo REAL del texto:
 
-     1.05rem (16.8px) → 717px
-     1.15rem (18.4px) → 786px
-     1.20rem (19.2px) → 820px
+     1.05rem (16.8px) → 717px   párrafos de servicio y de /nosotros/
+     1.10rem (17.6px) → 752px   entradillas
+     1.15rem (18.4px) → 786px   descripción de la ficha de caso
 
    (68 × 0.6284em × cuerpo, donde 0.6284em es el avance del "0" en Poppins.)
 

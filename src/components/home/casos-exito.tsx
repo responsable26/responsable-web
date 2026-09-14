@@ -222,7 +222,7 @@ export function CasosExito() {
             <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
               Casos de Éxito
             </p>
-            <h2 className="font-head mt-2 max-w-xl text-[clamp(2.2rem,6vw,3.6rem)] font-semibold text-magenta">
+            <h2 className="font-head mt-2 max-w-xl text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta">
               Impacto medible, valor sostenible.
             </h2>
           </div>

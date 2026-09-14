@@ -15,7 +15,7 @@ export function Intro() {
           línea puede plegarse, por palabras; la primera son dos palabras y no
           se parte a ningún ancho razonable.
         */}
-        <h2 className="font-head max-w-[60ch] text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-navy">
+        <h2 className="font-head max-w-[60ch] text-[clamp(1.6rem,4vw,2.05rem)] font-semibold text-navy">
           La sostenibilidad
           <br />
           como decisión de negocio

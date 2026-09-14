@@ -143,29 +143,29 @@ function BloqueTexto({
         </p>
         <h2
           id={tituloId}
-          className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy"
+          className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
         >
           {bloque.titulo}
         </h2>
       </div>
 
       {/*
-        786px = 68 caracteres a los 18.4px del párrafo. 68 es la medida de
+        717px = 68 caracteres a los 16.8px del párrafo. 68 es la medida de
         lectura única del sitio: la misma que usa el cuerpo de los artículos,
         para que las dos superficies de texto largo lean igual.
 
         En px y no en ch a propósito: el tope tiene que vivir en este
         contenedor —también acota la tabla opcional de más abajo—, y el
         contenedor hereda los 16px del cuerpo mientras el texto se pinta a
-        text-[1.15rem]. Un `max-w-[59ch]` aquí resolvería contra 16px y daría
-        593px, y el `max-w-[62ch]` que había antes daba 623px, o sea 54
-        caracteres reales y no los 62 que anunciaba. El número de una clase en
+        text-[1.05rem]. Cuando el texto iba a 1.15rem, el `max-w-[62ch]` que
+        había daba 623px, o sea 54 caracteres reales y no los 62 que
+        anunciaba. El número de una clase en
         ch solo dice la verdad si el elemento que la lleva tiene el tamaño de
         letra del texto que mide.
       */}
-      <div className="flex max-w-[786px] flex-col gap-4">
+      <div className="flex max-w-[717px] flex-col gap-4">
         {bloque.descripcion.map((parrafo) => (
-          <p key={parrafo} className="font-body text-[1.15rem] text-ink-soft">
+          <p key={parrafo} className="font-body text-[1.05rem] text-ink-soft">
             {parrafo}
           </p>
         ))}
@@ -343,7 +343,7 @@ export default async function ServicioPage(
           <h1 className="font-head mt-5 max-w-3xl text-[clamp(2rem,4vw,2.75rem)] font-semibold text-white">
             {hero.titulo}
           </h1>
-          <p className="font-body mt-4 max-w-2xl text-[1.2rem] text-white/90">
+          <p className="font-body mt-4 max-w-2xl text-[1.1rem] text-white/90">
             {hero.subtitulo}
           </p>
           <p className="font-body mt-4 max-w-[58ch] text-white/80">
@@ -377,14 +377,14 @@ export default async function ServicioPage(
               En qué consiste el servicio
             </h2>
 
-            {/* 786px = 68 caracteres a los 18.4px de estos párrafos, el mismo
+            {/* 717px = 68 caracteres a los 16.8px de estos párrafos, el mismo
                 tope que BloqueTexto más abajo. Ver §2 de globals.css. */}
             {restoDescripcion.length > 0 ? (
-              <div className="flex max-w-[786px] flex-col gap-4">
+              <div className="flex max-w-[717px] flex-col gap-4">
                 {restoDescripcion.map((parrafo) => (
                   <p
                     key={parrafo}
-                    className="font-body text-[1.15rem] text-ink-soft"
+                    className="font-body text-[1.05rem] text-ink-soft"
                   >
                     {parrafo}
                   </p>
@@ -454,13 +454,14 @@ export default async function ServicioPage(
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <div>
+              {/* Al tope de los H2 de sección y en una línea: el salto entre
+                  "Nuestro" y "Proceso" y el interlineado 1.02 eran de cuando
+                  este título iba a tamaño de hero (64px). */}
               <h2
                 id="proceso-title"
-                className="font-head text-[clamp(2.4rem,6vw,4rem)] leading-[1.02] font-semibold text-magenta"
+                className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
               >
-                Nuestro
-                <br />
-                Proceso
+                Nuestro Proceso
               </h2>
               <p className="font-body mt-6 max-w-[62%] min-w-[18rem] text-white/85">
                 {proceso.descripcion}
@@ -489,7 +490,7 @@ export default async function ServicioPage(
             </p>
             <h2
               id="faq-title"
-              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy"
+              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
             >
               Preguntas frecuentes
             </h2>
@@ -505,7 +506,7 @@ export default async function ServicioPage(
           <div className="rounded-[22px] bg-magenta py-[var(--section-y)]">
             <div className="mx-auto flex max-w-[var(--container)] flex-wrap items-center justify-between gap-8 px-[clamp(1rem,4vw,2rem)]">
               <div className="max-w-2xl">
-                <h2 className="font-head text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-white">
+                <h2 className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-white">
                   {cta.subtitulo}
                 </h2>
                 <p className="font-body mt-3 text-white/90">{cta.descripcion}</p>
@@ -526,7 +527,7 @@ export default async function ServicioPage(
             </p>
             <h2
               id="related-title"
-              className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold text-navy"
+              className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
             >
               Servicios relacionados
             </h2>

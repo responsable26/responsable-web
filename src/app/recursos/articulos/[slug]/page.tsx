@@ -229,7 +229,7 @@ export default async function ArticuloPage(
 
         <section className="bg-off-white px-6 py-[var(--section-y)]">
           <div className="mx-auto max-w-[var(--container)]">
-            <h2 className="font-head text-[clamp(1.6rem,4vw,2.4rem)] font-semibold text-navy">
+            <h2 className="font-head text-[clamp(1.6rem,4vw,2.05rem)] font-semibold text-navy">
               Otros artículos
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,380px))] lg:justify-center">
