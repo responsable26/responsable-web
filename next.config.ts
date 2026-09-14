@@ -54,15 +54,23 @@ const nextConfig: NextConfig = {
         destination: '/recursos/articulos/:slug/',
         permanent: true,
       },
-      { source: '/category/:path*', destination: '/recursos/articulos/', permanent: true },
-      { source: '/tag/:path*', destination: '/recursos/articulos/', permanent: true },
-      { source: '/blog/:path*', destination: '/recursos/articulos/', permanent: true },
+      /* El índice de artículos vive en /recursos/ desde que el Centro de
+         Recursos integró destacado, filtros y carga por bloques. Estas reglas
+         del WordPress apuntan ahí directamente, sin pasar por la redirección de
+         /recursos/articulos/ de más abajo: una cadena de dos saltos pierde
+         tiempo de rastreo y señal. */
+      { source: '/category/:path*', destination: '/recursos/', permanent: true },
+      { source: '/tag/:path*', destination: '/recursos/', permanent: true },
+      { source: '/blog/:path*', destination: '/recursos/', permanent: true },
       /* Antes que /portfolios/:path*, que manda todo el tipo de contenido al
          índice: este es el único portfolio con impresiones y su artículo sí
          existe, así que aterriza en él y no en un listado. */
       { source: '/portfolios/panorama-de-la-responsabilidad-social-en-mexico-2019/', destination: '/recursos/articulos/panorama-de-la-responsabilidad-social-en-mexico-2019/', permanent: true },
-      { source: '/portfolios/:path*', destination: '/recursos/articulos/', permanent: true },
-      { source: '/news/:path*', destination: '/recursos/articulos/', permanent: true },
+      { source: '/portfolios/:path*', destination: '/recursos/', permanent: true },
+      { source: '/news/:path*', destination: '/recursos/', permanent: true },
+      /* La antigua página "Ver todos los artículos". Solo la ruta exacta: las
+         fichas /recursos/articulos/<slug>/ siguen donde estaban. */
+      { source: '/recursos/articulos/', destination: '/recursos/', permanent: true },
       /* Casos de éxito. Cambió el prefijo —de /caso-de-exito/ singular a
          /casos-de-exito/— y además tres de los cinco cambiaron de slug: el
          viejo era el titular narrativo del caso y el nuevo es el nombre del

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { ArticuloCard } from "@/components/articulos/articulo-card";
-import { ARTICULOS, type ArticuloMeta } from "@/lib/articulos";
+import { RejillaRecursos } from "@/components/recursos/rejilla-recursos";
+import { ARTICULOS, formatFecha, type ArticuloMeta } from "@/lib/articulos";
+import { CATEGORIAS, categoriaDe } from "@/lib/categorias-articulos";
 
 const DESCRIPCION =
   "Estudios, perspectivas y artículos de ResponSable: las herramientas que necesita para convertir su estrategia de sostenibilidad en resultados tangibles.";
@@ -26,66 +28,80 @@ export const metadata: Metadata = {
 };
 
 /**
- * Una sección por tipo de recurso. Hoy solo hay artículos; añadir estudios o
- * webinars es agregar una entrada más a SECCIONES, sin tocar la maquetación.
+ * El artículo más reciente, a todo el ancho sobre la rejilla.
  *
- * Las secciones vacías no se renderizan: el filtro de abajo las descarta antes
- * de pintar, así que no quedan bloques huérfanos ni rótulos de «próximamente».
+ * Siempre automático por fecha: no hay selección manual que mantener, y el
+ * destacado cambia solo al publicar. Toda la pieza es un enlace, como las
+ * tarjetas de la rejilla.
  */
-type SeccionRecursos = {
-  id: string;
-  titulo: string;
-  articulos: ArticuloMeta[];
-  verTodos?: { href: string; label: string };
-};
-
-/** Cuántas piezas se muestran por sección en el hub. */
-const POR_SECCION = 9;
-
-function BloqueSeccion({ seccion }: { seccion: SeccionRecursos }) {
+function Destacado({ articulo }: { articulo: ArticuloMeta }) {
+  const categoria = categoriaDe(articulo.slug);
   return (
-    <section aria-labelledby={seccion.id}>
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-4">
-        <h2
-          id={seccion.id}
-          className="font-head text-[clamp(1.5rem,3.5vw,2.1rem)] font-semibold text-navy"
-        >
-          {seccion.titulo}
-        </h2>
-        {seccion.verTodos ? (
-          <Link
-            href={seccion.verTodos.href}
-            className="font-head text-sm font-semibold text-magenta"
-          >
-            {seccion.verTodos.label} →
-          </Link>
+    <Link
+      href={`/recursos/articulos/${articulo.slug}/`}
+      className="group grid overflow-hidden rounded border border-border bg-white shadow-sm transition-shadow duration-150 hover:shadow lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]"
+    >
+      {/* Mismo degradado de respaldo que las tarjetas, por si el artículo más
+          reciente llegara sin imagen destacada. */}
+      <div
+        className="relative aspect-[16/10] w-full overflow-hidden bg-navy lg:aspect-auto lg:min-h-[26rem]"
+        style={
+          articulo.imagen
+            ? undefined
+            : { backgroundImage: "linear-gradient(135deg, var(--color-navy), #2b3266)" }
+        }
+      >
+        {articulo.imagen ? (
+          <Image
+            src={articulo.imagen.src}
+            alt=""
+            fill
+            sizes="(min-width: 1328px) 747px, (min-width: 1024px) 58vw, calc(100vw - 3rem)"
+            className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+          />
         ) : null}
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,380px))] lg:justify-center">
-        {seccion.articulos.map((articulo, i) => (
-          <ArticuloCard key={articulo.slug} articulo={articulo} index={i} />
-        ))}
+      <div className="flex flex-col justify-center p-6 sm:p-10">
+        <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">
+          Lo más reciente · {categoria.nombre}
+        </p>
+        <time
+          dateTime={articulo.fecha}
+          className="font-body mt-3 text-sm text-ink-soft"
+        >
+          {formatFecha(articulo.fecha)}
+        </time>
+        <h2 className="font-head mt-2 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-balance text-navy">
+          {articulo.titulo}
+        </h2>
+        <p className="font-body mt-4 text-[1.05rem] text-ink-soft">
+          {articulo.excerpt}
+        </p>
+        <span className="font-head mt-6 text-sm font-semibold text-magenta">
+          → Leer artículo
+        </span>
       </div>
-    </section>
+    </Link>
   );
 }
 
 export default function RecursosPage() {
-  const secciones: SeccionRecursos[] = [
-    {
-      id: "ultimas-noticias",
-      titulo: "Últimas Noticias",
-      // ARTICULOS ya viene ordenado de más reciente a más antiguo.
-      articulos: ARTICULOS.slice(0, POR_SECCION),
-      verTodos: {
-        href: "/recursos/articulos/",
-        label: "Ver todos los artículos",
-      },
-    },
-  ];
+  // Se ordena aquí y no se confía en el orden del archivo generado: el
+  // destacado tiene que ser el más reciente pase lo que pase con el export.
+  const ordenados = [...ARTICULOS].sort((a, b) => b.fecha.localeCompare(a.fecha));
+  const [destacado, ...resto] = ordenados;
 
-  const visibles = secciones.filter((s) => s.articulos.length > 0);
+  /* El destacado no se repite en la rejilla, ni en "Todas" ni al filtrar. */
+  const entradas = resto.map((articulo) => ({
+    articulo,
+    categoria: categoriaDe(articulo.slug).id,
+  }));
+  const categorias = CATEGORIAS.map((c) => ({
+    id: c.id,
+    nombre: c.nombre,
+    total: entradas.filter((e) => e.categoria === c.id).length,
+  }));
 
   return (
     <>
@@ -109,10 +125,21 @@ export default function RecursosPage() {
         </div>
 
         <div className="px-6 py-[var(--section-y)]">
-          <div className="mx-auto flex max-w-[var(--container)] flex-col gap-[var(--section-y)]">
-            {visibles.map((seccion) => (
-              <BloqueSeccion key={seccion.id} seccion={seccion} />
-            ))}
+          <div className="mx-auto max-w-[var(--container)]">
+            {destacado ? <Destacado articulo={destacado} /> : null}
+
+            <section
+              aria-labelledby="todos-los-articulos"
+              className="mt-[var(--section-y)]"
+            >
+              <h2
+                id="todos-los-articulos"
+                className="font-head mb-6 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
+              >
+                Todos los artículos
+              </h2>
+              <RejillaRecursos entradas={entradas} categorias={categorias} />
+            </section>
           </div>
         </div>
       </main>

@@ -9,6 +9,7 @@ import { ArticuloCard } from "@/components/articulos/articulo-card";
 import { TablaContenidos } from "@/components/articulos/tabla-contenidos";
 import { CtaArticulo } from "@/components/articulos/cta-articulo";
 import { ARTICULOS, formatFecha, getArticuloMeta } from "@/lib/articulos";
+import { categoriaDe } from "@/lib/categorias-articulos";
 import { getArticuloBlocks } from "@/lib/articulos-content";
 import { prepararIndice } from "@/lib/indice-articulo";
 
@@ -65,7 +66,10 @@ export default async function ArticuloPage(
     await getArticuloBlocks(articulo.slug),
   );
   const conIndice = total >= 2;
-  const categoria = articulo.categorias[0];
+  /* La categoría del Centro de Recursos, no la de WordPress: la miga lleva a
+     /recursos/ con ese filtro aplicado. */
+  const categoria = categoriaDe(articulo.slug);
+  const urlCategoria = `/recursos/?categoria=${categoria.id}`;
   const relacionados = ARTICULOS.filter((a) => a.slug !== articulo.slug).slice(
     0,
     3,
@@ -106,8 +110,8 @@ export default async function ArticuloPage(
       {
         "@type": "ListItem",
         position: 2,
-        name: categoria,
-        item: "https://responsable.net/recursos/articulos/",
+        name: categoria.nombre,
+        item: `https://responsable.net${urlCategoria}`,
       },
       {
         "@type": "ListItem",
@@ -152,7 +156,7 @@ export default async function ArticuloPage(
 
           <div className="relative mx-auto w-full max-w-[calc(var(--container)+3rem)] px-6 py-12">
             <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
-              {categoria}
+              {categoria.nombre}
             </p>
             <h1 className="font-head mt-3 max-w-[24ch] text-[clamp(1.9rem,4.2vw,2.9rem)] font-semibold text-balance text-white">
               {articulo.titulo}
@@ -179,8 +183,8 @@ export default async function ArticuloPage(
               </li>
               <li aria-hidden="true">/</li>
               <li>
-                <Link href="/recursos/articulos/" className="hover:text-navy">
-                  {categoria}
+                <Link href={urlCategoria} className="hover:text-navy">
+                  {categoria.nombre}
                 </Link>
               </li>
               <li aria-hidden="true">/</li>

@@ -27,7 +27,7 @@ const BASE = "https://responsable.net";
   Las prioridades no se inflan: son relativas dentro del propio sitio y no
   aportan nada si todas valen 1. La Home encabeza, los servicios van justo
   debajo —son las páginas comerciales del sitio—, después el índice de casos
-  y el de artículos, luego las fichas de caso y las dos páginas
+  y el Centro de Recursos, que es el índice de artículos, luego las fichas de caso y las dos páginas
   institucionales, y por último los artículos.
 */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -79,26 +79,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     {
-      // El índice cambia cada vez que se publica un artículo, de ahí que su
-      // lastModified sea la fecha del más reciente.
-      url: `${BASE}/recursos/articulos/`,
-      lastModified: new Date(masReciente),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
       url: `${BASE}/nosotros/`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.7,
     },
     {
-      // Lista los mismos artículos que /recursos/articulos/, así que su
-      // lastModified es igual: la fecha del artículo más reciente.
+      // El índice de artículos: cambia cada vez que se publica uno, de ahí
+      // que su lastModified sea la fecha del más reciente. /recursos/articulos/
+      // ya no está: redirige aquí.
       url: `${BASE}/recursos/`,
       lastModified: new Date(masReciente),
       changeFrequency: "weekly",
-      priority: 0.7,
+      priority: 0.8,
     },
     ...ARTICULOS.map((articulo) => ({
       url: `${BASE}/recursos/articulos/${articulo.slug}/`,
