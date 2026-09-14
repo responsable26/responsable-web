@@ -2,12 +2,13 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { capturarGclid } from "@/lib/gclid";
+import { capturarClicAds } from "@/lib/gclid";
 
 /**
- * Guarda el gclid de la URL en cuanto aparece, en cualquier página del sitio.
+ * Guarda el identificador de clic de Google Ads (gclid, gbraid o wbraid) de la
+ * URL en cuanto aparece, en cualquier página del sitio.
  *
- * Va en el layout raíz porque el aterrizaje con ?gclid= puede ser cualquiera y
+ * Va en el layout raíz porque la página de aterrizaje puede ser cualquiera y
  * el formulario que lo necesita se abre mucho después, desde otra ruta.
  *
  * Se reejecuta al cambiar de ruta —de ahí la dependencia de usePathname— para
@@ -20,7 +21,7 @@ import { capturarGclid } from "@/lib/gclid";
 export function CapturaGclid() {
   const ruta = usePathname();
   useEffect(() => {
-    capturarGclid();
+    capturarClicAds();
   }, [ruta]);
   return null;
 }

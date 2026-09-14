@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { correoHtml, correoTexto, type LineaCorreo } from "./correo";
+import { PARAMETROS_CLIC_ADS, type ParametroClicAds } from "@/lib/gclid";
 
 /*
   Endpoint de los tres formularios del sitio. Las tres superficies —el modal de
@@ -81,7 +82,6 @@ type Superficie = keyof typeof SUPERFICIES;
    vienen, el correo simplemente no enseña esa línea. */
 const CONTEXTO = {
   pagina: "Página",
-  gclid: "gclid",
   referrer: "Referrer",
 } as const;
 
@@ -90,6 +90,22 @@ type ClaveContexto = keyof typeof CONTEXTO;
 /* Tope de longitud de lo que llega del cliente. Nada legítimo se acerca a
    estos valores y evita que un envío hostil infle el correo. */
 const MAX_CONTEXTO = 500;
+
+/* Los identificadores de clic de Google Ads son base64 web-safe. Lo que no
+   encaje no se puede importar como conversión, así que se descarta en vez de
+   pasarlo al correo. */
+const FORMATO_CLIC_ADS = /^[A-Za-z0-9_-]{1,200}$/;
+
+/** La línea del identificador de clic, o null si no viene o no es válido. La
+ *  etiqueta nombra el parámetro porque la importación sin conexión los recibe
+ *  en columnas distintas. */
+function lineaClicAds(valor: unknown): LineaCorreo | null {
+  if (typeof valor !== "object" || valor === null) return null;
+  const { parametro, valor: id } = valor as Record<string, unknown>;
+  if (!PARAMETROS_CLIC_ADS.includes(parametro as ParametroClicAds)) return null;
+  if (typeof id !== "string" || !FORMATO_CLIC_ADS.test(id.trim())) return null;
+  return { etiqueta: `Clic de Google Ads (${parametro})`, valor: id.trim() };
+}
 
 function esSuperficie(valor: unknown): valor is Superficie {
   return typeof valor === "string" && valor in SUPERFICIES;
@@ -233,6 +249,10 @@ export async function POST(request: Request) {
          como un fallo del correo y no como un dato que no había. */
       .filter((linea) => linea.valor),
   ];
+  /* El identificador de clic va el último, en su propia línea, para copiarlo
+     sin buscarlo al importar conversiones. Sin identificador no hay línea. */
+  const clicAds = lineaClicAds(bruto.clic_ads);
+  if (clicAds) tecnicos.push(clicAds);
 
   const contenido = {
     asunto,

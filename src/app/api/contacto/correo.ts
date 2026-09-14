@@ -37,7 +37,8 @@ export type DatosCorreo = {
   datos: readonly LineaCorreo[];
   /** El texto libre, aparte del resto por ser lo que se lee primero. */
   mensaje: string;
-  /** Origen, página, gclid y referrer: solo los que traen valor. */
+  /** Formulario, página, referrer y clic de Google Ads, en ese orden: solo
+   *  los que traen valor. */
   tecnicos: readonly LineaCorreo[];
 };
 

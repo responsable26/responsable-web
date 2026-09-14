@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
 import { FormField } from "@/components/formulario-contacto/form-field";
 import { eventoFormularioEnviado } from "@/lib/gtm";
-import { leerGclid } from "@/lib/gclid";
+import { leerClicAds } from "@/lib/gclid";
 
 /**
  * El formulario de contacto del sitio: campos, validación, envío y los tres
@@ -129,7 +129,8 @@ function normalizarUrl(valor: string): string | null {
  *
  * Lo captura el cliente porque el servidor no puede saberlo: la página real
  * solo la conoce el navegador —el modal se abre desde cualquier ruta, así que
- * no se deduce del `origen`—, y el referrer y el gclid viven en el documento y
+ * no se deduce del `origen`—, y el referrer y el clic de Ads viven en el
+ * documento y
  * en la URL, no en la petición.
  *
  * Se lee en el momento de enviar y no al montar: entre una cosa y otra el
@@ -141,9 +142,10 @@ function contextoNavegacion() {
   return {
     pagina: window.location.href,
     /* El de la URL o, si el visitante ya navegó, el que CapturaGclid guardó al
-       aterrizar (ver lib/gclid.ts). La página y el referrer sí salen del
-       momento del envío. */
-    gclid: leerGclid(),
+       aterrizar, mientras no tenga más de 90 días (ver lib/gclid.ts). La
+       página y el referrer sí salen del momento del envío. Solo viaja al
+       endpoint: no se pinta ni se empuja al dataLayer. */
+    clic_ads: leerClicAds(),
     referrer: document.referrer,
   };
 }
