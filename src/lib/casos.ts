@@ -1,19 +1,20 @@
 import { CUADRANTES } from "@/lib/servicios";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ⚠  UN DATO SIGUE SIN VALIDAR Y EL NOINDEX SIGUE PUESTO  ⚠
+   Los seis casos tienen contenido real validado por el cliente y ninguno
+   lleva `sinValidar` ni marcadores. Profuturo, Vestolit, BMW y Sanofi México
+   salen de los webinars grabados con cada cliente; HEINEKEN México y La
+   Esperanza, del texto entregado para reactivarlos. El índice y las seis
+   fichas son indexables y están en el sitemap.
 
-   Los cinco casos tienen contenido real y ninguno lleva `sinValidar`.
-   Profuturo, Vestolit y BMW salen de los webinars grabados con cada cliente;
-   HEINEKEN México y La Esperanza, del texto entregado para reactivarlos.
+   El orden del array es el orden del índice, del carrusel de la Home y de
+   "Otros casos". Se evita que dos casos seguidos compartan servicio: por eso
+   Sanofi México va entre Vestolit y HEINEKEN, que comparten Diagnóstico
+   Social.
 
-   Queda un único marcador: el `sector` de La Esperanza, pendiente de que el
-   cliente lo confirme. Lleva el prefijo literal "[PLACEHOLDER]" para que sea
-   imposible publicarlo por descuido: si aparece en pantalla, se ve.
-
-   El `robots: noindex` de las rutas de casos se mantiene hasta revisar los
-   cinco en pantalla: se levanta para las seis rutas a la vez, no caso a caso,
-   y en ese momento se añaden al sitemap.
+   Un caso nuevo cuyo texto aún no esté aprobado se marca con `sinValidar:
+   true`, que retira su ruta, y sus cadenas pendientes con el prefijo
+   PLACEHOLDER, para que se vean si llegan a pantalla.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /** Prefijo único, para poder localizar y auditar lo no validado. */
@@ -39,7 +40,7 @@ export type Caso = {
   resumen: string;
   /**
    * Descripción larga del caso, la que muestra el carrusel de la Home. Real y
-   * validada en los cinco casos.
+   * validada en todos los casos.
    * El carrusel la trunca por presentación; el dato no se recorta en origen.
    */
   descripcion: string;
@@ -106,8 +107,10 @@ export const CASOS: Caso[] = [
   {
     slug: "la-esperanza",
     cliente: "La Esperanza",
-    /* Pendiente: el cliente debe confirmarlo. */
-    sector: `${PLACEHOLDER} Sector por confirmar`,
+    /* Grupo Esperanza no es solo pastelería: incluye pan y pastelería, una
+       cadena de rosticerías, una panificadora industrial y una purificadora
+       de agua. */
+    sector: "Panificación y alimentos",
     resumen:
       "El paso de tener prácticas responsables sin documentar a una gestión integrada que la organización entiende, sostiene y sabe comunicar.",
     descripcion:
@@ -183,6 +186,38 @@ export const CASOS: Caso[] = [
       "Vestolit obtuvo una línea base con datos duros por planta: necesidades reales de cada comunidad, percepción de la empresa en cada sitio y riesgos ambientales y sociales identificados desde el territorio, no desde el escritorio.",
       "El efecto interno fue tan relevante como el externo. Al bajar la información a las plantas, muchos colaboradores descubrieron iniciativas que la propia empresa realizaba y desconocían. Lo que no se comunica no se reporta, y lo que no se reporta no se mide ni se gestiona.",
       "El diagnóstico convirtió el impacto social en un tema del negocio con evidencia detrás, en lugar de una opción que cada planta ejercía a su criterio.",
+    ],
+  },
+  {
+    slug: "sanofi-mexico",
+    cliente: "Sanofi México",
+    sector: "Farmacéutica",
+    resumen:
+      "El primer estudio de materialidad de la operación en México, que ordenó años de acciones dispersas y consiguió presupuesto para las prioridades.",
+    descripcion:
+      "Acompañamos a Sanofi México en su primer estudio de materialidad, consultando a colaboradores, líderes, clientes, socios comerciales, proveedores, cámaras e instituciones clave para identificar temas prioritarios, fortalecer su estrategia de responsabilidad social y alinear sus acciones con las expectativas de sus grupos de interés.",
+    videoYoutube: "EcMa_eMCO6c",
+    imagen: null,
+    /* Estrategia y no Estudio de Doble Materialidad, aunque el texto cuente la
+       etapa de materialidad: el cliente confirmó que fueron dos proyectos,
+       estudio de materialidad y estrategia, y "Doble Materialidad" afirmaría
+       un alcance distinto al entregado. */
+    serviciosAplicados: ["Estrategia de Sostenibilidad"],
+    reto: [
+      "Sanofi México nunca había hecho un ejercicio de este tipo. Tenía acciones en la materia desde hacía años, pero repartidas entre áreas y sin una estrategia que las ordenara. Ni siquiera estaba claro de quién era el tema: si de recursos humanos, de asuntos públicos o de comunicación.",
+      "Había además un factor de contexto. Sanofi es un jugador mundial en la industria de la salud, y la empresa necesitaba articular su compromiso con la comunidad de forma consistente con ese papel.",
+    ],
+    solucion: [
+      "Un estudio de materialidad de cinco meses en tres etapas.",
+      "En la priorización se midió el nivel de madurez de la empresa frente a su competencia y frente a referentes nacionales e internacionales, se construyó el listado de temas relevantes y se definieron los grupos de interés a consultar.",
+      "La consulta cubrió al 100% de la plantilla interna, incluidos directivos, y se extendió a clientes, socios comerciales, proveedores, cámaras del sector, autoridades e instituciones. Se combinaron encuestas en línea, entrevistas uno a uno y focus groups con participantes internos y externos. Los instrumentos se diseñaron desde ResponSable y se validaron con Sanofi antes de aplicarse.",
+      "La evaluación cruzó ambas prioridades, la del negocio y la de los grupos de interés, para construir la matriz de materialidad.",
+    ],
+    resultados: [
+      "Se reunieron 947 respuestas y se identificaron siete temas materiales.",
+      "El hallazgo más útil fue de doble filo: cinco de los siete temas ya se atendían en la operación, pero no todos los colaboradores lo sabían y los grupos de interés externos tampoco lo percibían. Las acciones existían; la comunicación no.",
+      "Los dos temas que la empresa decidió impulsar fueron derechos humanos y diversidad e inclusión. Este último ya tenía acciones, pero sin la formalidad ni la visibilidad necesarias; a partir del estudio se estructuró un comité de diversidad e inclusión.",
+      "Y el resultado que más importa en términos de negocio: el estudio permitió presentar el tema al liderazgo con datos, y con esos datos se obtuvo presupuesto asignado para ejecutar acciones al año siguiente.",
     ],
   },
   {

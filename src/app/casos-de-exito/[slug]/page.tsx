@@ -34,12 +34,6 @@ export async function generateMetadata(
     title: `Caso de éxito: ${caso.cliente}`,
     description: descripcion,
     alternates: { canonical },
-    /*
-      NOINDEX PROVISIONAL: se mantiene hasta revisar los cinco casos en
-      pantalla (ver la cabecera de lib/casos.ts). Retirar entonces, para todos
-      a la vez, y añadir las rutas al sitemap.
-    */
-    robots: { index: false, follow: false },
     openGraph: {
       type: "article",
       siteName: "ResponSable",
@@ -69,9 +63,15 @@ export default async function CasoPage(
   const caso = getCaso(slug);
   if (!caso) notFound();
 
-  const otros = CASOS_PUBLICOS.filter((c) => c.slug !== caso.slug).slice(
-    0,
-    3,
+  /* Los tres casos siguientes en el array, dando la vuelta al final, como
+     «Servicios relacionados» en las páginas de servicio. Cortar los tres
+     primeros hacía que casi todas las fichas propusieran el mismo trío y que
+     los últimos casos no se enlazaran desde ninguna. Con menos de cuatro
+     casos se toman los que haya, sin repetir ni enlazar a la propia ficha. */
+  const actual = CASOS_PUBLICOS.findIndex((c) => c.slug === caso.slug);
+  const otros = Array.from(
+    { length: Math.min(3, CASOS_PUBLICOS.length - 1) },
+    (_, i) => CASOS_PUBLICOS[(actual + 1 + i) % CASOS_PUBLICOS.length],
   );
 
   const CASE_JSON_LD = {
@@ -139,7 +139,7 @@ export default async function CasoPage(
       <main id="main" className="flex-1">
         {/*
           Hero navy con la imagen destacada de fondo cuando exista. Hoy ninguno
-          de los cinco casos la tiene, así que se sirve el navy sólido: es el
+          de los casos la tiene, así que se sirve el navy sólido: es el
           mismo degradado de respaldo que usan las tarjetas, sin capa extra.
         */}
         <div className="relative overflow-hidden border-b-4 border-magenta bg-navy px-6 py-[var(--section-y)]">
@@ -217,7 +217,7 @@ export default async function CasoPage(
                 que es una escala de protagonista sin ser una portada.
 
                 Y va antes del relato, no después: es lo único visual de la
-                página —ninguno de los cinco casos tiene imagen— y el cuerpo
+                página —ningún caso tiene imagen— y el cuerpo
                 arrancaba con tres bloques seguidos de texto corrido. Además la
                 voz del cliente respalda el caso antes de contarlo, no al final.
 

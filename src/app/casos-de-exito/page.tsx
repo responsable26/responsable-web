@@ -12,14 +12,6 @@ export const metadata: Metadata = {
   title: "Casos de Éxito",
   description: DESCRIPCION,
   alternates: { canonical: "/casos-de-exito/" },
-  /*
-    NOINDEX PROVISIONAL: los cinco casos ya se muestran, pero falta revisarlos
-    en pantalla y confirmar el sector de La Esperanza.
-
-    Se levanta a la vez que el de las rutas de caso, según la instrucción de
-    la cabecera de lib/casos.ts. Entonces, además, todas al sitemap.
-  */
-  robots: { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: "ResponSable",

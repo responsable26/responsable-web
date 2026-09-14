@@ -121,7 +121,7 @@ function TarjetaCaso({ caso, activo }: { caso: Caso; activo: boolean }) {
             recorte lateral del carrusel y con el padding de la tarjeta por
             breakpoint—, así que un límite en caracteres solo sería exacto
             para un ancho concreto. line-clamp-4 iguala la altura visible de
-            las cinco tarjetas sea cual sea ese ancho. El texto íntegro sigue
+            todas las tarjetas sea cual sea ese ancho. El texto íntegro sigue
             en casos.ts y se muestra completo en la página de cada caso.
           */}
           <p className="font-body mt-4 line-clamp-4 text-ink-soft">
