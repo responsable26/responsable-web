@@ -7,7 +7,7 @@ import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 
 const DESCRIPCION =
-  "Consultoría en sostenibilidad y RSE desde 2011. Acompañamos a más de 250 empresas en México y Latinoamérica a convertir la sostenibilidad en decisiones de negocio.";
+  "Consultoría en sostenibilidad y RSE desde 2011. Acompañamos a más de 200 empresas en México y Latinoamérica a convertir la sostenibilidad en decisiones de negocio.";
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.
@@ -57,11 +57,13 @@ const DIFERENCIALES = [
   "Acompañamos todo el proceso, desde el diagnóstico y la definición de prioridades hasta la implementación y la comunicación.",
 ];
 
-/** Cifras de la banda. El valor va suelto del texto para poder darle su escala. */
+/** Cifras de la banda. El valor va suelto del texto para poder darle su escala.
+ *  Cifras y rótulos salen del documento de credenciales del cliente, que es la
+ *  fuente: si cambian, se cambian allí primero. */
 const CIFRAS = [
-  { valor: "+250", etiqueta: "Compañías Asesoradas" },
-  { valor: "600", etiqueta: "Proyectos Gestionados" },
-  { valor: "+15", etiqueta: "Años Trabajando" },
+  { valor: "+600", etiqueta: "Proyectos de consultoría y capacitación" },
+  { valor: "+200", etiqueta: "Empresas acompañadas en México y Latinoamérica" },
+  { valor: "+15", etiqueta: "Años diseñando soluciones estratégicas en sostenibilidad" },
 ];
 
 export default function NosotrosPage() {
@@ -225,7 +227,7 @@ export default function NosotrosPage() {
               </div>
               <div className="flex flex-col gap-8">
                 <p className="font-body text-ink-soft">
-                  Desde entonces, hemos acompañado a más de 250 empresas en
+                  Desde entonces, hemos acompañado a más de 200 empresas en
                   México y Latinoamérica, en distintos niveles de madurez y
                   sectores. Algunas apenas empiezan a ordenar su sostenibilidad.
                   Otras buscan elevar la sofisticación de su estrategia,

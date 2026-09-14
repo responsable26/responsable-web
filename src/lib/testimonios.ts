@@ -42,11 +42,24 @@ export const TESTIMONIOS_VALIDADOS = true;
 export type Testimonio = {
   /** La cita, sin comillas: las pone el componente. */
   cita: string;
-  nombre: string;
+  /**
+   * Opcional: hay testimonios atribuidos solo a la empresa, sin persona. Sin
+   * nombre, la tarjeta muestra la empresa como atribución y saca de ella la
+   * inicial del avatar.
+   */
+  nombre?: string;
   /** Lo que da autoridad al testimonio en este contexto. No hay puntuación ni
-   *  estrellas: quién lo dice pesa más que una nota. */
-  cargo: string;
+   *  estrellas: quién lo dice pesa más que una nota. Opcional como `nombre`, y
+   *  solo se muestra junto a él: un cargo sin persona no atribuye nada. */
+  cargo?: string;
+  /** Siempre presente: es la única atribución que no falta nunca. */
   empresa: string;
+  /**
+   * ID del video en YouTube, opcional. Si lo trae, la tarjeta muestra el video
+   * encima de la cita; si no, solo el texto. Mismo nombre de campo que en
+   * `Caso` (casos.ts).
+   */
+  videoYoutube?: string;
 };
 
 /**

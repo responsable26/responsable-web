@@ -878,7 +878,7 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
       {
         pregunta: "¿Por qué elegir a ResponSable para capacitar?",
         respuesta:
-          "Nuestros facilitadores también asesoran proyectos reales de sostenibilidad. Los contenidos parten de la experiencia acompañando a más de 250 empresas de distintos sectores y tamaños. Por eso conectamos los conceptos con casos de negocio, decisiones, riesgos y situaciones observadas en la práctica, utilizando un lenguaje adecuado para cada audiencia.",
+          "Nuestros facilitadores también asesoran proyectos reales de sostenibilidad. Los contenidos parten de la experiencia acompañando a más de 200 empresas de distintos sectores y tamaños. Por eso conectamos los conceptos con casos de negocio, decisiones, riesgos y situaciones observadas en la práctica, utilizando un lenguaje adecuado para cada audiencia.",
       },
     ],
     cta: {
