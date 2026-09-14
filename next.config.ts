@@ -70,17 +70,8 @@ const nextConfig: NextConfig = {
          de quién era, no por parecido de slug, que aquí engaña: "el reto de
          ISO 26000 en grupo BAL" es la página de Vestolit. */
       { source: '/caso-de-exito/profuturo/', destination: '/casos-de-exito/profuturo/', permanent: true },
-      /* PROVISIONAL, las dos siguientes. Su destino real es la página de cada
-         caso —/casos-de-exito/la-esperanza/ y /casos-de-exito/heineken-mexico/
-         respectivamente—, pero esos dos casos llevan hoy `sinValidar: true` en
-         casos.ts, que retira su ruta del sitio y la deja en 404. Mandarlas al
-         índice conserva el tráfico histórico de esas URL en una página útil en
-         vez de perderlo.
-
-         REVERTIR a los destinos nombrados arriba cuando esos casos se validen
-         y se les quite el `sinValidar`. */
-      { source: '/caso-de-exito/la-esperanza/', destination: '/casos-de-exito/', permanent: true },
-      { source: '/caso-de-exito/de-la-crisis-de-suministro-a-la-sostenibilidad-rentable/', destination: '/casos-de-exito/', permanent: true },
+      { source: '/caso-de-exito/la-esperanza/', destination: '/casos-de-exito/la-esperanza/', permanent: true },
+      { source: '/caso-de-exito/de-la-crisis-de-suministro-a-la-sostenibilidad-rentable/', destination: '/casos-de-exito/heineken-mexico/', permanent: true },
       { source: '/caso-de-exito/el-reto-de-iso-26000-en-grupo-bal/', destination: '/casos-de-exito/vestolit/', permanent: true },
       { source: '/caso-de-exito/un-cambio-comienza-desde-adentro/', destination: '/casos-de-exito/bmw/', permanent: true },
       /* Las cuatro categorías de servicio del WordPress son exactamente los
@@ -115,10 +106,7 @@ const nextConfig: NextConfig = {
       { source: '/historia/', destination: '/nosotros/', permanent: true },
       /* Rutas del WordPress viejo que la auditoría de enlaces detectó como 404
          y que corresponden a casos de éxito. */
-      /* PROVISIONAL, por el mismo motivo que las dos de arriba: su destino real
-         es /casos-de-exito/heineken-mexico/, hoy en 404 por `sinValidar`.
-         REVERTIR cuando ese caso se valide. */
-      { source: '/heineken/', destination: '/casos-de-exito/', permanent: true },
+      { source: '/heineken/', destination: '/casos-de-exito/heineken-mexico/', permanent: true },
       { source: '/confian-en-nosotros/', destination: '/casos-de-exito/', permanent: true },
       /* Páginas de servicio del WordPress viejo.
 

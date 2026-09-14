@@ -35,9 +35,9 @@ export async function generateMetadata(
     description: descripcion,
     alternates: { canonical },
     /*
-      NOINDEX PROVISIONAL: el contenido de este caso es marcador de posición sin
-      validar por el cliente. Retirar cuando se sustituya por el definitivo, y
-      añadir entonces la ruta al sitemap.
+      NOINDEX PROVISIONAL: se mantiene hasta revisar los cinco casos en
+      pantalla (ver la cabecera de lib/casos.ts). Retirar entonces, para todos
+      a la vez, y añadir las rutas al sitemap.
     */
     robots: { index: false, follow: false },
     openGraph: {

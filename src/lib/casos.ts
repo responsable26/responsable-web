@@ -1,26 +1,19 @@
 import { CUADRANTES } from "@/lib/servicios";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ⚠  DOS CASOS SIGUEN SIN VALIDAR  ⚠
+   ⚠  UN DATO SIGUE SIN VALIDAR Y EL NOINDEX SIGUE PUESTO  ⚠
 
-   Profuturo, Vestolit y BMW tienen contenido real, redactado a partir de los
-   webinars grabados con cada cliente y aprobado por él. No llevan marcadores.
+   Los cinco casos tienen contenido real y ninguno lleva `sinValidar`.
+   Profuturo, Vestolit y BMW salen de los webinars grabados con cada cliente;
+   HEINEKEN México y La Esperanza, del texto entregado para reactivarlos.
 
-   HEINEKEN México y La Esperanza siguen pendientes: su texto narrativo
-   —resumen, reto, solución, resultados— es marcador de posición, sin revisar
-   ni aprobar. Van marcados con `sinValidar: true`, que los retira de todo el
-   sitio, y cada cadena lleva además el prefijo literal "[PLACEHOLDER]" para
-   que sea imposible publicarla por descuido: si aparece en pantalla, se ve.
+   Queda un único marcador: el `sector` de La Esperanza, pendiente de que el
+   cliente lo confirme. Lleva el prefijo literal "[PLACEHOLDER]" para que sea
+   imposible publicarlo por descuido: si aparece en pantalla, se ve.
 
-   El `robots: noindex` de las rutas de casos se mantiene hasta que esos dos
-   tengan contenido: se levanta para las seis rutas a la vez, no caso a caso.
-   Cuando llegue, por cada uno hay que sustituir el texto, quitar los prefijos
-   y borrar su `sinValidar`; y cuando estén los dos, retirar el noindex y
-   añadir las rutas al sitemap.
-
-   En los dos pendientes, lo único real son el NOMBRE DE CLIENTE y los
-   SERVICIOS APLICADOS: ambos salen del carrusel de la Home, que ya estaba en
-   el proyecto.
+   El `robots: noindex` de las rutas de casos se mantiene hasta revisar los
+   cinco en pantalla: se levanta para las seis rutas a la vez, no caso a caso,
+   y en ese momento se añaden al sitemap.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /** Prefijo único, para poder localizar y auditar lo no validado. */
@@ -112,23 +105,29 @@ export const CASOS: Caso[] = [
   },
   {
     slug: "la-esperanza",
-    sinValidar: true,
     cliente: "La Esperanza",
+    /* Pendiente: el cliente debe confirmarlo. */
     sector: `${PLACEHOLDER} Sector por confirmar`,
-    resumen: `${PLACEHOLDER} Frase de resumen del caso, pendiente de redacción y validación con el cliente.`,
+    resumen:
+      "El paso de tener prácticas responsables sin documentar a una gestión integrada que la organización entiende, sostiene y sabe comunicar.",
     descripcion:
       "En conjunto con Grupo Esperanza, implementamos un proceso de acompañamiento y asesoría para PyMes enfocado en integrar la sostenibilidad de manera transversal en sus procesos operativos y en construir una cultura organizacional sólida. Nuestra intervención resolvió el reto de estructurar, documentar y comunicar de forma efectiva las evidencias de impacto social que la empresa ya generaba de forma nativa pero no sabía plasmar. Más allá de orientar al equipo hacia la obtención de un distintivo corporativo, nuestro enfoque se centró en una guía integral basada en la transferencia de conocimiento y el aprendizaje continuo, lo que permitió a la organización apropiarse del proceso, descubrir nuevas oportunidades de innovación y consolidar un propósito social plenamente arraigado en su operación diaria.",
     videoYoutube: "dJ4a6GcpYV4",
     imagen: null,
     serviciosAplicados: ["Acompañamiento en sostenibilidad"],
     reto: [
-      `${PLACEHOLDER} Descripción del reto que enfrentaba la organización antes de la intervención.`,
+      "Grupo Esperanza quería que la sostenibilidad fuera parte de su marca y de su cultura, no una serie de acciones sueltas.",
+      "El problema no era la falta de prácticas responsables: ya las tenían. Era que nadie sabía cómo documentarlas. Al preguntar a cada área por sus evidencias, la respuesta era la misma: desconocían cómo registrar lo que hacían. Y sin evidencia no hay reconocimiento posible, ni distintivo, ni comunicación que se sostenga.",
     ],
     solucion: [
-      `${PLACEHOLDER} Descripción del trabajo realizado y del enfoque metodológico aplicado.`,
+      "Un acompañamiento continuo, no un entregable que se entrega y se cierra.",
+      "El trabajo empezó por conversar con cada área antes de pedirles formatos. Primero se dejó que explicaran con sus palabras lo que hacían, y solo después se les guió para convertirlo en evidencia. Ese orden importa: cuando se pide documentación a quien no sabe qué documentar, no sale nada.",
+      "A partir de ahí se mapearon las fortalezas que ya existían, se identificó dónde había innovación real y se integró la responsabilidad social dentro de los procesos de la empresa, en lugar de montar un proceso paralelo que dependiera de una sola persona.",
     ],
     resultados: [
-      `${PLACEHOLDER} Descripción de los resultados obtenidos y de su efecto en el negocio.`,
+      "Grupo Esperanza pasó de tener acciones responsables poco documentadas a una gestión integrada.",
+      "El cambio más importante fue de enfoque. Los equipos dejaron de trabajar para obtener un distintivo y empezaron a reconocer el impacto de lo que ya hacían en sus propias áreas. El distintivo llegó, junto con otras certificaciones, pero como consecuencia y no como objetivo.",
+      "La empresa terminó con algo más difícil de conseguir que un reconocimiento: la capacidad de ver cómo sus decisiones cotidianas generan impacto, y de comunicarlo con evidencia detrás.",
     ],
   },
   {
@@ -160,7 +159,6 @@ export const CASOS: Caso[] = [
   },
   {
     slug: "vestolit",
-    subtitulo: "Diagnóstico de Impacto Social",
     cliente: "Vestolit",
     sector: "Petroquímica",
     resumen:
@@ -189,24 +187,27 @@ export const CASOS: Caso[] = [
   },
   {
     slug: "heineken-mexico",
-    sinValidar: true,
-    subtitulo: "Estudio de materialidad",
     cliente: "HEINEKEN México",
-    sector: `${PLACEHOLDER} Sector por confirmar`,
-    resumen: `${PLACEHOLDER} Frase de resumen del caso, pendiente de redacción y validación con el cliente.`,
+    sector: "Bebidas",
+    resumen:
+      "Una consulta comunitaria por región para que la estrategia de acceso al agua se diseñara desde el territorio y no desde el escritorio.",
     descripcion:
-      "Junto con HEINEKEN México, desarrollamos su estudio de materialidad enfocado en el ámbito comunitario, un proceso clave que demostró cómo la asesoría experta optimiza los tiempos de ejecución y maximiza la profundidad de la investigación. Nuestra intervención facilitó el acceso a un nivel superior de stakeholders, aportando el respaldo técnico y las credenciales institucionales necesarias para validar sólidamente los resultados ante su corporativo global y superar las limitaciones de alcance de la gestión interna. Gracias a este esfuerzo conjunto, los hallazgos se transformaron en una hoja de ruta estratégica que hoy guía con claridad el rumbo de sus iniciativas sociales, permitiendo al equipo consolidar proyectos exitosos con un impacto plenamente fundamentado.",
-    videoYoutube: "YF6bb6ZNSi8",
+      "Llevamos a cabo una consulta comunitaria para HEINEKEN México con el objetivo de fortalecer su estrategia de acceso al agua, identificando necesidades por región, percepciones locales y oportunidades de mejora para focalizar iniciativas, recursos y alianzas con mayor precisión e impacto.",
+    videoYoutube: "Z47U-CSrrOI",
     imagen: null,
-    serviciosAplicados: ["Estudio de Doble Materialidad"],
+    serviciosAplicados: ["Diagnóstico Social y Línea base comunitaria"],
     reto: [
-      `${PLACEHOLDER} Descripción del reto que enfrentaba la organización antes de la intervención.`,
+      "HEINEKEN México necesitaba fortalecer su estrategia de acceso al agua.",
+      "La empresa opera en regiones con contextos hídricos muy distintos entre sí, y sin información del territorio cualquier iniciativa corre el mismo riesgo: diseñarse desde el centro, con buena intención y presupuesto, para resolver una necesidad que no es la que la comunidad tiene.",
     ],
     solucion: [
-      `${PLACEHOLDER} Descripción del trabajo realizado y del enfoque metodológico aplicado.`,
+      "Una consulta comunitaria orientada a entender la situación región por región.",
+      "El trabajo identificó las necesidades reales de cada zona, las percepciones locales sobre la empresa y su operación, y las oportunidades de mejora que las propias comunidades señalaban.",
     ],
     resultados: [
-      `${PLACEHOLDER} Descripción de los resultados obtenidos y de su efecto en el negocio.`,
+      "La consulta le dio a HEINEKEN México criterio para focalizar iniciativas, recursos y alianzas con mayor precisión.",
+      "Con esa base, la empresa comenzó a desarrollar una estrategia integral de acceso al agua, con iniciativas más asertivas y de mayor impacto que las que habría diseñado sin escuchar primero.",
+      "El valor del ejercicio no estuvo solo en los hallazgos, sino en el proceso de acercarse a los grupos de interés y analizar a fondo lo recopilado.",
     ],
   },
 ];

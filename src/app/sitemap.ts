@@ -15,7 +15,7 @@ const BASE = "https://responsable.net";
 
   Quedan fuera a propósito las páginas que llevan robots noindex —un sitemap
   que declara una URL excluida de indexación se contradice a sí mismo—:
-  - /casos-de-exito/ y sus cinco fichas, mientras su contenido siga sin validar.
+  - /casos-de-exito/ y sus cinco fichas, hasta revisarlas en pantalla.
   - /legal/ y sus dos hijas.
   - /proveedores/ y /trabaja-con-nosotros/, formularios de solicitud que no
     aportan a búsqueda.

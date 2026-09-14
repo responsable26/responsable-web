@@ -13,14 +13,11 @@ export const metadata: Metadata = {
   description: DESCRIPCION,
   alternates: { canonical: "/casos-de-exito/" },
   /*
-    NOINDEX PROVISIONAL, por coherencia y no por el contenido de esta página:
-    los casos sin validar ya no se muestran aquí —CASOS_PUBLICOS los filtra—,
-    pero indexarla ahora posicionaría una URL que enseña tres de los cinco
-    casos, y su contenido cambiaría al volver HEINEKEN México y La Esperanza.
+    NOINDEX PROVISIONAL: los cinco casos ya se muestran, pero falta revisarlos
+    en pantalla y confirmar el sector de La Esperanza.
 
-    Se levanta a la vez que el de las seis rutas de caso, según la instrucción
-    de la cabecera de lib/casos.ts: cuando esos dos tengan contenido validado y
-    dejen de llevar `sinValidar`. Entonces, además, ambas al sitemap.
+    Se levanta a la vez que el de las rutas de caso, según la instrucción de
+    la cabecera de lib/casos.ts. Entonces, además, todas al sitemap.
   */
   robots: { index: false, follow: false },
   openGraph: {
