@@ -20,8 +20,15 @@ import type { PasoProceso } from "@/lib/contenido-servicios";
 /** Un elemento de lista. `etiqueta` va en negrita delante del texto. */
 export type ElementoLista = { etiqueta?: string; texto: string };
 
+/** Ícono de línea de cada tarjeta de «¿Para qué sirve…?». Los dibuja
+ *  iconos-universidad.tsx. */
+export type IconoUso =
+  "base" | "grupos" | "induccion" | "negocio" | "continuidad" | "seguimiento";
+
 /** Tarjeta con título, párrafos y, opcionalmente, una lista introducida. */
 export type TarjetaUniversidad = {
+  /** Rótulo corto sobre el título, como «Nivel 1». */
+  rotulo?: string;
   titulo: string;
   parrafos: string[];
   lista?: { intro: string; elementos: ElementoLista[] };
@@ -64,6 +71,7 @@ export const UNIVERSIDAD = {
       "No todas las empresas necesitan desarrollar un curso desde cero. Por eso, la Universidad ResponSable puede configurarse en distintos niveles.",
     tarjetas: [
       {
+        rotulo: "Nivel 1",
         titulo: "Contenidos desarrollados por ResponSable",
         parrafos: [
           "Su equipo puede acceder a cursos y rutas de aprendizaje creados desde nuestra experiencia asesorando empresas.",
@@ -72,6 +80,7 @@ export const UNIVERSIDAD = {
         ],
       },
       {
+        rotulo: "Nivel 2",
         titulo: "Rutas adaptadas a cada audiencia",
         parrafos: [
           "Podemos seleccionar los cursos o módulos más relevantes y organizarlos en una ruta específica.",
@@ -94,6 +103,7 @@ export const UNIVERSIDAD = {
         },
       },
       {
+        rotulo: "Nivel 3",
         titulo: "Contenidos desarrollados para la empresa",
         parrafos: [
           "Cuando los contenidos existentes no cubren la necesidad, podemos producir cursos o materiales específicos.",
@@ -101,6 +111,55 @@ export const UNIVERSIDAD = {
         ],
       },
     ] satisfies TarjetaUniversidad[],
+  },
+
+  /*
+    Infografía de RESILIO, dentro de la tarjeta «Contenidos desarrollados por
+    ResponSable». No viene del documento de la página sino del brochure del
+    curso, con las frases pasadas de tú a usted. Las siete letras son los siete
+    pasos del método; los ocho módulos son las unidades del curso, un dato
+    distinto que da el brochure.
+  */
+  resilio: {
+    titulo: "Sostenibilidad estratégica: el método RESILIO",
+    pasos: [
+      {
+        letra: "R",
+        palabra: "Reflexionar",
+        frase: "Reflexión estratégica, defina objetivos claros",
+      },
+      {
+        letra: "E",
+        palabra: "Estudiar",
+        frase: "Diagnóstico y benchmark, descubra dónde está",
+      },
+      {
+        letra: "S",
+        palabra: "Solicitar",
+        frase: "Involucre a sus grupos de interés",
+      },
+      {
+        letra: "I",
+        palabra: "Institucionalizar",
+        frase: "Construya su estrategia de sostenibilidad",
+      },
+      {
+        letra: "L",
+        palabra: "Lograr",
+        frase: "Lleve su estrategia a la práctica",
+      },
+      {
+        letra: "I",
+        palabra: "Informar",
+        frase: "Aprenda a comunicar en sostenibilidad",
+      },
+      {
+        letra: "O",
+        palabra: "Optimizar",
+        frase: "Optimice con medición y mejora continua",
+      },
+    ],
+    dato: "8 módulos · 5.5 horas de aprendizaje guiado",
   },
 
   audiencias: {
@@ -158,36 +217,42 @@ export const UNIVERSIDAD = {
     titulo: "¿Para qué sirve la Universidad ResponSable?",
     usos: [
       {
+        icono: "base",
         titulo: "Construir una base común",
         texto:
           "Ayuda a que distintas personas, áreas o empresas proveedoras compartan los mismos conceptos y criterios.",
       },
       {
+        icono: "grupos",
         titulo: "Capacitar a grupos amplios",
         texto:
           "Permite llevar contenidos a equipos ubicados en diferentes ciudades o países y a cadenas de valor con muchas empresas participantes.",
       },
       {
+        icono: "induccion",
         titulo: "Facilitar la inducción",
         texto:
           "Acelera la formación de quienes se incorporan al área de sostenibilidad o necesitan comprender cómo se relaciona el tema con su función.",
       },
       {
+        icono: "negocio",
         titulo: "Llevar la sostenibilidad al negocio",
         texto:
           "Ayuda a que Compras, Ventas, Marketing, Comunicación y otras áreas comprendan qué decisiones les corresponden.",
       },
       {
+        icono: "continuidad",
         titulo: "Dar continuidad al aprendizaje",
         texto:
           "Los contenidos pueden acompañar un proceso de consultoría, preparar a las personas antes de un taller o reforzar lo aprendido después de una sesión en vivo.",
       },
       {
+        icono: "seguimiento",
         titulo: "Dar seguimiento al avance",
         texto:
           "Dependiendo del programa, es posible conocer participación, progreso y resultados de evaluaciones de aprendizaje.",
       },
-    ],
+    ] satisfies { icono: IconoUso; titulo: string; texto: string }[],
   },
 
   programa: {
@@ -341,6 +406,15 @@ export const UNIVERSIDAD = {
         "En los programas corporativos podemos dar seguimiento a indicadores de participación y avance. Dependiendo del diseño, también pueden incorporarse evaluaciones de aprendizaje y reportes.",
       ],
     },
+  ],
+
+  /** Cifras de refuerzo, las mismas de Nosotros: salen del documento de
+   *  credenciales 2026 del cliente, no del brochure del curso, que traía
+   *  cifras anteriores (150 empresas, 500 proyectos). Si cambian, se cambian
+   *  en las dos páginas. */
+  cifras: [
+    { valor: "+200", etiqueta: "empresas acompañadas" },
+    { valor: "+600", etiqueta: "proyectos de consultoría y capacitación" },
   ],
 
   cta: {

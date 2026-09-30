@@ -11,6 +11,8 @@ import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
 import { ProcesoPasos } from "@/components/servicio/proceso-pasos";
 import { PestanasVerticales } from "@/components/servicio/pestanas-verticales";
+import { InfografiaResilio } from "@/components/servicio/infografia-resilio";
+import { ICONOS_USOS } from "@/components/servicio/iconos-universidad";
 import {
   UNIVERSIDAD,
   type TarjetaUniversidad,
@@ -114,7 +116,16 @@ function paraRejilla(texto: string): string {
   return limpio.charAt(0).toUpperCase() + limpio.slice(1);
 }
 
-/** Rejilla de tarjetas de tres: una columna en móvil, tres desde lg. */
+/**
+ * Rejilla de tarjetas de tres: una columna en móvil, tres desde lg.
+ *
+ * items-start: cada tarjeta mide lo que pide su contenido, sin estirarse a la
+ * más alta de la fila.
+ *
+ * El filete superior y las viñetas van en lavanda, el color del cuadrante
+ * «¿Cómo lo hago?» al que pertenece el servicio, igual que en la rueda y en
+ * /servicio/. El magenta queda para los botones.
+ */
 function Tarjetas({
   tarjetas,
   fondo,
@@ -123,12 +134,19 @@ function Tarjetas({
   fondo: "bg-white" | "bg-off-white";
 }) {
   return (
-    <div className="mt-10 grid gap-6 lg:grid-cols-3">
+    <div className="mt-10 grid items-start gap-6 lg:grid-cols-3">
       {tarjetas.map((tarjeta) => (
         <article
           key={tarjeta.titulo}
-          className={`rounded border-t-2 border-magenta ${fondo} p-8`}
+          className={`rounded border-t-2 border-lavanda ${fondo} p-8`}
         >
+          {/* Navy sobre lavanda al 15 % y no texto lavanda: a este cuerpo el
+              lavanda sobre blanco no llega al contraste mínimo. */}
+          {tarjeta.rotulo ? (
+            <p className="font-head mb-3 inline-block rounded-full bg-lavanda/15 px-3 py-1 text-[0.72rem] font-semibold tracking-[0.08em] text-navy uppercase">
+              {tarjeta.rotulo}
+            </p>
+          ) : null}
           <h3 className="font-head text-[1.15rem] font-semibold text-navy">
             {tarjeta.titulo}
           </h3>
@@ -152,7 +170,7 @@ function Tarjetas({
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-magenta"
+                      className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-lavanda"
                     />
                     <span>
                       {elemento.etiqueta ? (
@@ -340,6 +358,7 @@ export default function UniversidadResponsablePage() {
               {contenidoBase.intro}
             </p>
             <Tarjetas tarjetas={contenidoBase.tarjetas} fondo="bg-white" />
+            <InfografiaResilio {...UNIVERSIDAD.resilio} />
           </div>
         </section>
 
@@ -361,7 +380,9 @@ export default function UniversidadResponsablePage() {
         <section
           id="para-que-sirve"
           aria-labelledby="para-que-sirve-title"
-          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+          /* Fondo lavanda suave: la sección de la página que más se asocia al
+             cuadrante, y la que rompe la alternancia blanco/off-white. */
+          className="scroll-mt-36 bg-lavanda/10 py-[var(--section-y)]"
         >
           <div className={CONTENEDOR}>
             <h2 id="para-que-sirve-title" className={CLASE_H2}>
@@ -369,8 +390,12 @@ export default function UniversidadResponsablePage() {
             </h2>
             <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {paraQueSirve.usos.map((uso) => (
-                <li key={uso.titulo} className="rounded bg-white p-8">
-                  <h3 className="font-head text-[1.15rem] font-semibold text-navy">
+                <li
+                  key={uso.titulo}
+                  className="rounded border-t-2 border-lavanda bg-white p-8"
+                >
+                  {ICONOS_USOS[uso.icono]("size-7 text-lavanda")}
+                  <h3 className="font-head mt-4 text-[1.15rem] font-semibold text-navy">
                     {uso.titulo}
                   </h3>
                   <p className="font-body mt-3 text-ink-soft">{uso.texto}</p>
@@ -486,6 +511,35 @@ export default function UniversidadResponsablePage() {
             <div className="mx-auto mt-10 max-w-3xl">
               <Faq items={preguntas} />
             </div>
+          </div>
+        </section>
+
+        {/* ------------------------------- CIFRAS ------------------------------ */}
+        {/* Refuerzo antes del cierre, en lugar de la banda de logos: el
+            documento no nombra clientes. Mismo tratamiento que la banda de
+            cifras de Nosotros, con el acento lavanda de la página. */}
+        <section
+          aria-label="ResponSable en cifras"
+          className="py-[var(--section-y)]"
+        >
+          <div className={CONTENEDOR}>
+            <dl className="mx-auto grid max-w-3xl gap-10 text-center sm:grid-cols-2 sm:gap-0">
+              {UNIVERSIDAD.cifras.map((cifra) => (
+                <div
+                  key={cifra.valor}
+                  /* flex-col-reverse: la etiqueta va antes en el DOM, como
+                     pide <dt>/<dd>, y la cifra se pinta encima. */
+                  className="flex flex-col-reverse border-lavanda/40 px-6 not-first:sm:border-l"
+                >
+                  <dt className="font-body mt-3 text-ink-soft">
+                    {cifra.etiqueta}
+                  </dt>
+                  <dd className="font-head text-[clamp(2.6rem,7vw,3.8rem)] leading-none font-semibold text-navy">
+                    {cifra.valor}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 

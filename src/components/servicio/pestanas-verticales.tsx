@@ -78,7 +78,7 @@ export function PestanasVerticales({ grupos }: { grupos: GrupoPestana[] }) {
           id={`${baseId}-panel-${indice}`}
           aria-labelledby={`${baseId}-tab-${indice}`}
           hidden={indice !== activa}
-          className="rounded border-t-2 border-magenta bg-off-white p-8"
+          className="rounded border-t-2 border-lavanda bg-off-white p-8"
         >
           <ul className="flex flex-col gap-3">
             {grupo.elementos.map((elemento) => (
@@ -88,7 +88,7 @@ export function PestanasVerticales({ grupos }: { grupos: GrupoPestana[] }) {
               >
                 <span
                   aria-hidden="true"
-                  className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-magenta"
+                  className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-lavanda"
                 />
                 {elemento}
               </li>
