@@ -66,6 +66,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      // Mismo caso que Doble Materialidad: ruta estática propia.
+      url: `${BASE}/servicio/universidad-responsable/`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${BASE}/casos-de-exito/`,
       lastModified: new Date(),
       changeFrequency: "monthly",

@@ -289,10 +289,10 @@ export const CUADRANTES: Cuadrante[] = [
         href: "/servicio/cursos-talleres-para-empresas/",
       },
       {
-        /* Sin href: todavía no tiene página. Su URL del WordPress,
-           /servicio/cursos-online-universidad-responsable/, redirige de forma
-           provisional a cursos y talleres (ver next.config.ts) hasta que se
-           publique. Descripción y viñetas verbatim, aprobadas por el cliente. */
+        /* Página con ruta estática propia. Su URL del WordPress,
+           /servicio/cursos-online-universidad-responsable/, redirige a ella
+           (ver next.config.ts). Descripción y viñetas verbatim, aprobadas por
+           el cliente. */
         nombre: "E-learning en sostenibilidad: Universidad ResponSable",
         descripcion:
           "Formación en línea para desarrollar capacidades en sostenibilidad de forma flexible y escalable. Convertimos nuestra experiencia de consultoría en cursos prácticos para equipos de sostenibilidad, áreas clave y cadena de valor. Sirven para incorporar nuevas personas, actualizar conocimientos y profesionalizar la gestión sin depender siempre de capacitaciones en vivo.",
@@ -303,6 +303,7 @@ export const CUADRANTES: Cuadrante[] = [
           "Una solución costo-eficiente para capacitar equipos y cadenas de valor",
           "Opción de mentoría con consultores para resolver dudas y aterrizar lo aprendido a la realidad de la empresa",
         ],
+        href: "/servicio/universidad-responsable/",
       },
       {
         nombre: "Sostenibilidad en Cadena de Valor",

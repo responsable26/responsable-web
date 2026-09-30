@@ -172,6 +172,7 @@ const TESTIMONIOS: Record<string, readonly Testimonio[]> = {
 const RUTAS_SERVICIO = new Set([
   ...CONTENIDO_SERVICIOS.map((servicio) => servicio.slug),
   "estudio-doble-materialidad",
+  "universidad-responsable",
 ]);
 for (const slug of Object.keys(TESTIMONIOS)) {
   if (!RUTAS_SERVICIO.has(slug)) {

@@ -22,8 +22,11 @@ const MAXIMO = 6;
  */
 export function TestimoniosServicio({
   testimonios,
+  titulo = "Lo que dicen quienes ya lo hicieron",
 }: {
   testimonios: readonly Testimonio[];
+  /** Titular propio de la página, cuando su documento lo trae. */
+  titulo?: string;
 }) {
   if (testimonios.length === 0) return null;
 
@@ -42,7 +45,7 @@ export function TestimoniosServicio({
           id="testimonios-title"
           className="font-head mt-2 max-w-[20ch] text-[clamp(1.6rem,4vw,2.05rem)] font-semibold text-navy"
         >
-          Lo que dicen quienes ya lo hicieron
+          {titulo}
         </h2>
 
         <RejillaTestimonios testimonios={testimonios.slice(0, MAXIMO)} />

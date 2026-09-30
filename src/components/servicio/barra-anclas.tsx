@@ -99,8 +99,16 @@ export function BarraAnclas({ anclas }: { anclas: readonly Ancla[] }) {
            y el p-1.5 de la pastilla. Sobre 576px quedaban 16px, y mientras la
            webfont carga se compone con la de respaldo, de métricas parecidas
            pero no idénticas: con ese margen podía asomar la barra de
-           desplazamiento durante ese intervalo. Con 608px sobran 48px. */
-        className="pointer-events-auto mx-auto max-w-[38rem] overflow-x-auto rounded-full bg-white p-1.5 shadow-sm"
+           desplazamiento durante ese intervalo. Con 608px sobran 48px.
+
+           Ese ancho es un mínimo, no un tope: w-fit deja crecer la pastilla
+           cuando las etiquetas de una página suman más, en vez de mostrar la
+           barra de desplazamiento, y max-w-full la contiene en el ancho de la
+           ventana. Las páginas que caben en 608px no cambian: la pastilla se
+           queda en ese ancho y las pestañas se lo reparten como antes. El
+           min() mantiene el comportamiento de siempre en ventanas más
+           estrechas que 608px. */
+        className="pointer-events-auto mx-auto w-fit max-w-full min-w-[min(38rem,100%)] overflow-x-auto rounded-full bg-white p-1.5 shadow-sm"
       >
         <ul className="flex items-center gap-1">
           {anclas.map((ancla, index) => {

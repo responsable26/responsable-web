@@ -134,19 +134,15 @@ const nextConfig: NextConfig = {
       { source: '/comunicacion-en-rse/', destination: '/servicio/estrategia-de-comunicacion-en-sostenibilidad/', permanent: true },
       { source: '/estrategia-de-comunicacion-en-rse/', destination: '/servicio/estrategia-de-comunicacion-en-sostenibilidad/', permanent: true },
       { source: '/cursos-y-talleres-de-rse-en-mexico/', destination: '/servicio/cursos-talleres-para-empresas/', permanent: true },
-      /* PROVISIONAL. Esta URL es la del servicio de formación en línea
-         "E-learning en sostenibilidad: Universidad ResponSable". El servicio
-         ya existe en el catálogo (CUADRANTES, sin href), pero todavía no tiene
-         página: no está en contenido-servicios.ts, así que sin este redirect
-         su ruta serviría un 404 pese a seguir recibiendo tráfico en Search
-         Console. Va al servicio de formación vivo, que es el destino más
-         cercano, no porque sean el mismo servicio. RETIRAR en el mismo cambio
-         en que se publique la página del servicio: a partir de ahí este
-         redirect la secuestraría.
+      /* URL de WordPress de "E-learning en sostenibilidad: Universidad
+         ResponSable". La página nueva no reutiliza este slug a propósito:
+         «cursos online» competía por la misma palabra clave que Cursos y
+         talleres, y el cliente quiere separarlos. El 301 traslada la
+         autoridad a /servicio/universidad-responsable/.
 
          Es además el único origen de esta lista que ya cuelga de /servicio/,
          porque en el WordPress esa página vivía bajo ese mismo prefijo. */
-      { source: '/servicio/cursos-online-universidad-responsable/', destination: '/servicio/cursos-talleres-para-empresas/', permanent: true },
+      { source: '/servicio/cursos-online-universidad-responsable/', destination: '/servicio/universidad-responsable/', permanent: true },
       { source: '/diagnostico-sostenibilidad/', destination: '/servicio/diagnostico-de-sostenibilidad/', permanent: true },
       { source: '/estrategia-de-sostenibilidad-y-rse/', destination: '/servicio/estrategia-sostenibilidad/', permanent: true },
       /* La excepción a la regla de arriba: Estudio de Doble Materialidad no
