@@ -496,21 +496,36 @@ export default function EstudioDobleMaterialidadPage() {
           id="faq"
           aria-labelledby="faq-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+          /* Fondo blanco y tarjetas off-white: con la sección off-white y
+             las tarjetas blancas, cada pregunta se confundía con el fondo. De
+             paso deja de ir pegada a Testimonios, que también es off-white. */
+          className="scroll-mt-36 bg-white py-[var(--section-y)]"
         >
-          <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
-            <p className="font-head text-center text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
-              Dudas habituales
-            </p>
-            <h2
-              id="faq-title"
-              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
-            >
-              Preguntas frecuentes
-            </h2>
+          {/* Dos columnas desde lg, como los demás bloques de texto del
+              sitio: presentación a la izquierda, acordeón a la derecha. El
+              layout vive aquí y no en Faq, así que las páginas que centran la
+              sección no cambian. */}
+          <div className="mx-auto grid max-w-[var(--container)] gap-[clamp(2rem,5vw,4rem)] px-[clamp(1rem,4vw,2rem)] lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+            <div>
+              <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
+                Dudas habituales
+              </p>
+              <h2
+                id="faq-title"
+                className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
+              >
+                Preguntas frecuentes
+              </h2>
+              {/* Redactado por nosotros, no viene del documento; aprobado. */}
+              <p className="font-body mt-4 text-[1.05rem] text-ink-soft">
+                Reunimos las dudas más habituales sobre el estudio de doble
+                materialidad: qué es, qué alcance conviene y qué recibe su
+                empresa al final. Si la suya no está aquí, contáctenos.
+              </p>
+            </div>
 
-            <div className="mx-auto mt-10 max-w-3xl">
-              <Faq items={FAQ_ITEMS} />
+            <div>
+              <Faq items={FAQ_ITEMS} fondoTarjeta="bg-off-white" />
             </div>
           </div>
         </section>

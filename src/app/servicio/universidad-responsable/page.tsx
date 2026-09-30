@@ -495,7 +495,10 @@ export default function UniversidadResponsablePage() {
         <section
           id="faq"
           aria-labelledby="faq-title"
-          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+          /* Fondo blanco y tarjetas off-white, como en Doble Materialidad: con
+             la sección off-white y las tarjetas blancas, cada pregunta se
+             confundía con el fondo. */
+          className="scroll-mt-36 bg-white py-[var(--section-y)]"
         >
           <div className={CONTENEDOR}>
             <p className="font-head text-center text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
@@ -509,7 +512,7 @@ export default function UniversidadResponsablePage() {
             </h2>
 
             <div className="mx-auto mt-10 max-w-3xl">
-              <Faq items={preguntas} />
+              <Faq items={preguntas} fondoTarjeta="bg-off-white" />
             </div>
           </div>
         </section>

@@ -20,10 +20,14 @@ export type FaqItem = {
 export function Faq({
   items,
   abiertoInicial = null,
+  fondoTarjeta = "bg-white",
 }: {
   items: FaqItem[];
   /** Índice del elemento que empieza abierto. Por defecto, todos cerrados. */
   abiertoInicial?: number | null;
+  /** Fondo de cada pregunta. Blanco por defecto, sobre secciones off-white;
+   *  off-white cuando la sección es blanca, para que la tarjeta se distinga. */
+  fondoTarjeta?: "bg-white" | "bg-off-white";
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(abiertoInicial);
   const baseId = useId();
@@ -38,7 +42,7 @@ export function Faq({
         return (
           <div
             key={item.question}
-            className="overflow-hidden rounded-sm border border-border bg-white"
+            className={`overflow-hidden rounded-sm border border-border ${fondoTarjeta}`}
           >
             <h3 className="m-0">
               <button

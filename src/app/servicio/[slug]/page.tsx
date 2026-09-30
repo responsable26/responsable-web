@@ -482,7 +482,10 @@ export default async function ServicioPage(
           id="faq"
           aria-labelledby="faq-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+          /* Fondo blanco y tarjetas off-white, como en Doble Materialidad: con
+             la sección off-white y las tarjetas blancas, cada pregunta se
+             confundía con el fondo. */
+          className="scroll-mt-36 bg-white py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <p className="font-head text-center text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
@@ -496,7 +499,7 @@ export default async function ServicioPage(
             </h2>
 
             <div className="mx-auto mt-10 max-w-3xl">
-              <Faq items={preguntas} />
+              <Faq items={preguntas} fondoTarjeta="bg-off-white" />
             </div>
           </div>
         </section>
