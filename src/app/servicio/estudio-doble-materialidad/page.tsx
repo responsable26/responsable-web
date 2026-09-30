@@ -434,7 +434,7 @@ export default function EstudioDobleMaterialidadPage() {
             </div>
 
             <BeneficiosCarousel
-              title="6 Beneficios que Habilitas con la Doble Materialidad"
+              title="6 Beneficios que Habilita con la Doble Materialidad"
               items={BENEFICIOS}
             />
           </div>
