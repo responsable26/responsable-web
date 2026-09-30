@@ -68,7 +68,8 @@ CAB = '''/**
  * control de cada documento, la fila de instrucciones de las tablas, la nota de
  * redacción de Acompañamiento y las imágenes sueltas del final, elegir la
  * VERSION CORTA donde el documento ofrecía alternativas, corregir dos erratas
- * puntuales y convertir el copy a tratamiento de usted—.
+ * puntuales, aplicar los textos que el cliente aprobó después de entregar los
+ * documentos y convertir el copy a tratamiento de usted—.
  *
  * NO EDITE ESTE ARCHIVO A MANO. Es generado: cualquier corrección se pierde en
  * cuanto alguien vuelva a extraer los .docx. Los documentos originales están en

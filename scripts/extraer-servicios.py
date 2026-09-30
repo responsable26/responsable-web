@@ -25,7 +25,9 @@ la conversión es parte de la extracción y sobrevive a repetirla.
 Se aplica en tres capas, en este orden:
 
   1. ERRATAS         — erratas puntuales confirmadas con André.
-  2. USTED_FRASES    — sustitución de la cadena completa. Es la capa para todo
+     APROBADOS       — textos que el cliente cambió después de entregar los
+                       .docx. Mismo mecanismo que ERRATAS: cadena completa.
+  2. USTED_FRASES   — sustitución de la cadena completa. Es la capa para todo
                        lo que exige cambiar una forma verbal, porque el mismo
                        verbo puede ser imperativo dirigido al lector («Evalúa tu
                        madurez») o tercera persona describiendo el servicio
@@ -256,9 +258,33 @@ ERRATAS = {
         "Demuestra impacto con evidencia defendible",
 }
 
+# Textos aprobados después de la entrega de los .docx. Estaban corregidos a mano
+# en contenido-servicios.ts y se perdían al volver a extraer; viven aquí para
+# que sobrevivan. Si un .docx nuevo ya los trae, la entrada deja de casar y no
+# hace nada.
+APROBADOS = {
+    # Cursos y talleres: viñetas del hero (commit ce7e618).
+    "Contenido adaptado a cada nivel jerárquico":
+        "Contenido por nivel y reto, no un temario genérico",
+    "Formatos desde sensibilización hasta programas aplicados":
+        "De la sensibilización a programas llevados a la práctica",
+    # Cursos y talleres: cifra según credenciales 2026 (commit 43092ab).
+    "Nuestros facilitadores también asesoran proyectos reales de sostenibilidad. "
+    "Los contenidos parten de la experiencia acompañando a más de 150 empresas "
+    "de distintos sectores y tamaños. Por eso conectamos los conceptos con casos "
+    "de negocio, decisiones, riesgos y situaciones observadas en la práctica, "
+    "utilizando un lenguaje adecuado para cada audiencia.":
+        "Nuestros facilitadores también asesoran proyectos reales de sostenibilidad. "
+        "Los contenidos parten de la experiencia acompañando a más de 200 empresas "
+        "de distintos sectores y tamaños. Por eso conectamos los conceptos con casos "
+        "de negocio, decisiones, riesgos y situaciones observadas en la práctica, "
+        "utilizando un lenguaje adecuado para cada audiencia.",
+}
+
 # ── Capa 2: cadenas completas que exigen cambiar formas verbales ─────────────
 # Frases redactadas de nuevo porque en usted no funcionaban traducidas.
-REESCRITOS = {"Dale norte a tu sostenibilidad"}
+REESCRITOS = {"Dale norte a tu sostenibilidad",
+              "Documenta mejor prácticas que ya existen"}
 
 USTED_FRASES = {
     # Informe de sostenibilidad
@@ -269,6 +295,14 @@ USTED_FRASES = {
     # Acompañamiento en sostenibilidad
     "Avanza tu agenda de sostenibilidad con apoyo experto":
         "Avance su agenda de sostenibilidad con apoyo experto",
+    "Ordena prioridades y proyectos de sostenibilidad":
+        "Ordene prioridades y proyectos de sostenibilidad",
+    "Avanza tareas puntuales sin contratar cada proyecto por separado":
+        "Avance tareas puntuales sin contratar cada proyecto por separado",
+    "Recibe guía experta, seguimiento y retroalimentación":
+        "Reciba guía experta, seguimiento y retroalimentación",
+    "Adapta el acompañamiento por horas, periodo o iguala mensual":
+        "Adapte el acompañamiento por horas, periodo o iguala mensual",
     # Diagnóstico ISO 26000
     "Evalúa tu madurez con ISO 26000":
         "Evalúe su madurez con ISO 26000",
@@ -298,13 +332,31 @@ USTED_FRASES = {
     # Cursos y talleres
     "Activa hoy las capacidades que tu estrategia de sostenibilidad necesita":
         "Active hoy las capacidades que su estrategia de sostenibilidad necesita",
+    "Desarrolla capacidades según cada área y nivel jerárquico":
+        "Desarrolle capacidades según cada área y nivel jerárquico",
+    "Alinea funciones, mejora conversaciones y reduce fricciones internas":
+        "Alinee funciones, mejore conversaciones y reduzca fricciones internas",
     # Distintivo ESR
     "Postula con claridad, evidencia y control":
         "Postule con claridad, evidencia y control",
-    # «Fortalece» se queda en tercera persona: el sujeto es el servicio, no el
-    # lector. Solo cambia «postulas», que sí va dirigido a él.
     "Fortalece la gestión de la RSE mientras postulas":
-        "Fortalece la gestión de la RSE mientras postula",
+        "Fortalezca la gestión de la RSE mientras postula",
+    "Ordena la postulación al Distintivo ESR":
+        "Ordene la postulación al Distintivo ESR",
+    "Involucra a las áreas y fortalece la gestión":
+        "Involucre a las áreas y fortalezca la gestión",
+    "Reduce retrabajos y convierte cada evidencia en una ruta de mejora":
+        "Reduzca retrabajos y convierta cada evidencia en una ruta de mejora",
+    "Elige cuánto acompañamiento y trabajo delegar":
+        "Elija cuánto acompañamiento y trabajo delegar",
+    "Coordina áreas, responsables y fechas":
+        "Coordine áreas, responsables y fechas",
+    # REESCRITO: además del imperativo, «Documenta mejor prácticas» pasa a
+    # «Documente las mejores prácticas», redacción indicada por el cliente.
+    "Documenta mejor prácticas que ya existen":
+        "Documente las mejores prácticas que ya existen",
+    "Reduce retrabajos y carga para sostenibilidad":
+        "Reduzca retrabajos y carga para sostenibilidad",
     "Logra una postulación ordenada, bien sustentada y adaptada al nivel de "
     "apoyo que tu empresa necesita.":
         "Logre una postulación ordenada, bien sustentada y adaptada al nivel de "
@@ -368,6 +420,7 @@ RESIDUO = re.compile(
 
 def a_usted(texto):
     texto = ERRATAS.get(texto, texto)
+    texto = APROBADOS.get(texto, texto)
     if texto in USTED_FRASES:
         return USTED_FRASES[texto]
     for patron, reemplazo in USTED_PALABRAS:

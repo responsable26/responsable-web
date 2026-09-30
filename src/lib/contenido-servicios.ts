@@ -7,7 +7,8 @@
  * control de cada documento, la fila de instrucciones de las tablas, la nota de
  * redacción de Acompañamiento y las imágenes sueltas del final, elegir la
  * VERSION CORTA donde el documento ofrecía alternativas, corregir dos erratas
- * puntuales y convertir el copy a tratamiento de usted—.
+ * puntuales, aplicar los textos que el cliente aprobó después de entregar los
+ * documentos y convertir el copy a tratamiento de usted—.
  *
  * NO EDITE ESTE ARCHIVO A MANO. Es generado: cualquier corrección se pierde en
  * cuanto alguien vuelva a extraer los .docx. Los documentos originales están en
@@ -676,24 +677,24 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
         "ResponSable le ayuda a postular al Distintivo ESR sin convertir el proceso en una persecución de documentos. Definimos responsabilidades, ordenamos evidencias y ajustamos el apoyo a la capacidad de su equipo, desde capacitación hasta gestión integral. Así reduce retrabajos, fortalece la documentación de prácticas reales y aprovecha la postulación para profesionalizar su gestión.",
       ],
       puntos: [
-        "Elige cuánto acompañamiento y trabajo delegar",
-        "Coordina áreas, responsables y fechas",
-        "Documenta mejor prácticas que ya existen",
-        "Reduce retrabajos y carga para sostenibilidad",
+        "Elija cuánto acompañamiento y trabajo delegar",
+        "Coordine áreas, responsables y fechas",
+        "Documente las mejores prácticas que ya existen",
+        "Reduzca retrabajos y carga para sostenibilidad",
       ],
     },
     paraQueSirve: {
-      titulo: "Ordena la postulación al Distintivo ESR",
-      subtitulo: "Involucra a las áreas y fortalece la gestión",
+      titulo: "Ordene la postulación al Distintivo ESR",
+      subtitulo: "Involucre a las áreas y fortalezca la gestión",
       descripcion: [
         "El Distintivo ESR permite revisar de forma integral cómo la empresa define, implementa, documenta y da seguimiento a sus prácticas ambientales, sociales y de gobernanza. La postulación al reconocimiento del CEMEFI ayuda a reconocer fortalezas, identificar oportunidades de mejora y demostrar que la responsabilidad social se construye desde distintas áreas y procesos de la organización.",
         "ResponSable inicia el proyecto con un kickoff que capacita y alinea a las áreas alrededor de un objetivo común. Aclaramos qué solicita cada indicador, qué debe aportar cada responsable y cómo organizar tiempos y evidencias. Así, el área encargada de sostenibilidad deja de perseguir documentos, gana control sobre el proceso y promueve una colaboración más efectiva.",
       ],
     },
     beneficios: {
-      titulo: "Fortalece la gestión de la RSE mientras postula",
+      titulo: "Fortalezca la gestión de la RSE mientras postula",
       subtitulo:
-        "Reduce retrabajos y convierte cada evidencia en una ruta de mejora",
+        "Reduzca retrabajos y convierta cada evidencia en una ruta de mejora",
       descripcion: [
         "La empresa no solo integra un expediente más sólido. También obtiene una visión clara de qué prácticas ya están consolidadas, cuáles necesitan documentarse mejor y dónde existen brechas que requieren atención. Esto permite enfocar esfuerzos, reducir retrabajos y dar continuidad a la gestión durante el año.",
         "Para ResponSable, el Distintivo ESR no es el punto final. Al cerrar la postulación, entregamos un diagnóstico con fortalezas, áreas de mejora y recomendaciones para fortalecer la gestión de sostenibilidad y llegar mejor preparados al siguiente ciclo. Así, el reconocimiento se convierte en una herramienta para decidir qué mejorar, no en un ejercicio aislado.",
@@ -798,7 +799,7 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
     },
     paraQueSirve: {
       titulo: "Capacitación corporativa en sostenibilidad",
-      subtitulo: "Desarrolla capacidades según cada área y nivel jerárquico",
+      subtitulo: "Desarrolle capacidades según cada área y nivel jerárquico",
       descripcion: [
         "La sostenibilidad avanza con mayor claridad y coordinación cuando el Consejo sabe qué preguntas hacer para supervisar riesgos y oportunidades, el Comité alinea áreas y da seguimiento a las prioridades, el área de sostenibilidad gestiona con mayor método y criterio, y cada función integra la sostenibilidad en las decisiones que le corresponden.",
         "Para lograrlo, cada audiencia necesita una capacitación diferente. Adaptamos el vocabulario, la profundidad y los ejemplos a las responsabilidades de los participantes, e incorporamos casos de negocio del sector y situaciones de sus propias áreas. Así, los conceptos se vuelven relevantes, comprensibles y aplicables a la realidad de la empresa, fortaleciendo su capacidad para decidir, coordinarse y avanzar.",
@@ -807,7 +808,7 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
     beneficios: {
       titulo: "Más capacidad para gestionar la sostenibilidad",
       subtitulo:
-        "Alinea funciones, mejora conversaciones y reduce fricciones internas",
+        "Alinee funciones, mejore conversaciones y reduzca fricciones internas",
       descripcion: [
         "Una capacitación bien diseñada ayuda a construir un lenguaje común, aclarar responsabilidades y formular mejores preguntas sobre sostenibilidad. Esto reduce interpretaciones distintas, facilita conversaciones más productivas y mejora la coordinación entre quienes deben supervisar, decidir, gestionar o implementar.",
         "Según el objetivo y la audiencia, incorporamos casos de negocio, referentes sectoriales, ejemplos de las propias áreas y ejercicios adaptados. Estos recursos permiten conectar los conceptos con la realidad de la empresa, comparar enfoques y comprender mejor cómo aplicar la sostenibilidad desde cada función.",
@@ -902,10 +903,10 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
         "El objetivo es que el área gane capacidad sin aumentar estructura fija, sin contratar cada necesidad como un proyecto separado y sin avanzar sola en temas que pueden afectar la calidad de sus decisiones, su credibilidad interna o el cumplimiento de sus compromisos.",
       ],
       puntos: [
-        "Ordena prioridades y proyectos de sostenibilidad",
-        "Avanza tareas puntuales sin contratar cada proyecto por separado",
-        "Recibe guía experta, seguimiento y retroalimentación",
-        "Adapta el acompañamiento por horas, periodo o iguala mensual",
+        "Ordene prioridades y proyectos de sostenibilidad",
+        "Avance tareas puntuales sin contratar cada proyecto por separado",
+        "Reciba guía experta, seguimiento y retroalimentación",
+        "Adapte el acompañamiento por horas, periodo o iguala mensual",
       ],
     },
     paraQueSirve: {
