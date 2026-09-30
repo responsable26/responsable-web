@@ -194,19 +194,43 @@ export const UNIVERSIDAD = {
     titulo: "¿Qué puede incluir un programa?",
     intro:
       "Según el objetivo y el alcance acordado, una solución puede incorporar:",
-    elementos: [
-      "cursos y rutas de aprendizaje;",
-      "selección o liberación progresiva de contenidos;",
-      "ejemplos y casos sectoriales;",
-      "videos, políticas y materiales de la empresa;",
-      "evaluaciones de aprendizaje;",
-      "seguimiento de participación y avance;",
-      "reconocimientos digitales;",
-      "webinars y sesiones de preguntas y respuestas;",
-      "mentorías;",
-      "comunicación para impulsar la participación;",
-      "reportes;",
-      "elementos de identidad de la empresa.",
+    /*
+      Los doce elementos del documento, en su texto literal, repartidos en
+      tres grupos. PROPUESTA: los nombres de grupo y el reparto son una
+      clasificación nuestra, no vienen en el documento, y están pendientes de
+      revisión por Gwenaelle. El documento los trae como una sola lista
+      corrida, en este orden: los cuatro de Contenido, evaluaciones,
+      seguimiento, reconocimientos, webinars, mentorías, comunicación,
+      reportes e identidad.
+    */
+    grupos: [
+      {
+        titulo: "Contenido",
+        elementos: [
+          "cursos y rutas de aprendizaje;",
+          "selección o liberación progresiva de contenidos;",
+          "ejemplos y casos sectoriales;",
+          "videos, políticas y materiales de la empresa;",
+        ],
+      },
+      {
+        titulo: "Evaluación y seguimiento",
+        elementos: [
+          "evaluaciones de aprendizaje;",
+          "seguimiento de participación y avance;",
+          "reconocimientos digitales;",
+          "reportes;",
+        ],
+      },
+      {
+        titulo: "Acompañamiento",
+        elementos: [
+          "webinars y sesiones de preguntas y respuestas;",
+          "mentorías;",
+          "comunicación para impulsar la participación;",
+          "elementos de identidad de la empresa.",
+        ],
+      },
     ],
     cierre:
       "Estas funcionalidades no se incluyen automáticamente en todos los programas. Se seleccionan de acuerdo con la audiencia, los objetivos y el nivel de acompañamiento requerido.",

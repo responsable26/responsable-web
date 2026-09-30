@@ -17,8 +17,15 @@ export type FaqItem = {
  * that rotates 45° into an "×" when open, and an answer that collapses via
  * grid-template-rows (no JS height measurement).
  */
-export function Faq({ items }: { items: FaqItem[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+export function Faq({
+  items,
+  abiertoInicial = null,
+}: {
+  items: FaqItem[];
+  /** Índice del elemento que empieza abierto. Por defecto, todos cerrados. */
+  abiertoInicial?: number | null;
+}) {
+  const [openIndex, setOpenIndex] = useState<number | null>(abiertoInicial);
   const baseId = useId();
 
   return (

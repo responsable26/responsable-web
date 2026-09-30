@@ -10,6 +10,7 @@ import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
 import { ProcesoPasos } from "@/components/servicio/proceso-pasos";
+import { PestanasVerticales } from "@/components/servicio/pestanas-verticales";
 import {
   UNIVERSIDAD,
   type TarjetaUniversidad,
@@ -101,9 +102,10 @@ function BloqueDosColumnas({
 }
 
 /**
- * Un elemento de lista del documento, preparado para pintarse en rejilla:
- * mayúscula inicial y sin la puntuación final («;», «.»). En una rejilla cada
- * casilla se lee suelta y el punto y coma de la enumeración corrida sobra. El
+ * Un elemento de lista del documento, preparado para pintarse suelto —en las
+ * pestañas y el acordeón de «¿Qué puede incluir un programa?»—: mayúscula
+ * inicial y sin la puntuación final («;», «.»). Cada elemento se lee aparte y
+ * el punto y coma de la enumeración corrida sobra. El
  * dato conserva el texto del documento; esto es solo presentación. Las listas
  * corridas de las tarjetas no pasan por aquí y mantienen su puntuación.
  */
@@ -184,6 +186,11 @@ export default function UniversidadResponsablePage() {
     faq,
     cta,
   } = UNIVERSIDAD;
+
+  const gruposPrograma = programa.grupos.map((grupo) => ({
+    titulo: grupo.titulo,
+    elementos: grupo.elementos.map(paraRejilla),
+  }));
 
   const testimonios = testimoniosDe(UNIVERSIDAD.slug);
   const anclas = [
@@ -379,29 +386,39 @@ export default function UniversidadResponsablePage() {
           className="py-[var(--section-y)]"
         >
           <div className={CONTENEDOR}>
-            <h2 id="programa-title" className={CLASE_H2}>
-              {programa.titulo}
-            </h2>
-            <p className={`${CLASE_PARRAFO} mt-4 max-w-[717px]`}>
-              {programa.intro}
-            </p>
-            <ul className="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              {programa.elementos.map((elemento) => (
-                <li
-                  key={elemento}
-                  className="font-body flex gap-3 border-t border-border pt-4 text-[1.05rem] text-navy"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-magenta"
+            {/*
+              Dos columnas desde lg: texto a la izquierda, pestañas verticales
+              a la derecha. Por debajo de lg la derecha no deja sitio a lista y
+              panel lado a lado (unos 380px a 768px), así que el texto va arriba
+              y los mismos grupos bajan como acordeón, con el primero abierto
+              como la primera pestaña. Solo uno de los dos se muestra en cada
+              ancho; el oculto queda en display:none, fuera también del árbol
+              de accesibilidad.
+            */}
+            <div className="grid gap-[clamp(2rem,5vw,4rem)] lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+              <div>
+                <h2 id="programa-title" className={CLASE_H2}>
+                  {programa.titulo}
+                </h2>
+                <p className={`${CLASE_PARRAFO} mt-4`}>{programa.intro}</p>
+                <p className={`${CLASE_PARRAFO} mt-4`}>{programa.cierre}</p>
+              </div>
+
+              <div>
+                <div className="max-lg:hidden">
+                  <PestanasVerticales grupos={gruposPrograma} />
+                </div>
+                <div className="lg:hidden">
+                  <Faq
+                    items={gruposPrograma.map((grupo) => ({
+                      question: grupo.titulo,
+                      answer: grupo.elementos,
+                    }))}
+                    abiertoInicial={0}
                   />
-                  {paraRejilla(elemento)}
-                </li>
-              ))}
-            </ul>
-            <p className={`${CLASE_PARRAFO} mt-8 max-w-[717px]`}>
-              {programa.cierre}
-            </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
