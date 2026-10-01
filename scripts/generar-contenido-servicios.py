@@ -97,9 +97,19 @@ export type PasoProceso = {
   descripcion: string;
 };
 
+export type OpcionRespuesta = {
+  etiqueta: string;
+  texto: string;
+};
+
 export type Pregunta = {
   pregunta: string;
   respuesta: string;
+  /**
+   * La misma respuesta como lista de opciones con etiqueta, cuando el
+   * documento la escribe así. `respuesta` conserva el texto corrido.
+   */
+  lista?: OpcionRespuesta[];
 };
 
 /**
@@ -211,6 +221,11 @@ for archivo, slug, servicio, propuesto in ORDEN:
         out.append("      {\n")
         out.append(f"        pregunta: {s(q['pregunta'])},\n")
         out.append(f"        respuesta: {s(q['respuesta'])},\n")
+        if q.get("lista"):
+            out.append("        lista: [\n")
+            for o in q["lista"]:
+                out.append(f"          {{ etiqueta: {s(o['etiqueta'])}, texto: {s(o['texto'])} }},\n")
+            out.append("        ],\n")
         out.append("      },\n")
     out.append("    ],\n")
     out.append("    cta: {\n")

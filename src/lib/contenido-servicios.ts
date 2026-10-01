@@ -36,9 +36,19 @@ export type PasoProceso = {
   descripcion: string;
 };
 
+export type OpcionRespuesta = {
+  etiqueta: string;
+  texto: string;
+};
+
 export type Pregunta = {
   pregunta: string;
   respuesta: string;
+  /**
+   * La misma respuesta como lista de opciones con etiqueta, cuando el
+   * documento la escribe así. `respuesta` conserva el texto corrido.
+   */
+  lista?: OpcionRespuesta[];
 };
 
 /**
@@ -677,10 +687,10 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
         "ResponSable le ayuda a postular al Distintivo ESR sin convertir el proceso en una persecución de documentos. Definimos responsabilidades, ordenamos evidencias y ajustamos el apoyo a la capacidad de su equipo, desde capacitación hasta gestión integral. Así reduce retrabajos, fortalece la documentación de prácticas reales y aprovecha la postulación para profesionalizar su gestión.",
       ],
       puntos: [
-        "Elija cuánto acompañamiento y trabajo delegar",
-        "Coordine áreas, responsables y fechas",
-        "Documente las mejores prácticas que ya existen",
-        "Reduzca retrabajos y carga para sostenibilidad",
+        "Defina el nivel de acompañamiento, de asesoría a gestión completa",
+        "Coordine áreas, responsables y fechas de la postulación en un solo lugar",
+        "Reutilice evidencias y documentación que ya tiene, sin reconstruirla",
+        "Reduzca el retrabajo y la carga del equipo de sostenibilidad",
       ],
     },
     paraQueSirve: {
@@ -762,6 +772,23 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
         pregunta: "¿Qué acompañamiento para el Distintivo ESR necesito?",
         respuesta:
           "Capacitación: le compartimos nuestro conocimiento y experiencia. Así su equipo coordina, clasifica y carga la postulación con la metodología aprendida. Coach: su equipo opera el proceso y ResponSable aporta metodología, revisa avances, resuelve dudas y orienta decisiones clave. Modalidad integral: ResponSable se hace cargo de la postulación al Distintivo ESR de A hasta Z. Capacita, alinea y da seguimiento a las áreas, coordina la recopilación, clasifica las evidencias, integra el expediente y realiza la carga, mientras la empresa proporciona y valida la información.",
+        lista: [
+          {
+            etiqueta: "Capacitación",
+            texto:
+              "le compartimos nuestro conocimiento y experiencia. Así su equipo coordina, clasifica y carga la postulación con la metodología aprendida.",
+          },
+          {
+            etiqueta: "Coach",
+            texto:
+              "su equipo opera el proceso y ResponSable aporta metodología, revisa avances, resuelve dudas y orienta decisiones clave.",
+          },
+          {
+            etiqueta: "Modalidad integral",
+            texto:
+              "ResponSable se hace cargo de la postulación al Distintivo ESR de A hasta Z. Capacita, alinea y da seguimiento a las áreas, coordina la recopilación, clasifica las evidencias, integra el expediente y realiza la carga, mientras la empresa proporciona y valida la información.",
+          },
+        ],
       },
       {
         pregunta: "¿Por qué elegir a ResponSable para el ESR?",

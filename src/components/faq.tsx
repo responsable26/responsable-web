@@ -7,9 +7,14 @@ export type FaqItem = {
   /**
    * A single paragraph (string), a bullet list when the answer enumerates
    * options (string[]), or several flowing paragraphs with a visual break
-   * between them and no bullets ({ paragraphs: string[] }).
+   * between them and no bullets ({ paragraphs: string[] }), or a bullet list
+   * of options, each led by its label in bold ({ options: [...] }).
    */
-  answer: string | string[] | { paragraphs: string[] };
+  answer:
+    | string
+    | string[]
+    | { paragraphs: string[] }
+    | { options: { label: string; text: string }[] };
 };
 
 /**
@@ -82,6 +87,18 @@ export function Faq({
                         <li key={line}>{line}</li>
                       ))}
                     </ul>
+                  ) : typeof item.answer === "object" &&
+                    "options" in item.answer ? (
+                    <ul className="flex list-disc flex-col gap-2 pl-5">
+                      {item.answer.options.map((option) => (
+                        <li key={option.label}>
+                          <strong className="font-semibold text-navy">
+                            {option.label}:
+                          </strong>{" "}
+                          {option.text}
+                        </li>
+                      ))}
+                    </ul>
                   ) : typeof item.answer === "object" ? (
                     <div className="flex flex-col gap-3">
                       {item.answer.paragraphs.map((paragraph) => (
@@ -114,9 +131,13 @@ export function FaqJsonLd({ items }: { items: FaqItem[] }): ReactNode {
         "@type": "Answer",
         text: Array.isArray(item.answer)
           ? item.answer.map((l) => `• ${l}`).join(" ")
-          : typeof item.answer === "object"
-            ? item.answer.paragraphs.join("\n\n")
-            : item.answer,
+          : typeof item.answer === "object" && "options" in item.answer
+            ? item.answer.options
+                .map((o) => `• ${o.label}: ${o.text}`)
+                .join(" ")
+            : typeof item.answer === "object"
+              ? item.answer.paragraphs.join("\n\n")
+              : item.answer,
       },
     })),
   };

@@ -415,7 +415,16 @@ export default async function ServicioPage(
 
   const preguntas: FaqItem[] = faq.map((item) => ({
     question: item.pregunta,
-    answer: item.respuesta,
+    /* Respuestas que el documento escribe como opciones con etiqueta van en
+       lista; el resto, como el texto corrido de siempre. */
+    answer: item.lista
+      ? {
+          options: item.lista.map((opcion) => ({
+            label: opcion.etiqueta,
+            text: opcion.texto,
+          })),
+        }
+      : item.respuesta,
   }));
   const introFaq = FAQ_INTROS[contenido.slug];
 

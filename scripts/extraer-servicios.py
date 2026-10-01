@@ -284,11 +284,21 @@ APROBADOS = {
     # extractor; el cliente prefirió conservar «norte» del original.
     "Dale norte a tu sostenibilidad":
         "Dele norte a su sostenibilidad",
+    # Distintivo ESR: los cuatro puntos descriptivos del hero. Sustituyen a sus
+    # versiones en usted de USTED_FRASES, que se retiraron de allí.
+    "Elige cuánto acompañamiento y trabajo delegar":
+        "Defina el nivel de acompañamiento, de asesoría a gestión completa",
+    "Coordina áreas, responsables y fechas":
+        "Coordine áreas, responsables y fechas de la postulación en un solo lugar",
+    "Documenta mejor prácticas que ya existen":
+        "Reutilice evidencias y documentación que ya tiene, sin reconstruirla",
+    "Reduce retrabajos y carga para sostenibilidad":
+        "Reduzca el retrabajo y la carga del equipo de sostenibilidad",
 }
 
 # ── Capa 2: cadenas completas que exigen cambiar formas verbales ─────────────
 # Frases redactadas de nuevo porque en usted no funcionaban traducidas.
-REESCRITOS = {"Documenta mejor prácticas que ya existen"}
+REESCRITOS: set[str] = set()
 
 USTED_FRASES = {
     # Informe de sostenibilidad
@@ -347,16 +357,6 @@ USTED_FRASES = {
         "Involucre a las áreas y fortalezca la gestión",
     "Reduce retrabajos y convierte cada evidencia en una ruta de mejora":
         "Reduzca retrabajos y convierta cada evidencia en una ruta de mejora",
-    "Elige cuánto acompañamiento y trabajo delegar":
-        "Elija cuánto acompañamiento y trabajo delegar",
-    "Coordina áreas, responsables y fechas":
-        "Coordine áreas, responsables y fechas",
-    # REESCRITO: además del imperativo, «Documenta mejor prácticas» pasa a
-    # «Documente las mejores prácticas», redacción indicada por el cliente.
-    "Documenta mejor prácticas que ya existen":
-        "Documente las mejores prácticas que ya existen",
-    "Reduce retrabajos y carga para sostenibilidad":
-        "Reduzca retrabajos y carga para sostenibilidad",
     "Logra una postulación ordenada, bien sustentada y adaptada al nivel de "
     "apoyo que tu empresa necesita.":
         "Logre una postulación ordenada, bien sustentada y adaptada al nivel de "
@@ -436,6 +436,25 @@ def convertir(nodo):
     if isinstance(nodo, dict):
         return {k: convertir(v) for k, v in nodo.items()}
     return nodo
+
+
+# Respuesta de FAQ que el documento escribe como opciones, un párrafo por opción
+# con su etiqueta delante («Coach: su equipo opera…»). Se conserva como lista
+# para pintarla con viñetas y la etiqueta en negrita; `respuesta` sigue llevando
+# el texto corrido, que es lo que usan los datos estructurados. Solo cuando
+# TODOS los párrafos de la celda siguen el patrón y son al menos dos: una
+# respuesta normal que empiece por «Sí:» no se convierte en lista.
+OPCION_FAQ = re.compile(r"^([^:.]{1,30}):\s+(.+)$")
+
+
+def pregunta_faq(fila):
+    parrafos = [p.strip() for p in fila[2] if p.strip()]
+    q = {"pregunta": " ".join(fila[1]), "respuesta": " ".join(fila[2])}
+    opciones = [OPCION_FAQ.match(p) for p in parrafos]
+    if len(parrafos) >= 2 and all(opciones):
+        q["lista"] = [{"etiqueta": m.group(1).strip(), "texto": m.group(2).strip()}
+                      for m in opciones]
+    return q
 
 
 salida = []
@@ -524,8 +543,7 @@ for nombre in ARCHIVOS:
     # FAQ
     tfaq = [d for t, d in secs.get("faq", []) if t == "tabla"]
     filas = tfaq[0] if tfaq else []
-    r["faq"] = [{"pregunta": " ".join(f[1]), "respuesta": " ".join(f[2])}
-                for f in filas[1:] if len(f) >= 3]
+    r["faq"] = [pregunta_faq(f) for f in filas[1:] if len(f) >= 3]
     if filas:
         r["descartado"].append(("fila-instrucciones-faq", " | ".join(" ".join(c) for c in filas[0])))
 
