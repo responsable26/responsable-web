@@ -129,6 +129,19 @@ ASCII en el origen, así que el problema reaparecerá si se rehace la descarga c
 > Además, en `panorama-la-responsabilidad-social-mexico-2019` el enlace al estudio mostraba como
 > texto la URL vieja (`/portfolios/panorama-de-la-responsabilidad-social-en-mexico-2019/`); ahora
 > muestra «Panorama de la Responsabilidad Social en México 2019», con el mismo destino.
+>
+> **Actualización 2026-10-01 (3). Enlaces externos rotos.** Corregidos directamente en los JSON.
+> Los enlaces externos nuevos abren en pestaña nueva con `rel="noreferrer noopener"`.
+>
+> | Artículo | Enlace | Cambio |
+> |---|---|---|
+> | `6-tips-para-postular-al-distintivo-esr-del-cemefi` | «aquí.» (convocatoria ESR 2022 de Cemefi, 404) | Copia del Wayback Machine del PDF original |
+> | `acciones-empresariales-ante-covid-19` | «“Academia de meseros Modelo”» (plataforma retirada) | Enlace eliminado; el texto se conserva |
+> | `como-reportar-ods-en-informes-de-sustentabilidad` | «La aplicación de las herramientas de comunicación a la RSE» (Dircom, 404) | Copia del Wayback Machine de la ficha de la publicación |
+> | `como-reportar-ods-en-informes-de-sustentabilidad` | «podemos hablar sobre tu proyecto…» (landing de gr8.com, 404) | `/?contacto=1`, en la misma pestaña |
+> | `informes-de-sustentabilidad-por-donde-empezar` | «10 principios de Pacto Mundial» (404 tras el cambio a pactoglobal.org.mx) | `https://pactoglobal.org.mx/los-diez-principios/` |
+> | `informes-de-sustentabilidad-por-donde-empezar` | «LALA» (Informe Anual 2018, 404) | `https://www.lala.com.mx/centro-reportes/` |
+> | `la-responsabilidad-social-en-el-sector-alimentario-en-mexico` | Párrafo del segundo estudio de ResponSable (`bit.ly/1D775Fq`, 404) | Párrafo restaurado desde git en su posición original; el enlace apunta a la copia del Wayback Machine del estudio. El texto visible del enlace sigue siendo la URL de bit.ly |
 
 Se reescribieron a ruta relativa como se indicó, sin inventar destino. **Hoy dan 404.**
 
