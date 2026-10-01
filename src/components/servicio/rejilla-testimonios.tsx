@@ -104,7 +104,7 @@ export function RejillaTestimonios({
              faltar— ni la empresa —que puede repetirse— sirven de clave. */
           <figure
             key={index}
-            className="mb-6 break-inside-avoid rounded border border-border bg-white p-6 shadow-sm"
+            className="mb-6 break-inside-avoid rounded border border-border bg-off-white p-6 shadow-sm"
           >
             {testimonio.videoYoutube ? (
               <VideoYoutube

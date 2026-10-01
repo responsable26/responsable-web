@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { ChevronIcon } from "@/components/icons";
 import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
 import type { PasoProceso } from "@/lib/contenido-servicios";
@@ -35,13 +36,38 @@ function Paso({ paso, numero }: { paso: PasoProceso; numero: number }) {
   );
 }
 
-export function ProcesoPasos({ pasos }: { pasos: PasoProceso[] }) {
+type ProcesoPasosProps = {
+  pasos: PasoProceso[];
+  /**
+   * Título y entradilla de la sección metidos dentro de la tarjeta, encima de
+   * los pasos. Sin él —el caso general— la tarjeta solo lleva los pasos y el
+   * encabezado queda fuera, sobre el fondo de la sección. Con él la tarjeta es
+   * el primer elemento de la sección y pierde su margen superior.
+   */
+  encabezado?: ReactNode;
+  /** Flechas del carrusel bajo los pasos en vez de arriba a la derecha. */
+  controlesAbajo?: boolean;
+  /** Cierre dentro de la tarjeta, bajo los pasos (y bajo las flechas). */
+  pie?: ReactNode;
+};
+
+export function ProcesoPasos({
+  pasos,
+  encabezado,
+  controlesAbajo = false,
+  pie,
+}: ProcesoPasosProps) {
   const { ref, desplazarUnPaso, propsPista, clasesPista } =
     usePistaArrastrable<HTMLOListElement>();
 
+  /* Con encabezado dentro, la sección ya no es navy: un filete ayuda a separar
+     la tarjeta blanca de un fondo claro. */
+  const tarjeta = encabezado ? "border border-border" : "mt-12";
+
   if (pasos.length <= MAXIMO_EN_REJILLA) {
     return (
-      <div className="mt-12 rounded bg-white p-8 shadow sm:p-12">
+      <div className={`${tarjeta} rounded bg-white p-8 shadow sm:p-12`}>
+        {encabezado ? <div className="mb-10">{encabezado}</div> : null}
         <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {pasos.map((paso, indice) => (
             <li key={paso.titulo}>
@@ -49,9 +75,35 @@ export function ProcesoPasos({ pasos }: { pasos: PasoProceso[] }) {
             </li>
           ))}
         </ol>
+        {pie ? <div className="mt-8">{pie}</div> : null}
       </div>
     );
   }
+
+  const controles = (
+    <div
+      className={`flex justify-end gap-3 px-8 sm:px-12 ${
+        controlesAbajo ? "mt-8" : "mb-6"
+      }`}
+    >
+      <button
+        type="button"
+        onClick={() => desplazarUnPaso(-1)}
+        aria-label="Pasos anteriores"
+        className="flex size-11 items-center justify-center rounded-full border border-navy text-navy transition-colors hover:border-magenta hover:text-magenta active:bg-magenta/10"
+      >
+        <ChevronIcon direction="left" className="size-5" />
+      </button>
+      <button
+        type="button"
+        onClick={() => desplazarUnPaso(1)}
+        aria-label="Pasos siguientes"
+        className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56]"
+      >
+        <ChevronIcon direction="right" className="size-5" />
+      </button>
+    </div>
+  );
 
   return (
     /*
@@ -60,31 +112,19 @@ export function ProcesoPasos({ pasos }: { pasos: PasoProceso[] }) {
       la tarjeta al deslizarse, en lugar de aparecer y desaparecer dentro de una
       franja de padding, y el snap sigue anclándolos donde empieza el contenido.
     */
-    <div className="mt-12 overflow-hidden rounded bg-white py-8 shadow sm:py-12">
+    <div
+      className={`${tarjeta} overflow-hidden rounded bg-white py-8 shadow sm:py-12`}
+    >
+      {encabezado ? (
+        <div className="mb-10 px-8 sm:px-12">{encabezado}</div>
+      ) : null}
       {/*
         Los controles van dentro de la tarjeta blanca y no junto al titular de la
         sección, que está sobre navy: es lo que permite conservar el tratamiento
         exacto de los del carrusel de artículos —borde navy en el anterior,
         magenta sólido en el siguiente—, que sobre navy no se leería.
       */}
-      <div className="mb-6 flex justify-end gap-3 px-8 sm:px-12">
-        <button
-          type="button"
-          onClick={() => desplazarUnPaso(-1)}
-          aria-label="Pasos anteriores"
-          className="flex size-11 items-center justify-center rounded-full border border-navy text-navy transition-colors hover:border-magenta hover:text-magenta active:bg-magenta/10"
-        >
-          <ChevronIcon direction="left" className="size-5" />
-        </button>
-        <button
-          type="button"
-          onClick={() => desplazarUnPaso(1)}
-          aria-label="Pasos siguientes"
-          className="flex size-11 items-center justify-center rounded-full bg-magenta text-white transition-colors hover:bg-[#C71268] active:bg-[#A50E56]"
-        >
-          <ChevronIcon direction="right" className="size-5" />
-        </button>
-      </div>
+      {controlesAbajo ? null : controles}
 
       <ol
         ref={ref}
@@ -115,6 +155,9 @@ export function ProcesoPasos({ pasos }: { pasos: PasoProceso[] }) {
           </li>
         ))}
       </ol>
+
+      {controlesAbajo ? controles : null}
+      {pie ? <div className="mt-8 px-8 sm:px-12">{pie}</div> : null}
     </div>
   );
 }

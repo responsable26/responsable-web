@@ -1,4 +1,7 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
@@ -10,6 +13,7 @@ import { HeroFramed } from "@/components/hero-framed";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
+import { FAQ_INTROS } from "@/lib/faq-intros";
 import { RelatedCard } from "@/components/related-card";
 import { ProcesoPasos } from "@/components/servicio/proceso-pasos";
 import {
@@ -28,7 +32,7 @@ import {
 
   El tratamiento visual replica el de esa página —hero enmarcado con video,
   anclas contextuales en el header, secciones alternando blanco y off-white,
-  proceso sobre navy, FAQ en acordeón y banda CTA magenta—, pero resuelve dos
+  proceso en tarjeta, FAQ en acordeón y banda CTA magenta—, pero resuelve dos
   cosas que aquella no tenía que resolver: que ningún documento aporta imágenes,
   y que la longitud del contenido varía mucho de un servicio a otro.
 */
@@ -94,13 +98,6 @@ const ANCLAS_ANTES = [
 ];
 const ANCLAS_FAQ = { label: "Preguntas frecuentes", href: "#faq" };
 
-/* Servicios cuyos puntos descriptivos van en tarjetas montadas a caballo sobre
-   el borde inferior del hero. Es opt-in por slug: el resto de páginas conserva
-   la lista bajo filete magenta. */
-const PUNTOS_A_CABALLO = new Set([
-  "estrategia-de-comunicacion-en-sostenibilidad",
-]);
-
 /* Servicios cuya entradilla del hero se abre a 4xl (unos 100 caracteres por
    línea) en vez de los 58ch generales. Solo para entradillas largas, donde la
    columna estrecha las alargaba hasta siete líneas. Opt-in por slug. */
@@ -112,6 +109,13 @@ const ENTRADILLA_ANCHA = new Set([
    de los botones. Se añade desde aquí y no en HeroFramed, que comparten todas
    las páginas con hero. Opt-in por slug. */
 const HERO_AMPLIO = new Set(["estrategia-de-comunicacion-en-sostenibilidad"]);
+
+/* Servicios con margen blanco también arriba y abajo de la banda CTA magenta,
+   no solo a los lados: la banda deja de tocar las secciones vecinas y queda
+   enmarcada como la tarjeta del hero, con el mismo margen. Opt-in por slug. */
+const CTA_CON_MARGEN = new Set([
+  "estrategia-de-comunicacion-en-sostenibilidad",
+]);
 
 /**
  * Los tres servicios siguientes en el catálogo, en círculo.
@@ -144,15 +148,75 @@ function BloqueTexto({
   bloque,
   colorEtiqueta,
   id,
+  sobreNavy = false,
+  infografia,
+  apilado = false,
 }: {
   bloque: BloqueServicio;
   colorEtiqueta: "magenta" | "teal";
   id: string;
+  /** Título y párrafos en claro, para secciones con fondo navy. */
+  sobreNavy?: boolean;
+  /**
+   * Infografía (SVG en línea o imagen JPG). Con ella el bloque pasa a dos
+   * columnas desde lg —infografía a la izquierda, y a la derecha etiqueta,
+   * título y párrafos apilados— en vez de título a la izquierda y párrafos a
+   * la derecha.
+   */
+  infografia?: Infografia;
+  /** Uso interno: etiqueta, título y párrafos en una sola columna. */
+  apilado?: boolean;
 }) {
   const tituloId = `${id}-title`;
 
+  if (infografia) {
+    return (
+      <div className="grid items-center gap-[clamp(2rem,5vw,4rem)] lg:grid-cols-2">
+        {/*
+          Misma caja para los dos formatos: gris claro, esquinas redondeadas;
+          por debajo de lg se apila, topada a 520px y centrada.
+
+          El SVG va incrustado en línea, como el de Doble Materialidad:
+          conserva su <title>/<desc> como nombre accesible y puede usar la
+          Poppins de la página. El JPG pasa por next/image con sus dimensiones
+          reales, así que no hay salto de layout al cargar.
+        */}
+        {infografia.tipo === "svg" ? (
+          <div
+            className={`${CAJA_INFOGRAFIA} [&_svg]:block [&_svg]:h-auto [&_svg]:w-full`}
+            dangerouslySetInnerHTML={{ __html: infografia.svg }}
+          />
+        ) : (
+          <div className={CAJA_INFOGRAFIA}>
+            <Image
+              src={infografia.src}
+              width={infografia.ancho}
+              height={infografia.alto}
+              alt={infografia.alt}
+              sizes="(min-width: 1024px) 540px, (min-width: 560px) 520px, 100vw"
+              className="block h-auto w-full"
+            />
+          </div>
+        )}
+        <BloqueTexto
+          bloque={bloque}
+          colorEtiqueta={colorEtiqueta}
+          id={id}
+          sobreNavy={sobreNavy}
+          apilado
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="grid gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+    <div
+      className={
+        apilado
+          ? "flex flex-col gap-4"
+          : "grid gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]"
+      }
+    >
       <div>
         <p
           className={`font-head text-[0.78rem] font-semibold tracking-[0.12em] uppercase ${
@@ -163,7 +227,9 @@ function BloqueTexto({
         </p>
         <h2
           id={tituloId}
-          className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
+          className={`font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold ${
+            sobreNavy ? "text-white" : "text-navy"
+          }`}
         >
           {bloque.titulo}
         </h2>
@@ -185,7 +251,12 @@ function BloqueTexto({
       */}
       <div className="flex max-w-[717px] flex-col gap-4">
         {bloque.descripcion.map((parrafo) => (
-          <p key={parrafo} className="font-body text-[1.05rem] text-ink-soft">
+          <p
+            key={parrafo}
+            className={`font-body text-[1.05rem] ${
+              sobreNavy ? "text-white/85" : "text-ink-soft"
+            }`}
+          >
             {parrafo}
           </p>
         ))}
@@ -230,6 +301,88 @@ function BloqueTexto({
   );
 }
 
+type Infografia =
+  | { tipo: "svg"; svg: string }
+  | { tipo: "imagen"; src: string; ancho: number; alto: number; alt: string };
+
+/* Texto alternativo de las infografías en imagen, por slug. El SVG no lo
+   necesita: lleva su propio <title>. Sin entrada, se usa un genérico con el
+   título de la sección. */
+const ALT_INFOGRAFIA: Record<string, string> = {
+  "estrategia-de-comunicacion-en-sostenibilidad":
+    "Infografía de las 7 estrategias para una comunicación efectiva sobre sostenibilidad",
+};
+
+const CAJA_INFOGRAFIA =
+  "mx-auto w-full max-w-[520px] overflow-hidden rounded bg-off-white lg:max-w-none";
+
+/**
+ * Ancho y alto de un JPEG, leídos de su marcador SOF. next/image los necesita
+ * para reservar el hueco, y así no hace falta declararlos a mano cada vez que
+ * se cambie el archivo.
+ */
+function medidasJpeg(datos: Buffer): { ancho: number; alto: number } | null {
+  let i = 2;
+  while (i + 9 < datos.length) {
+    if (datos[i] !== 0xff) return null;
+    const marcador = datos[i + 1];
+    // SOF0–SOF15, salvo DHT (C4), JPG (C8) y DAC (CC), que no son marcos.
+    if (
+      marcador >= 0xc0 &&
+      marcador <= 0xcf &&
+      ![0xc4, 0xc8, 0xcc].includes(marcador)
+    ) {
+      return {
+        alto: datos.readUInt16BE(i + 5),
+        ancho: datos.readUInt16BE(i + 7),
+      };
+    }
+    i += 2 + datos.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
+/**
+ * Infografía de la sección Beneficios, si el servicio la tiene en
+ * public/servicios/<slug>/ como infografia.svg, .jpg o .jpeg (por ese orden de
+ * preferencia). Mismo patrón y misma ruta que Doble Materialidad: el archivo es
+ * la fuente única. El SVG se inserta tal cual, salvo la declaración <?xml ?>,
+ * que no es válida dentro de HTML.
+ *
+ * Basta con subir el archivo para que la sección pase a dos columnas; sin él
+ * la sección conserva su layout. Las páginas son estáticas, así que en
+ * producción el cambio entra con el siguiente build.
+ */
+function infografiaDe(
+  slug: string,
+  tituloSeccion: string,
+): Infografia | undefined {
+  const carpeta = path.join(process.cwd(), "public/servicios", slug);
+
+  const svg = path.join(carpeta, "infografia.svg");
+  if (existsSync(svg)) {
+    return {
+      tipo: "svg",
+      svg: readFileSync(svg, "utf8").replace(/^<\?xml[^>]*\?>\s*/, ""),
+    };
+  }
+
+  for (const extension of ["jpg", "jpeg"]) {
+    const archivo = path.join(carpeta, `infografia.${extension}`);
+    if (!existsSync(archivo)) continue;
+    const medidas = medidasJpeg(readFileSync(archivo));
+    if (!medidas) continue;
+    return {
+      tipo: "imagen",
+      src: `/servicios/${slug}/infografia.${extension}`,
+      alt: ALT_INFOGRAFIA[slug] ?? `Infografía: ${tituloSeccion}`,
+      ...medidas,
+    };
+  }
+
+  return undefined;
+}
+
 export default async function ServicioPage(
   props: PageProps<"/servicio/[slug]">,
 ) {
@@ -257,13 +410,14 @@ export default async function ServicioPage(
     sobre video, que es donde peor se lee.
   */
   const [entradilla, ...restoDescripcion] = hero.descripcion;
-  const aCaballo = PUNTOS_A_CABALLO.has(contenido.slug);
   const heroAmplio = HERO_AMPLIO.has(contenido.slug);
+  const ctaConMargen = CTA_CON_MARGEN.has(contenido.slug);
 
   const preguntas: FaqItem[] = faq.map((item) => ({
     question: item.pregunta,
     answer: item.respuesta,
   }));
+  const introFaq = FAQ_INTROS[contenido.slug];
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
@@ -397,72 +551,54 @@ export default async function ServicioPage(
               tarjetas de puntos al subir sobre su borde (ver CLAVES): sin ella
               taparían los botones. Mismo 4rem que el solape de abajo; con
               heroAmplio se suma el mismo aire extra que arriba. */}
-          {aCaballo ? (
-            <div
-              aria-hidden="true"
-              className={heroAmplio ? "h-22 sm:h-26" : "h-16"}
-            />
-          ) : heroAmplio ? (
-            <div aria-hidden="true" className="h-6 sm:h-10" />
-          ) : null}
+          <div
+            aria-hidden="true"
+            className={heroAmplio ? "h-22 sm:h-26" : "h-16"}
+          />
         </HeroFramed>
 
         {/* ------------------------------- CLAVES ------------------------------ */}
         {/*
-          Los cuatro puntos descriptivos del documento, más el resto de la
-          descripción general cuando la hay.
+          Los cuatro puntos descriptivos del documento, cada uno en su tarjeta,
+          más el resto de la descripción general cuando la hay. Son cuatro en
+          los diez servicios, así que la retícula de cuatro columnas siempre
+          cierra.
 
-          Es también la respuesta a que no haya imágenes: cuatro enunciados
-          cortos bajo un filete magenta dan ritmo visual y cortan el bloque de
-          texto sin depender de ninguna ilustración. Son cuatro en los diez
-          servicios, así que la retícula de cuatro columnas siempre cierra.
-        */}
-        {/*
-          Con aCaballo las tarjetas de puntos van primero y suben sobre el
-          hero: el -mt descuenta el margen inferior de la sección del hero
-          (p-4 / sm:p-7) más 4rem de solape, que es lo que queda sobre el navy.
-          Sin padding superior en la sección, porque ese aire ya lo pone el
-          propio solape. z-30 porque el contenido del hero va en z-20 dentro
-          de una tarjeta sin contexto de apilamiento propio.
+          Las tarjetas van primero y suben sobre el hero: el -mt descuenta el
+          margen inferior de la sección del hero (p-4 / sm:p-7) más 4rem de
+          solape, que es lo que queda sobre el navy. z-30 porque el contenido
+          del hero va en z-20 dentro de una tarjeta sin contexto de
+          apilamiento propio. Mismo criterio que las tarjetas de beneficios de
+          Doble Materialidad (rounded, p-6, sombra y elevación al hover), pero
+          en blanco: navy sobre el navy del hero perdería la mitad superior.
 
-          Las tarjetas siguen el criterio de las de beneficios de Doble
-          Materialidad (rounded, p-6, sombra y elevación al hover), pero en
-          blanco: navy sobre el navy del hero se perdería la mitad superior.
+          Sin padding vertical: arriba lo pone el solape, y abajo Para qué
+          sirve, que tampoco lleva fondo, ya separa con su propio padding; un
+          --section-y aquí dejaba el hueco doble.
         */}
-        <section
-          aria-labelledby="claves-title"
-          className={
-            aCaballo ? "pb-[var(--section-y)]" : "py-[var(--section-y)]"
-          }
-        >
+        <section aria-labelledby="claves-title">
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <h2 id="claves-title" className="sr-only">
               En qué consiste el servicio
             </h2>
 
-            {aCaballo ? (
-              <ul className="relative z-30 -mt-20 grid gap-6 sm:-mt-[5.75rem] sm:grid-cols-2 lg:grid-cols-4">
-                {hero.puntos.map((punto) => (
-                  <li
-                    key={punto}
-                    className="rounded bg-white p-6 shadow transition-[transform,box-shadow] duration-150 hover:-translate-y-1 hover:shadow-lg"
-                  >
-                    <p className="font-head text-[0.95rem] font-medium text-navy">
-                      {punto}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+            <ul className="relative z-30 -mt-20 grid gap-6 sm:-mt-[5.75rem] sm:grid-cols-2 lg:grid-cols-4">
+              {hero.puntos.map((punto) => (
+                <li
+                  key={punto}
+                  className="rounded bg-white p-6 shadow transition-[transform,box-shadow] duration-150 hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <p className="font-head text-[0.95rem] font-medium text-navy">
+                    {punto}
+                  </p>
+                </li>
+              ))}
+            </ul>
 
             {/* 717px = 68 caracteres a los 16.8px de estos párrafos, el mismo
                 tope que BloqueTexto más abajo. Ver §2 de globals.css. */}
             {restoDescripcion.length > 0 ? (
-              <div
-                className={`flex max-w-[717px] flex-col gap-4 ${
-                  aCaballo ? "mt-12" : ""
-                }`}
-              >
+              <div className="mt-12 flex max-w-[717px] flex-col gap-4">
                 {restoDescripcion.map((parrafo) => (
                   <p
                     key={parrafo}
@@ -473,22 +609,6 @@ export default async function ServicioPage(
                 ))}
               </div>
             ) : null}
-
-            {aCaballo ? null : (
-              <ul
-                className={`grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ${
-                  restoDescripcion.length > 0 ? "mt-12" : ""
-                }`}
-              >
-                {hero.puntos.map((punto) => (
-                  <li key={punto} className="border-t-2 border-magenta pt-4">
-                    <p className="font-head text-[1.05rem] font-medium text-navy">
-                      {punto}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
         </section>
 
@@ -502,7 +622,11 @@ export default async function ServicioPage(
              el header (80px desde lg), los 12px de separación y los 48px de la
              barra de anclajes. Mismo valor que las secciones de /servicio/, que
              resuelven el mismo solapamiento. */
-          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+          /* Fondos: Para qué sirve sin fondo, Beneficios en navy y Proceso en
+             off-white con su tarjeta blanca. Es el orden de la sección previa
+             a Proceso en navy que se repite en Doble Materialidad y en
+             Universidad ResponSable. */
+          className="scroll-mt-36 py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <BloqueTexto
@@ -518,13 +642,15 @@ export default async function ServicioPage(
           id="beneficios"
           aria-labelledby="beneficios-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          className="scroll-mt-36 py-[var(--section-y)]"
+          className="scroll-mt-36 bg-navy py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <BloqueTexto
               bloque={beneficios}
               colorEtiqueta="teal"
               id="beneficios"
+              sobreNavy
+              infografia={infografiaDe(contenido.slug, beneficios.titulo)}
             />
           </div>
         </section>
@@ -534,27 +660,29 @@ export default async function ServicioPage(
           id="proceso"
           aria-labelledby="proceso-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          className="scroll-mt-36 bg-navy py-[var(--section-y)]"
+          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
-            <div>
-              {/* Al tope de los H2 de sección y en una línea: el salto entre
-                  "Nuestro" y "Proceso" y el interlineado 1.02 eran de cuando
-                  este título iba a tamaño de hero (64px). */}
-              <h2
-                id="proceso-title"
-                className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
-              >
-                Nuestro Proceso
-              </h2>
-              <p className="font-body mt-6 max-w-[62%] min-w-[18rem] text-white/85">
-                {proceso.descripcion}
-              </p>
-            </div>
-
-            {/* Rejilla hasta cuatro pasos, pista deslizable a partir de cinco.
-                La decisión y las dos disposiciones viven en el componente. */}
-            <ProcesoPasos pasos={proceso.pasos} />
+            {/* Título, entradilla y pasos en una sola tarjeta. Rejilla hasta
+                cuatro pasos, pista deslizable a partir de cinco: la decisión y
+                las dos disposiciones viven en el componente. */}
+            <ProcesoPasos
+              pasos={proceso.pasos}
+              controlesAbajo
+              encabezado={
+                <>
+                  <h2
+                    id="proceso-title"
+                    className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
+                  >
+                    Nuestro Proceso
+                  </h2>
+                  <p className="font-body mt-6 max-w-[62%] min-w-[18rem] text-ink-soft">
+                    {proceso.descripcion}
+                  </p>
+                </>
+              }
+            />
           </div>
         </section>
 
@@ -566,30 +694,51 @@ export default async function ServicioPage(
           id="faq"
           aria-labelledby="faq-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          /* Fondo blanco y tarjetas off-white, como en Doble Materialidad: con
-             la sección off-white y las tarjetas blancas, cada pregunta se
-             confundía con el fondo. */
-          className="scroll-mt-36 bg-white py-[var(--section-y)]"
+          /* Con testimonios delante —que van en blanco— la sección pasa a
+             off-white con tarjetas blancas, para no repetir fondo; sin ellos
+             la precede Proceso, en off-white, y se queda en blanco. */
+          className={`scroll-mt-36 py-[var(--section-y)] ${
+            testimonios.length > 0 ? "bg-off-white" : "bg-white"
+          }`}
         >
-          <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
-            <p className="font-head text-center text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
-              Dudas habituales
-            </p>
-            <h2
-              id="faq-title"
-              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
-            >
-              Preguntas frecuentes
-            </h2>
+          {/* Dos columnas desde lg, el mismo layout que Doble Materialidad:
+              presentación a la izquierda, acordeón a la derecha. */}
+          <div className="mx-auto grid max-w-[var(--container)] gap-[clamp(2rem,5vw,4rem)] px-[clamp(1rem,4vw,2rem)] lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+            <div>
+              <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
+                Dudas habituales
+              </p>
+              <h2
+                id="faq-title"
+                className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
+              >
+                Preguntas frecuentes
+              </h2>
+              {/* Redacción nuestra, no viene del documento. Pendiente de
+                  validar: ver src/lib/faq-intros.ts. */}
+              {introFaq ? (
+                <p className="font-body mt-4 text-[1.05rem] text-ink-soft">
+                  {introFaq.texto}
+                </p>
+              ) : null}
+            </div>
 
-            <div className="mx-auto mt-10 max-w-3xl">
-              <Faq items={preguntas} fondoTarjeta="bg-off-white" />
+            <div>
+              <Faq
+                items={preguntas}
+                fondoTarjeta={
+                  testimonios.length > 0 ? "bg-white" : "bg-off-white"
+                }
+              />
             </div>
           </div>
         </section>
 
         {/* ------------------------------ BANDA CTA ---------------------------- */}
-        <section id="contacto" className="px-4 sm:px-7">
+        <section
+          id="contacto"
+          className={ctaConMargen ? "bg-white p-4 sm:p-7" : "px-4 sm:px-7"}
+        >
           <div className="rounded-[22px] bg-magenta py-[var(--section-y)]">
             <div className="mx-auto flex max-w-[var(--container)] flex-wrap items-center justify-between gap-8 px-[clamp(1rem,4vw,2rem)]">
               <div className="max-w-2xl">

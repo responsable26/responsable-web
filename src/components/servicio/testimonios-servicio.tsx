@@ -34,8 +34,11 @@ export function TestimoniosServicio({
     <section
       id="testimonios"
       aria-labelledby="testimonios-title"
-      /* Ver la nota de scroll-mt en la primera sección con ancla. */
-      className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+      /* Ver la nota de scroll-mt en la primera sección con ancla.
+         Blanca: la precede Proceso, en off-white, y la sigue Preguntas
+         frecuentes, que pasa a off-white cuando hay testimonios. Las
+         tarjetas, en off-white, se distinguen del fondo. */
+      className="scroll-mt-36 bg-white py-[var(--section-y)]"
     >
       <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
         <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-magenta uppercase">

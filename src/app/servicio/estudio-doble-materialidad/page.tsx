@@ -13,6 +13,7 @@ import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
 import { RelatedCard } from "@/components/related-card";
+import { ProcesoPasos } from "@/components/servicio/proceso-pasos";
 import {
   BeneficiosCarousel,
   type Beneficio,
@@ -335,7 +336,9 @@ export default function EstudioDobleMaterialidadPage() {
               */}
               <div
                 className="mx-auto max-w-[520px] overflow-hidden rounded bg-off-white lg:max-w-none [&_svg]:block [&_svg]:h-auto [&_svg]:w-full"
-                dangerouslySetInnerHTML={{ __html: INFOGRAFIA_DOBLE_MATERIALIDAD }}
+                dangerouslySetInnerHTML={{
+                  __html: INFOGRAFIA_DOBLE_MATERIALIDAD,
+                }}
               />
             </div>
             <div>
@@ -376,7 +379,9 @@ export default function EstudioDobleMaterialidadPage() {
              el header (80px desde lg), los 12px de separación y los 48px de la
              barra de anclajes. Mismo valor que las secciones de /servicio/, que
              resuelven el mismo solapamiento. */
-          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
+          /* Navy en la sección previa a Proceso y Proceso en off-white con su
+             tarjeta: mismo orden de fondos que las demás páginas de servicio. */
+          className="scroll-mt-36 bg-navy py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <div className="grid items-center gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[2fr_1fr]">
@@ -384,17 +389,17 @@ export default function EstudioDobleMaterialidadPage() {
                 <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
                   Impactos, riesgos y oportunidades priorizados
                 </p>
-                <h2 className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy">
+                <h2 className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-white">
                   Temas materiales claros
                 </h2>
-                <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
+                <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-white/85">
                   El principal beneficio es dejar de gestionar la sostenibilidad
                   como una lista extensa de temas. La empresa distingue qué
                   asuntos exigen acción inmediata, cuáles pueden afectar su
                   desempeño financiero y dónde existen oportunidades que
                   conviene desarrollar.
                 </p>
-                <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-ink-soft">
+                <p className="font-body mt-4 max-w-[717px] text-[1.05rem] text-white/85">
                   Así, puede enfocar recursos, justificar presupuesto, definir
                   responsabilidades e indicadores y sostener sus decisiones con
                   mayor trazabilidad ante Dirección. Cuando se consulta a grupos
@@ -436,6 +441,7 @@ export default function EstudioDobleMaterialidadPage() {
             <BeneficiosCarousel
               title="6 Beneficios que Habilita con la Doble Materialidad"
               items={BENEFICIOS}
+              sobreNavy
             />
           </div>
         </section>
@@ -445,46 +451,36 @@ export default function EstudioDobleMaterialidadPage() {
           id="proceso"
           aria-labelledby="proceso-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          className="scroll-mt-36 bg-navy py-[var(--section-y)]"
+          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
         >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
-            {/* Title then intro stacked and left-aligned, intro ~60% wide —
-                matching the live site, which does not put them side by side. */}
-            <div>
-              {/* Al tope de los H2 de sección y en una línea: el salto entre
-                  "Nuestro" y "Proceso" y el interlineado 1.02 eran de cuando
-                  este título iba a tamaño de hero (64px). */}
-              <h2
-                id="proceso-title"
-                className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
-              >
-                Nuestro Proceso
-              </h2>
-              <p className="font-body mt-6 max-w-[62%] min-w-[18rem] text-white/85">
-                Realizamos el estudio de doble materialidad con una metodología
-                estructurada para pasar del análisis de contexto a la matriz de
-                doble materialidad, los Impactos, Riesgos y Oportunidades (IROs)
-                priorizados y las recomendaciones estratégicas.
-              </p>
-            </div>
-
-            <div className="mt-12 rounded bg-white p-8 shadow sm:p-12">
-              <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                {PASOS.map((paso) => (
-                  <li key={paso.num}>
-                    <span className="font-head flex size-11 items-center justify-center rounded-full bg-magenta text-lg font-bold text-white">
-                      {paso.num}
-                    </span>
-                    <h3 className="font-head mt-4 text-[1.15rem] font-semibold text-navy">
-                      {paso.title}
-                    </h3>
-                    <p className="font-body mt-2 text-sm text-ink-soft">
-                      {paso.text}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            </div>
+            {/* Título, entradilla y pasos en una sola tarjeta, el mismo
+                tratamiento que las demás páginas de servicio. Cuatro pasos:
+                rejilla, sin flechas. */}
+            <ProcesoPasos
+              pasos={PASOS.map((paso) => ({
+                titulo: paso.title,
+                descripcion: paso.text,
+              }))}
+              controlesAbajo
+              encabezado={
+                <>
+                  <h2
+                    id="proceso-title"
+                    className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
+                  >
+                    Nuestro Proceso
+                  </h2>
+                  <p className="font-body mt-6 max-w-[62%] min-w-[18rem] text-ink-soft">
+                    Realizamos el estudio de doble materialidad con una
+                    metodología estructurada para pasar del análisis de contexto
+                    a la matriz de doble materialidad, los Impactos, Riesgos y
+                    Oportunidades (IROs) priorizados y las recomendaciones
+                    estratégicas.
+                  </p>
+                </>
+              }
+            />
           </div>
         </section>
 
@@ -496,10 +492,12 @@ export default function EstudioDobleMaterialidadPage() {
           id="faq"
           aria-labelledby="faq-title"
           /* Ver la nota de scroll-mt en la primera sección con ancla. */
-          /* Fondo blanco y tarjetas off-white: con la sección off-white y
-             las tarjetas blancas, cada pregunta se confundía con el fondo. De
-             paso deja de ir pegada a Testimonios, que también es off-white. */
-          className="scroll-mt-36 bg-white py-[var(--section-y)]"
+          /* Con testimonios delante —que van en blanco— la sección pasa a
+             off-white con tarjetas blancas, para no repetir fondo; sin ellos
+             la precede Proceso, en off-white, y se queda en blanco. */
+          className={`scroll-mt-36 py-[var(--section-y)] ${
+            testimonios.length > 0 ? "bg-off-white" : "bg-white"
+          }`}
         >
           {/* Dos columnas desde lg, como los demás bloques de texto del
               sitio: presentación a la izquierda, acordeón a la derecha. El
@@ -525,7 +523,12 @@ export default function EstudioDobleMaterialidadPage() {
             </div>
 
             <div>
-              <Faq items={FAQ_ITEMS} fondoTarjeta="bg-off-white" />
+              <Faq
+                items={FAQ_ITEMS}
+                fondoTarjeta={
+                  testimonios.length > 0 ? "bg-white" : "bg-off-white"
+                }
+              />
             </div>
           </div>
         </section>

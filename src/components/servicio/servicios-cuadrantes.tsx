@@ -74,11 +74,9 @@ export function ServiciosCuadrantes() {
     pasa por irAAncla, el mismo mecanismo que el header, pasándole el alto
     medido de la barra además del del header.
   */
-  function irACuadrante(
-    event: ReactMouseEvent<HTMLAnchorElement>,
-    id: string,
-  ) {
-    const altoPastilla = pastillaRef.current?.getBoundingClientRect().height ?? 0;
+  function irACuadrante(event: ReactMouseEvent<HTMLAnchorElement>, id: string) {
+    const altoPastilla =
+      pastillaRef.current?.getBoundingClientRect().height ?? 0;
     if (irAAncla(id, altoPastilla + SEPARACION)) event.preventDefault();
   }
 

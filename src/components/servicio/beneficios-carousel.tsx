@@ -17,9 +17,15 @@ export type Beneficio = { num: string; from: string; to: string };
 export function BeneficiosCarousel({
   title,
   items,
+  sobreNavy = false,
 }: {
   title: string;
   items: Beneficio[];
+  /**
+   * Para secciones con fondo navy: título y flechas en blanco, y tarjetas
+   * blancas en vez de navy, que sobre el mismo navy no se distinguirían.
+   */
+  sobreNavy?: boolean;
 }) {
   const { ref, desplazarUnPaso, propsPista, clasesPista } =
     usePistaArrastrable<HTMLUListElement>();
@@ -27,7 +33,11 @@ export function BeneficiosCarousel({
   return (
     <div className="mt-14">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h3 className="font-head max-w-2xl text-[clamp(1.15rem,2vw,1.4rem)] font-semibold text-navy">
+        <h3
+          className={`font-head max-w-2xl text-[clamp(1.15rem,2vw,1.4rem)] font-semibold ${
+            sobreNavy ? "text-white" : "text-navy"
+          }`}
+        >
           {title}
         </h3>
         <div className="flex gap-3">
@@ -35,7 +45,9 @@ export function BeneficiosCarousel({
             type="button"
             onClick={() => desplazarUnPaso(-1)}
             aria-label="Ver beneficios anteriores"
-            className="flex size-11 items-center justify-center rounded-full border border-navy text-navy transition-colors hover:border-magenta hover:text-magenta"
+            className={`flex size-11 items-center justify-center rounded-full border transition-colors hover:border-magenta hover:text-magenta ${
+              sobreNavy ? "border-white text-white" : "border-navy text-navy"
+            }`}
           >
             <ChevronIcon direction="left" className="size-5" />
           </button>
@@ -43,7 +55,9 @@ export function BeneficiosCarousel({
             type="button"
             onClick={() => desplazarUnPaso(1)}
             aria-label="Ver más beneficios"
-            className="flex size-11 items-center justify-center rounded-full border border-navy text-navy transition-colors hover:border-magenta hover:text-magenta"
+            className={`flex size-11 items-center justify-center rounded-full border transition-colors hover:border-magenta hover:text-magenta ${
+              sobreNavy ? "border-white text-white" : "border-navy text-navy"
+            }`}
           >
             <ChevronIcon direction="right" className="size-5" />
           </button>
@@ -63,16 +77,33 @@ export function BeneficiosCarousel({
           <li
             key={item.num}
             /* --visible: 3 → 2 → 1, per the documented .bcar track. */
-            className="w-full shrink-0 snap-start rounded bg-navy p-6 shadow-sm transition-[transform,box-shadow] duration-150 hover:-translate-y-1 hover:shadow sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+            className={`w-full shrink-0 snap-start rounded p-6 shadow-sm ${
+              sobreNavy ? "bg-white" : "bg-navy"
+            } transition-[transform,box-shadow] duration-150 hover:-translate-y-1 hover:shadow sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]`}
           >
             <span className="font-head text-2xl font-bold text-magenta">
               {item.num}
             </span>
-            <p className="font-body mt-4 text-white/85">{item.from}</p>
-            <p className="font-head my-1 text-xl text-magenta" aria-hidden="true">
+            <p
+              className={`font-body mt-4 ${
+                sobreNavy ? "text-ink-soft" : "text-white/85"
+              }`}
+            >
+              {item.from}
+            </p>
+            <p
+              className="font-head my-1 text-xl text-magenta"
+              aria-hidden="true"
+            >
               →
             </p>
-            <p className="font-head font-semibold text-white">{item.to}</p>
+            <p
+              className={`font-head font-semibold ${
+                sobreNavy ? "text-navy" : "text-white"
+              }`}
+            >
+              {item.to}
+            </p>
           </li>
         ))}
       </ul>

@@ -9,6 +9,7 @@ import { HeroFramed } from "@/components/hero-framed";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { ContactButton } from "@/components/contact-button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/faq";
+import { FAQ_INTROS } from "@/lib/faq-intros";
 import { ProcesoPasos } from "@/components/servicio/proceso-pasos";
 import { PestanasVerticales } from "@/components/servicio/pestanas-verticales";
 import { InfografiaResilio } from "@/components/servicio/infografia-resilio";
@@ -82,19 +83,34 @@ function BloqueDosColumnas({
   id,
   titulo,
   parrafos,
+  sobreNavy = false,
 }: {
   id: string;
   titulo: string;
   parrafos: string[];
+  /** Título y párrafos en claro, para secciones con fondo navy. */
+  sobreNavy?: boolean;
 }) {
   return (
     <div className="grid gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-      <h2 id={`${id}-title`} className={CLASE_H2}>
+      <h2
+        id={`${id}-title`}
+        className={
+          sobreNavy ? CLASE_H2.replace("text-navy", "text-white") : CLASE_H2
+        }
+      >
         {titulo}
       </h2>
       <div className="flex max-w-[717px] flex-col gap-4">
         {parrafos.map((parrafo) => (
-          <p key={parrafo} className={CLASE_PARRAFO}>
+          <p
+            key={parrafo}
+            className={
+              sobreNavy
+                ? CLASE_PARRAFO.replace("text-ink-soft", "text-white/85")
+                : CLASE_PARRAFO
+            }
+          >
             {parrafo}
           </p>
         ))}
@@ -226,6 +242,7 @@ export default function UniversidadResponsablePage() {
         ? item.respuesta[0]
         : { paragraphs: item.respuesta },
   }));
+  const introFaq = FAQ_INTROS["universidad-responsable"];
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
@@ -450,13 +467,16 @@ export default function UniversidadResponsablePage() {
         {/* ------------------------------ PRÁCTICA ----------------------------- */}
         <section
           aria-labelledby="practica-title"
-          className="bg-off-white py-[var(--section-y)]"
+          /* Navy en la sección previa a Proceso y Proceso en off-white con su
+             tarjeta: mismo orden de fondos que las demás páginas de servicio. */
+          className="bg-navy py-[var(--section-y)]"
         >
           <div className={CONTENEDOR}>
             <BloqueDosColumnas
               id="practica"
               titulo={practica.titulo}
               parrafos={practica.parrafos}
+              sobreNavy
             />
           </div>
         </section>
@@ -465,21 +485,28 @@ export default function UniversidadResponsablePage() {
         <section
           id="como-funciona"
           aria-labelledby="como-funciona-title"
-          className="scroll-mt-36 bg-navy py-[var(--section-y)]"
+          className="scroll-mt-36 bg-off-white py-[var(--section-y)]"
         >
           <div className={CONTENEDOR}>
-            <h2
-              id="como-funciona-title"
-              className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
-            >
-              {proceso.titulo}
-            </h2>
-
-            <ProcesoPasos pasos={proceso.pasos} />
-
-            <p className="font-body mt-8 max-w-[717px] text-white/85">
-              {proceso.cierre}
-            </p>
+            {/* Título, pasos y cierre en una sola tarjeta, flechas bajo los
+                pasos: el mismo tratamiento que las demás páginas de servicio. */}
+            <ProcesoPasos
+              pasos={proceso.pasos}
+              controlesAbajo
+              encabezado={
+                <h2
+                  id="como-funciona-title"
+                  className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-magenta"
+                >
+                  {proceso.titulo}
+                </h2>
+              }
+              pie={
+                <p className="font-body max-w-[717px] text-ink-soft">
+                  {proceso.cierre}
+                </p>
+              }
+            />
           </div>
         </section>
 
@@ -495,24 +522,42 @@ export default function UniversidadResponsablePage() {
         <section
           id="faq"
           aria-labelledby="faq-title"
-          /* Fondo blanco y tarjetas off-white, como en Doble Materialidad: con
-             la sección off-white y las tarjetas blancas, cada pregunta se
-             confundía con el fondo. */
-          className="scroll-mt-36 bg-white py-[var(--section-y)]"
+          /* Con testimonios delante —que van en blanco— la sección pasa a
+             off-white con tarjetas blancas, para no repetir fondo; sin ellos
+             la precede Proceso, en off-white, y se queda en blanco. */
+          className={`scroll-mt-36 py-[var(--section-y)] ${
+            testimonios.length > 0 ? "bg-off-white" : "bg-white"
+          }`}
         >
-          <div className={CONTENEDOR}>
-            <p className="font-head text-center text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
-              Dudas habituales
-            </p>
-            <h2
-              id="faq-title"
-              className="font-head mt-3 text-center text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
-            >
-              Preguntas frecuentes
-            </h2>
+          {/* Dos columnas desde lg, el mismo layout que Doble Materialidad:
+              presentación a la izquierda, acordeón a la derecha. */}
+          <div className="mx-auto grid max-w-[var(--container)] gap-[clamp(2rem,5vw,4rem)] px-[clamp(1rem,4vw,2rem)] lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+            <div>
+              <p className="font-head text-[0.78rem] font-semibold tracking-[0.12em] text-teal uppercase">
+                Dudas habituales
+              </p>
+              <h2
+                id="faq-title"
+                className="font-head mt-3 text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-navy"
+              >
+                Preguntas frecuentes
+              </h2>
+              {/* Redacción nuestra, no viene del documento. Pendiente de
+                  validar: ver src/lib/faq-intros.ts. */}
+              {introFaq ? (
+                <p className="font-body mt-4 text-[1.05rem] text-ink-soft">
+                  {introFaq.texto}
+                </p>
+              ) : null}
+            </div>
 
-            <div className="mx-auto mt-10 max-w-3xl">
-              <Faq items={preguntas} fondoTarjeta="bg-off-white" />
+            <div>
+              <Faq
+                items={preguntas}
+                fondoTarjeta={
+                  testimonios.length > 0 ? "bg-white" : "bg-off-white"
+                }
+              />
             </div>
           </div>
         </section>
