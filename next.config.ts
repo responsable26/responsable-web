@@ -116,6 +116,22 @@ const nextConfig: NextConfig = {
          y que corresponden a casos de éxito. */
       { source: '/heineken/', destination: '/casos-de-exito/heineken-mexico/', permanent: true },
       { source: '/confian-en-nosotros/', destination: '/casos-de-exito/', permanent: true },
+      /* Destinos de enlaces rotos dentro de los artículos del blog (ver
+         REVISION-ARTICULOS.md, secciones 8 y 9). Los enlaces ya se corrigieron
+         en los JSON de src/content/articulos/; estas reglas cubren las URLs
+         viejas que puedan seguir indexadas o enlazadas desde fuera.
+
+         /diagnostico-responsabilidad-social/ va al cuadrante y no a una ficha:
+         el servicio equivalente, Diagnóstico Social y Línea base comunitaria,
+         no tiene página propia. Las dos de ResponsHABLE eran las páginas para
+         pedir la grabación, que ya no existen: llevan al artículo de cada
+         sesión. */
+      { source: '/estrategia-de-ds-y-rse/', destination: '/servicio/estrategia-sostenibilidad/', permanent: true },
+      { source: '/informe-de-sustentabilidad/', destination: '/servicio/informe-de-sostenibilidad/', permanent: true },
+      { source: '/responshable-1/', destination: '/recursos/articulos/responshable-1-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa/', permanent: true },
+      { source: '/responshable-2/', destination: '/recursos/articulos/responshable-2-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa/', permanent: true },
+      { source: '/diagnostico-responsabilidad-social/', destination: '/servicio/#donde-estoy', permanent: true },
+      { source: '/recursos/articulos/6-tips-para-postular-al-esr/', destination: '/recursos/articulos/6-tips-para-postular-al-distintivo-esr-del-cemefi/', permanent: true },
       /* Páginas de servicio del WordPress viejo.
 
          Ninguna vive bajo /servicio/: todas cuelgan de la raíz y usan el

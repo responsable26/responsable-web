@@ -98,23 +98,29 @@ ASCII en el origen, así que el problema reaparecerá si se rehace la descarga c
 
 ## 8. Enlaces internos a páginas que todavía no existen
 
+> **Actualización 2026-10-01.** Las rutas marcadas como resueltas se corrigieron **directamente en
+> los JSON** de `src/content/articulos/` y con redirects permanentes en `next.config.ts`, **no** en
+> las tablas `RUTA_REMAP` / `SLUG_REMAP`: el pipeline de WordPress no está en el repositorio y no se
+> va a volver a ejecutar. Las demás rutas de esta tabla ya resuelven por los redirects de
+> `next.config.ts`, con un salto.
+
 Se reescribieron a ruta relativa como se indicó, sin inventar destino. **Hoy dan 404.**
 
 | Ruta destino | Notas que enlazan | Ejemplos |
 |---|---|---|
 | `/estudio-de-materialidad-2/` | 9 | `analisis-de-materialidad-mas-alla-de-un-requisito-para-reportar`, `como-reportar-ods-en-informes-de-sustentabilidad`, `estudio-de-materialidad-10-beneficios-estrategicos` (+6) |
-| `/estrategia-de-ds-y-rse/` | 8 | `5-consejos-de-responsabilidad-social-empresarial-rse-que-no-cuestan-casi-nada`, `beneficios-de-rs-en-las-pymes`, `como-desarrollar-tu-estrategia-de-rse-con-la-metodologia-resilio` (+5) |
+| `/estrategia-de-ds-y-rse/` | 8 | `5-consejos-de-responsabilidad-social-empresarial-rse-que-no-cuestan-casi-nada`, `beneficios-de-rs-en-las-pymes`, `como-desarrollar-tu-estrategia-de-rse-con-la-metodologia-resilio` (+5) — **Resuelto el 2026-10-01:** enlaces cambiados a `/servicio/estrategia-sostenibilidad/`. |
 | `/postular-al-distintivo-esr-del-cemefi/` | 7 | `6-tips-para-postular-al-distintivo-esr-del-cemefi`, `distintivo-esr-importancia-cadena-de-valor`, `impartimos-cursos-y-talleres-de-responsabilidad-social-este-2019` (+4) |
-| `/informe-de-sustentabilidad/` | 5 | `10-errores-que-debes-evitar-en-tu-informe-de-sostenibilidad`, `como-reportar-ods-en-informes-de-sustentabilidad`, `el-a-b-c-de-la-actualizacion-de-los-estandares-de-gri` (+2) |
+| `/informe-de-sustentabilidad/` | 5 | `10-errores-que-debes-evitar-en-tu-informe-de-sostenibilidad`, `como-reportar-ods-en-informes-de-sustentabilidad`, `el-a-b-c-de-la-actualizacion-de-los-estandares-de-gri` (+2) — **Resuelto el 2026-10-01:** enlaces cambiados a `/servicio/informe-de-sostenibilidad/`. |
 | `/cursos-y-talleres-de-rse-en-mexico/` | 3 | `como-construir-una-cadena-de-valor-y-guiar-a-las-pymes-hacia-los-ods`, `impartimos-cursos-y-talleres-de-responsabilidad-social-este-2019`, `los-desafios-de-desarrollar-una-estrategia-de-sustentabilidad-exitosa` |
 | `/comunicacion-en-rse/` | 2 | `guia-responsabilidad-social-empresarial-pymes`, `los-desastres-no-son-naturales` |
 | `/reputacion-corporativa-2/` | 2 | `datos-que-revelan-el-estado-de-la-rs-en-mexico`, `desarrollando-nuevas-estrategias-en-responsabilidad-social-corporativa` |
 | `/acompanamiento-rse/` | 2 | `guia-sobre-los-stakeholders`, `todo-lo-que-debes-saber-sobre-compras-sostenibles-en-5-minutos` |
 | `/heineken/` | 2 | `guia-analisis-de-materialidad`, `heineken-mexico-pasos-estrategicos-para-un-estudio-de-materialidad-fuera-de-lo-comun` |
-| `/responshable-1/` | 2 | `responshable-1-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa`, `responshable-2-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa` |
-| `/responshable-2/` | 1 | `responshable-2-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa` |
+| `/responshable-1/` | 2 | `responshable-1-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa`, `responshable-2-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa` — **Resuelto el 2026-10-01:** botón «Quiero la grabación» eliminado en ResponsHABLE 1; el «aquí» de ResponsHABLE 2 apunta al artículo de ResponsHABLE 1. |
+| `/responshable-2/` | 1 | `responshable-2-resolvemos-las-dudas-de-responsabilidad-social-en-tu-empresa` — **Resuelto el 2026-10-01:** botón «Quiero ver la grabación» eliminado (el `href` llevaba un espacio al final). |
 | `/confian-en-nosotros/` | 1 | `5-consejos-de-responsabilidad-social-empresarial-rse-que-no-cuestan-casi-nada` |
-| `/diagnostico-responsabilidad-social/` | 1 | `como-realizar-un-diagnostico-de-impacto-social-efectivo` |
+| `/diagnostico-responsabilidad-social/` | 1 | `como-realizar-un-diagnostico-de-impacto-social-efectivo` — **Resuelto el 2026-10-01:** enlace cambiado a `/servicio/#donde-estoy`. |
 | `/traje-a-la-medida/` | 1 | `guia-responsabilidad-social-empresarial-pymes` |
 | `/norma-iso-26000/` | 1 | `5-razones-para-evaluar-la-madurez-de-la-rs-en-tu-empresa-usando-la-iso-26000` |
 
@@ -175,7 +181,7 @@ apunte a un artículo publicado. No detiene la generación: lo que encuentra se 
 
 | Artículo de origen | Slug destino inexistente | Texto del ancla |
 |---|---|---|
-| `responsabilidad-social-la-base-de-una-organizacion-resiliente` | `6-tips-para-postular-al-esr` | ESR |
+| `responsabilidad-social-la-base-de-una-organizacion-resiliente` | `6-tips-para-postular-al-esr` | ESR — **Resuelto el 2026-10-01:** el enlace anidado se eliminó y queda uno solo sobre «distintivos como el ESR», a `/servicio/distintivo-esr/`. Corregido en el JSON y con redirect en `next.config.ts` de `/recursos/articulos/6-tips-para-postular-al-esr/` a `/recursos/articulos/6-tips-para-postular-al-distintivo-esr-del-cemefi/`, no en `SLUG_REMAP`. |
 
 Cada uno da 404. Para resolverlo: apuntar el enlace al destino correcto añadiendo una entrada a
 `SLUG_REMAP` en el pipeline, o publicar el artículo que falta.
