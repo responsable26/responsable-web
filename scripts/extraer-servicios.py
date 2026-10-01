@@ -279,12 +279,16 @@ APROBADOS = {
         "de distintos sectores y tamaños. Por eso conectamos los conceptos con casos "
         "de negocio, decisiones, riesgos y situaciones observadas en la práctica, "
         "utilizando un lenguaje adecuado para cada audiencia.",
+    # Estrategia de sostenibilidad: subtítulo del hero. Sustituye a «Ponga
+    # rumbo a su sostenibilidad», la versión en usted reescrita en el
+    # extractor; el cliente prefirió conservar «norte» del original.
+    "Dale norte a tu sostenibilidad":
+        "Dele norte a su sostenibilidad",
 }
 
 # ── Capa 2: cadenas completas que exigen cambiar formas verbales ─────────────
 # Frases redactadas de nuevo porque en usted no funcionaban traducidas.
-REESCRITOS = {"Dale norte a tu sostenibilidad",
-              "Documenta mejor prácticas que ya existen"}
+REESCRITOS = {"Documenta mejor prácticas que ya existen"}
 
 USTED_FRASES = {
     # Informe de sostenibilidad
@@ -321,12 +325,8 @@ USTED_FRASES = {
     "Convierte avances en confianza verificable":
         "Convierta avances en confianza verificable",
     # Estrategia de sostenibilidad
-    # REESCRITO: «Dale norte a» no tiene equivalente en usted que no suene
-    # rígido («Dele norte a su sostenibilidad»). «Ponga rumbo» conserva la idea
-    # de fijar una dirección y usa el mismo vocabulario que el titular del
-    # bloque siguiente de ese documento, «Sostenibilidad con rumbo».
-    "Dale norte a tu sostenibilidad":
-        "Ponga rumbo a su sostenibilidad",
+    # «Dale norte a tu sostenibilidad» ya no pasa por aquí: el cliente aprobó
+    # «Dele norte a su sostenibilidad» y vive en APROBADOS, que se aplica antes.
     "Ordena tus prioridades de sostenibilidad":
         "Ordene sus prioridades de sostenibilidad",
     # Cursos y talleres

@@ -1030,7 +1030,7 @@ export const CONTENIDO_SERVICIOS: ContenidoServicio[] = [
     servicio: "Estrategia de Sostenibilidad",
     hero: {
       titulo: "Estrategia de sostenibilidad",
-      subtitulo: "Ponga rumbo a su sostenibilidad",
+      subtitulo: "Dele norte a su sostenibilidad",
       descripcion: [
         "Tener iniciativas de sostenibilidad no equivale a tener una estrategia. En ResponSable convertimos diagnósticos, estudios de doble materialidad, riesgos e iniciativas aisladas en una ruta alineada al negocio, con prioridades, responsables e indicadores. Así, la empresa sabe dónde enfocar recursos y cómo avanzar con mayor coordinación.",
       ],

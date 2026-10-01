@@ -94,6 +94,25 @@ const ANCLAS_ANTES = [
 ];
 const ANCLAS_FAQ = { label: "Preguntas frecuentes", href: "#faq" };
 
+/* Servicios cuyos puntos descriptivos van en tarjetas montadas a caballo sobre
+   el borde inferior del hero. Es opt-in por slug: el resto de páginas conserva
+   la lista bajo filete magenta. */
+const PUNTOS_A_CABALLO = new Set([
+  "estrategia-de-comunicacion-en-sostenibilidad",
+]);
+
+/* Servicios cuya entradilla del hero se abre a 4xl (unos 100 caracteres por
+   línea) en vez de los 58ch generales. Solo para entradillas largas, donde la
+   columna estrecha las alargaba hasta siete líneas. Opt-in por slug. */
+const ENTRADILLA_ANCHA = new Set([
+  "estrategia-de-comunicacion-en-sostenibilidad",
+]);
+
+/* Servicios con más aire vertical en el hero, arriba del breadcrumb y debajo
+   de los botones. Se añade desde aquí y no en HeroFramed, que comparten todas
+   las páginas con hero. Opt-in por slug. */
+const HERO_AMPLIO = new Set(["estrategia-de-comunicacion-en-sostenibilidad"]);
+
 /**
  * Los tres servicios siguientes en el catálogo, en círculo.
  *
@@ -105,7 +124,8 @@ const ANCLAS_FAQ = { label: "Preguntas frecuentes", href: "#faq" };
 function relacionados(slug: string): ContenidoServicio[] {
   const actual = CONTENIDO_SERVICIOS.findIndex((s) => s.slug === slug);
   return [1, 2, 3].map(
-    (salto) => CONTENIDO_SERVICIOS[(actual + salto) % CONTENIDO_SERVICIOS.length],
+    (salto) =>
+      CONTENIDO_SERVICIOS[(actual + salto) % CONTENIDO_SERVICIOS.length],
   );
 }
 
@@ -198,7 +218,9 @@ function BloqueTexto({
                 <dt className="font-head text-base font-semibold text-navy">
                   {concepto}
                 </dt>
-                <dd className="font-body mt-1 text-ink-soft sm:mt-0">{valor}</dd>
+                <dd className="font-body mt-1 text-ink-soft sm:mt-0">
+                  {valor}
+                </dd>
               </div>
             ))}
           </dl>
@@ -235,6 +257,8 @@ export default async function ServicioPage(
     sobre video, que es donde peor se lee.
   */
   const [entradilla, ...restoDescripcion] = hero.descripcion;
+  const aCaballo = PUNTOS_A_CABALLO.has(contenido.slug);
+  const heroAmplio = HERO_AMPLIO.has(contenido.slug);
 
   const preguntas: FaqItem[] = faq.map((item) => ({
     question: item.pregunta,
@@ -304,6 +328,9 @@ export default async function ServicioPage(
           contenido="centrado"
           altoTarjeta="contenido"
         >
+          {heroAmplio ? (
+            <div aria-hidden="true" className="h-6 sm:h-10" />
+          ) : null}
           <nav
             aria-label="Ruta de navegación"
             className="font-body text-[0.9rem]"
@@ -346,7 +373,13 @@ export default async function ServicioPage(
           <p className="font-body mt-4 max-w-2xl text-[1.1rem] text-white/90">
             {hero.subtitulo}
           </p>
-          <p className="font-body mt-4 max-w-[58ch] text-white/80">
+          <p
+            className={`font-body mt-4 text-white/80 ${
+              ENTRADILLA_ANCHA.has(contenido.slug)
+                ? "max-w-4xl"
+                : "max-w-[58ch]"
+            }`}
+          >
             {entradilla}
           </p>
 
@@ -359,6 +392,19 @@ export default async function ServicioPage(
               Ver el proceso
             </a>
           </div>
+
+          {/* Reserva dentro de la tarjeta navy la franja que ocupan las
+              tarjetas de puntos al subir sobre su borde (ver CLAVES): sin ella
+              taparían los botones. Mismo 4rem que el solape de abajo; con
+              heroAmplio se suma el mismo aire extra que arriba. */}
+          {aCaballo ? (
+            <div
+              aria-hidden="true"
+              className={heroAmplio ? "h-22 sm:h-26" : "h-16"}
+            />
+          ) : heroAmplio ? (
+            <div aria-hidden="true" className="h-6 sm:h-10" />
+          ) : null}
         </HeroFramed>
 
         {/* ------------------------------- CLAVES ------------------------------ */}
@@ -371,16 +417,52 @@ export default async function ServicioPage(
           texto sin depender de ninguna ilustración. Son cuatro en los diez
           servicios, así que la retícula de cuatro columnas siempre cierra.
         */}
-        <section aria-labelledby="claves-title" className="py-[var(--section-y)]">
+        {/*
+          Con aCaballo las tarjetas de puntos van primero y suben sobre el
+          hero: el -mt descuenta el margen inferior de la sección del hero
+          (p-4 / sm:p-7) más 4rem de solape, que es lo que queda sobre el navy.
+          Sin padding superior en la sección, porque ese aire ya lo pone el
+          propio solape. z-30 porque el contenido del hero va en z-20 dentro
+          de una tarjeta sin contexto de apilamiento propio.
+
+          Las tarjetas siguen el criterio de las de beneficios de Doble
+          Materialidad (rounded, p-6, sombra y elevación al hover), pero en
+          blanco: navy sobre el navy del hero se perdería la mitad superior.
+        */}
+        <section
+          aria-labelledby="claves-title"
+          className={
+            aCaballo ? "pb-[var(--section-y)]" : "py-[var(--section-y)]"
+          }
+        >
           <div className="mx-auto max-w-[var(--container)] px-[clamp(1rem,4vw,2rem)]">
             <h2 id="claves-title" className="sr-only">
               En qué consiste el servicio
             </h2>
 
+            {aCaballo ? (
+              <ul className="relative z-30 -mt-20 grid gap-6 sm:-mt-[5.75rem] sm:grid-cols-2 lg:grid-cols-4">
+                {hero.puntos.map((punto) => (
+                  <li
+                    key={punto}
+                    className="rounded bg-white p-6 shadow transition-[transform,box-shadow] duration-150 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <p className="font-head text-[0.95rem] font-medium text-navy">
+                      {punto}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+
             {/* 717px = 68 caracteres a los 16.8px de estos párrafos, el mismo
                 tope que BloqueTexto más abajo. Ver §2 de globals.css. */}
             {restoDescripcion.length > 0 ? (
-              <div className="flex max-w-[717px] flex-col gap-4">
+              <div
+                className={`flex max-w-[717px] flex-col gap-4 ${
+                  aCaballo ? "mt-12" : ""
+                }`}
+              >
                 {restoDescripcion.map((parrafo) => (
                   <p
                     key={parrafo}
@@ -392,19 +474,21 @@ export default async function ServicioPage(
               </div>
             ) : null}
 
-            <ul
-              className={`grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ${
-                restoDescripcion.length > 0 ? "mt-12" : ""
-              }`}
-            >
-              {hero.puntos.map((punto) => (
-                <li key={punto} className="border-t-2 border-magenta pt-4">
-                  <p className="font-head text-[1.05rem] font-medium text-navy">
-                    {punto}
-                  </p>
-                </li>
-              ))}
-            </ul>
+            {aCaballo ? null : (
+              <ul
+                className={`grid gap-6 sm:grid-cols-2 lg:grid-cols-4 ${
+                  restoDescripcion.length > 0 ? "mt-12" : ""
+                }`}
+              >
+                {hero.puntos.map((punto) => (
+                  <li key={punto} className="border-t-2 border-magenta pt-4">
+                    <p className="font-head text-[1.05rem] font-medium text-navy">
+                      {punto}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </section>
 
@@ -512,7 +596,9 @@ export default async function ServicioPage(
                 <h2 className="font-head text-[clamp(1.6rem,3.5vw,2.05rem)] font-semibold text-white">
                   {cta.subtitulo}
                 </h2>
-                <p className="font-body mt-3 text-white/90">{cta.descripcion}</p>
+                <p className="font-body mt-3 text-white/90">
+                  {cta.descripcion}
+                </p>
               </div>
               <ContactButton variant="dark">Contáctenos</ContactButton>
             </div>
