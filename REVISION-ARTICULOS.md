@@ -103,6 +103,14 @@ ASCII en el origen, así que el problema reaparecerá si se rehace la descarga c
 > las tablas `RUTA_REMAP` / `SLUG_REMAP`: el pipeline de WordPress no está en el repositorio y no se
 > va a volver a ejecutar. Las demás rutas de esta tabla ya resuelven por los redirects de
 > `next.config.ts`, con un salto.
+>
+> **Actualización 2026-10-01 (2).** Los enlaces internos a URLs redirigidas (`/estudio-de-materialidad-2/`,
+> `/postular-al-distintivo-esr-del-cemefi/`, `/portfolios/panorama-de-la-responsabilidad-social-en-mexico-2019/`,
+> etc.) se actualizaron a su destino final **directamente en los JSON** de `src/content/articulos/`:
+> 33 enlaces. Las reglas de `next.config.ts` se conservan para quien llega desde fuera del sitio.
+> Quedan 12 enlaces sin cambiar, todavía apuntando a la URL vieja, porque el destino del redirect
+> no corresponde al texto del enlace (por ejemplo, un «formulario» que llevaría a una página de
+> servicio, o un enlace que acabaría apuntando al propio artículo). Están pendientes de decidir.
 
 Se reescribieron a ruta relativa como se indicó, sin inventar destino. **Hoy dan 404.**
 
