@@ -141,7 +141,29 @@ ASCII en el origen, así que el problema reaparecerá si se rehace la descarga c
 > | `como-reportar-ods-en-informes-de-sustentabilidad` | «podemos hablar sobre tu proyecto…» (landing de gr8.com, 404) | `/?contacto=1`, en la misma pestaña |
 > | `informes-de-sustentabilidad-por-donde-empezar` | «10 principios de Pacto Mundial» (404 tras el cambio a pactoglobal.org.mx) | `https://pactoglobal.org.mx/los-diez-principios/` |
 > | `informes-de-sustentabilidad-por-donde-empezar` | «LALA» (Informe Anual 2018, 404) | `https://www.lala.com.mx/centro-reportes/` |
-> | `la-responsabilidad-social-en-el-sector-alimentario-en-mexico` | Párrafo del segundo estudio de ResponSable (`bit.ly/1D775Fq`, 404) | Párrafo restaurado desde git en su posición original; el enlace apunta a la copia del Wayback Machine del estudio. El texto visible del enlace sigue siendo la URL de bit.ly |
+> | `la-responsabilidad-social-en-el-sector-alimentario-en-mexico` | Párrafo del segundo estudio de ResponSable (`bit.ly/1D775Fq`, 404) |
+>
+> **Actualización 2026-10-01 (4). Correcciones técnicas.**
+>
+> - **Imágenes y LCP.** El destacado de `/recursos/` y el hero de cada ficha cargan con
+>   `loading="eager"` y `fetchPriority="high"` (`priority` está obsoleto desde Next 16). En los
+>   JSON, las 87 `<img>` del cuerpo llevan `loading="lazy"` y `decoding="async"`. Las 67 sin
+>   medidas utilizables tienen ahora `width`/`height` reales leídos del archivo: 65 no traían
+>   ninguna, `2015-01-FMR-2016.webp` traía `100%`/`auto` y `2014-12-infografia.webp` solo
+>   `width`, a la que se añadió el `height` proporcional. El CSS de `.articulo-prose img` ya
+>   tenía `max-width: 100%; height: auto`, así que no deforma.
+> - **Sitemap.** Solo los artículos declaran `lastmod`, con su fecha de publicación. El resto
+>   de páginas ya no lo lleva (antes era la fecha de cada build).
+> - **Textos.** Quitado el espacio de no separación final de 3 títulos en `src/lib/articulos.ts`
+>   (`guia-sobre-los-stakeholders`, `guia-calcular-retorno-social`,
+>   `guia-analisis-de-materialidad`). Errata «disponble» → «disponible» en
+>   `panorama-de-la-responsabilidad-social-en-mexico-2019`.
+> - **«Otros artículos».** Ya no son siempre los 3 primeros: misma categoría primero, del más
+>   reciente al más antiguo, y se completa con los más recientes del blog. Los de «Archivo» solo
+>   aparecen en artículos de «Archivo».
+>
+> Los datos para la revisión editorial pendiente (titles, descriptions, alt y encabezados) están
+> en `revision-editorial-blog.md`, en la raíz del proyecto. Párrafo restaurado desde git en su posición original; el enlace apunta a la copia del Wayback Machine del estudio. El texto visible del enlace sigue siendo la URL de bit.ly |
 
 Se reescribieron a ruta relativa como se indicó, sin inventar destino. **Hoy dan 404.**
 

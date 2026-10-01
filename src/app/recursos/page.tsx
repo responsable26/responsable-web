@@ -48,7 +48,10 @@ function Destacado({ articulo }: { articulo: ArticuloMeta }) {
         style={
           articulo.imagen
             ? undefined
-            : { backgroundImage: "linear-gradient(135deg, var(--color-navy), #2b3266)" }
+            : {
+                backgroundImage:
+                  "linear-gradient(135deg, var(--color-navy), #2b3266)",
+              }
         }
       >
         {articulo.imagen ? (
@@ -56,6 +59,11 @@ function Destacado({ articulo }: { articulo: ArticuloMeta }) {
             src={articulo.imagen.src}
             alt=""
             fill
+            /* Es el elemento más grande de la primera pantalla (el LCP): carga
+               de inmediato y con prioridad alta, sin esperar a que se acerque
+               al viewport. */
+            loading="eager"
+            fetchPriority="high"
             sizes="(min-width: 1328px) 747px, (min-width: 1024px) 58vw, calc(100vw - 3rem)"
             className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
           />
@@ -89,7 +97,9 @@ function Destacado({ articulo }: { articulo: ArticuloMeta }) {
 export default function RecursosPage() {
   // Se ordena aquí y no se confía en el orden del archivo generado: el
   // destacado tiene que ser el más reciente pase lo que pase con el export.
-  const ordenados = [...ARTICULOS].sort((a, b) => b.fecha.localeCompare(a.fecha));
+  const ordenados = [...ARTICULOS].sort((a, b) =>
+    b.fecha.localeCompare(a.fecha),
+  );
   const [destacado, ...resto] = ordenados;
 
   /* El destacado no se repite en la rejilla, ni en "Todas" ni al filtrar. */

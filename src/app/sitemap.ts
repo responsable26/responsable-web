@@ -24,6 +24,12 @@ const BASE = "https://responsable.net";
     aportan a búsqueda.
   Cada una entra en cuanto se le retire el noindex, y no antes.
 
+  lastmod solo donde hay una fecha real: los artículos, con su fecha de
+  publicación, y /recursos/, con la del artículo más reciente, que es cuando
+  cambia el índice. El resto de páginas no lo declara: no hay una fecha real de
+  modificación que dar, y la del build cambiaba en cada despliegue aunque la
+  página no cambiara, que es justo lo que enseña a Google a ignorar el campo.
+
   Las prioridades no se inflan: son relativas dentro del propio sitio y no
   aportan nada si todas valen 1. La Home encabeza, los servicios van justo
   debajo —son las páginas comerciales del sitio—, después el índice de casos
@@ -39,13 +45,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${BASE}/`,
-      lastModified: new Date(masReciente),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${BASE}/servicio/`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
@@ -53,7 +57,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE}/servicio/${servicio.slug}/`,
       // No hay fecha en los documentos: la del build es lo más honesto que se
       // puede declarar sin inventarla.
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
@@ -61,33 +64,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       // Fuera del map porque tiene ruta estática propia y no está en
       // CONTENIDO_SERVICIOS, pero es una página de servicio más.
       url: `${BASE}/servicio/estudio-doble-materialidad/`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       // Mismo caso que Doble Materialidad: ruta estática propia.
       url: `${BASE}/servicio/universidad-responsable/`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${BASE}/casos-de-exito/`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     ...CASOS_PUBLICOS.map((caso) => ({
       url: `${BASE}/casos-de-exito/${caso.slug}/`,
       // Los casos no llevan fecha: la del build, como en los servicios.
-      lastModified: new Date(),
       changeFrequency: "yearly" as const,
       priority: 0.7,
     })),
     {
       url: `${BASE}/nosotros/`,
-      lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.7,
     },

@@ -8,10 +8,39 @@ import { ArticuloBody } from "@/components/articulos/articulo-body";
 import { ArticuloCard } from "@/components/articulos/articulo-card";
 import { TablaContenidos } from "@/components/articulos/tabla-contenidos";
 import { CtaArticulo } from "@/components/articulos/cta-articulo";
-import { ARTICULOS, formatFecha, getArticuloMeta } from "@/lib/articulos";
+import {
+  ARTICULOS,
+  formatFecha,
+  getArticuloMeta,
+  type ArticuloMeta,
+} from "@/lib/articulos";
 import { categoriaDe } from "@/lib/categorias-articulos";
 import { getArticuloBlocks } from "@/lib/articulos-content";
 import { prepararIndice } from "@/lib/indice-articulo";
+
+/**
+ * Los tres artículos de "Otros artículos".
+ *
+ * Primero los de la misma categoría, del más reciente al más antiguo; si no
+ * llegan a tres, se completa con los más recientes del blog. Los de "Archivo"
+ * (noticias de 2012 a 2020) solo aparecen como relacionados de otro artículo
+ * de "Archivo", nunca en los de las demás categorías. Se resuelve al generar
+ * la página, así que los enlaces van en el HTML servido.
+ */
+function relacionadosDe(actual: ArticuloMeta): ArticuloMeta[] {
+  const categoria = categoriaDe(actual.slug).id;
+  const candidatos = [...ARTICULOS]
+    .filter((a) => a.slug !== actual.slug)
+    .filter(
+      (a) => categoria === "archivo" || categoriaDe(a.slug).id !== "archivo",
+    )
+    .sort((a, b) => b.fecha.localeCompare(a.fecha));
+  const mismaCategoria = candidatos.filter(
+    (a) => categoriaDe(a.slug).id === categoria,
+  );
+  const resto = candidatos.filter((a) => categoriaDe(a.slug).id !== categoria);
+  return [...mismaCategoria, ...resto].slice(0, 3);
+}
 
 export function generateStaticParams() {
   return ARTICULOS.map((articulo) => ({ slug: articulo.slug }));
@@ -72,10 +101,7 @@ export default async function ArticuloPage(
      cliente y la URL canonicaliza a /recursos/). Cuando las categorías tengan
      URL, la miga puede volver a pasar por ellas. */
   const categoria = categoriaDe(articulo.slug);
-  const relacionados = ARTICULOS.filter((a) => a.slug !== articulo.slug).slice(
-    0,
-    3,
-  );
+  const relacionados = relacionadosDe(articulo);
 
   const ARTICLE_JSON_LD = {
     "@context": "https://schema.org",
@@ -160,7 +186,10 @@ export default async function ArticuloPage(
               src={articulo.imagen.src}
               alt=""
               fill
-              priority
+              /* LCP de la ficha. `priority` está obsoleto desde Next 16: la
+                 documentación recomienda loading="eager" y fetchPriority="high". */
+              loading="eager"
+              fetchPriority="high"
               sizes="100vw"
               className="object-cover"
             />
