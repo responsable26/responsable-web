@@ -207,7 +207,7 @@ export const CASOS: Caso[] = [
     resumen:
       "El primer estudio de materialidad de la operación en México, que ordenó años de acciones dispersas y consiguió presupuesto para las prioridades.",
     descripcion:
-      "Acompañamos a Sanofi México en su primer estudio de materialidad, consultando a colaboradores, líderes, clientes, socios comerciales, proveedores, cámaras e instituciones clave para identificar temas prioritarios, fortalecer su estrategia de responsabilidad social y alinear sus acciones con las expectativas de sus grupos de interés.",
+      "Acompañamos a Sanofi México en su primer estudio de materialidad, consultando a colaboradores, líderes, clientes, socios comerciales, proveedores, cámaras e instituciones clave. Identificamos temas prioritarios que permitieron fortalecer su estrategia de responsabilidad social y alinear sus acciones con las expectativas de sus grupos de interés.",
     videoYoutube: "EcMa_eMCO6c",
     imagen: null,
     /* Estrategia y no Estudio de Doble Materialidad, aunque el texto cuente la
@@ -216,13 +216,13 @@ export const CASOS: Caso[] = [
        un alcance distinto al entregado. */
     serviciosAplicados: ["Estrategia de Sostenibilidad"],
     reto: [
-      "Sanofi México nunca había hecho un ejercicio de este tipo. Tenía acciones en la materia desde hacía años, pero repartidas entre áreas y sin una estrategia que las ordenara. Ni siquiera estaba claro de quién era el tema: si de recursos humanos, de asuntos públicos o de comunicación.",
-      "Había además un factor de contexto. Sanofi es un jugador mundial en la industria de la salud, y la empresa necesitaba articular su compromiso con la comunidad de forma consistente con ese papel.",
+      "Sanofi México no había hecho un ejercicio de este tipo. Tenía acciones en la materia desde hacía años, pero repartidas entre áreas y sin una estrategia que las ordenara. Ni siquiera estaba claro de quién era el tema: si de recursos humanos, de asuntos públicos o de comunicación.",
+      "Había además un factor de contexto: Sanofi es una de las compañías líderes a nivel mundial en la industria de la salud, y la empresa necesitaba articular su compromiso con la comunidad de forma consistente con ese papel.",
     ],
     solucion: [
-      "Un estudio de materialidad de cinco meses en tres etapas.",
+      "Un estudio de materialidad de cinco meses en tres etapas: priorizar, consultar y evaluar.",
       "En la priorización se midió el nivel de madurez de la empresa frente a su competencia y frente a referentes nacionales e internacionales, se construyó el listado de temas relevantes y se definieron los grupos de interés a consultar.",
-      "La consulta cubrió al 100% de la plantilla interna, incluidos directivos, y se extendió a clientes, socios comerciales, proveedores, cámaras del sector, autoridades e instituciones. Se combinaron encuestas en línea, entrevistas uno a uno y focus groups con participantes internos y externos. Los instrumentos se diseñaron desde ResponSable y se validaron con Sanofi antes de aplicarse.",
+      "La consulta cubrió al 100% de la plantilla interna, incluidos directivos, y se extendió a clientes, socios comerciales, proveedores, cámaras del sector, autoridades e instituciones. Se combinaron encuestas en línea, entrevistas uno a uno y focus groups con participantes internos y externos. Los instrumentos de consulta fueron diseñados por ResponSable y validados con Sanofi antes de aplicarse.",
       "La evaluación cruzó ambas prioridades, la del negocio y la de los grupos de interés, para construir la matriz de materialidad.",
     ],
     resultados: [
