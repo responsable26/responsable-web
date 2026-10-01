@@ -26,7 +26,7 @@ const LOGOS = [
     h: 110,
   },
   { nombre: "Profuturo", archivo: "profuturo", w: 300, h: 126 },
-  { nombre: "La Esperanza", archivo: "la-esperanza", w: 235, h: 110 },
+  { nombre: "Grupo Esperanza", archivo: "la-esperanza", w: 235, h: 110 },
 ];
 
 /**

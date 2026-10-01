@@ -3,7 +3,7 @@ import { CUADRANTES } from "@/lib/servicios";
 /* ═══════════════════════════════════════════════════════════════════════════
    Los seis casos tienen contenido real validado por el cliente y ninguno
    lleva `sinValidar` ni marcadores. Profuturo, Vestolit, BMW y Sanofi México
-   salen de los webinars grabados con cada cliente; HEINEKEN México y La
+   salen de los webinars grabados con cada cliente; HEINEKEN México y Grupo
    Esperanza, del texto entregado para reactivarlos. El índice y las seis
    fichas son indexables y están en el sitemap.
 
@@ -118,7 +118,7 @@ export const CASOS: Caso[] = [
   },
   {
     slug: "la-esperanza",
-    cliente: "La Esperanza",
+    cliente: "Grupo Esperanza",
     /* Grupo Esperanza no es solo pastelería: incluye pan y pastelería, una
        cadena de rosticerías, una panificadora industrial y una purificadora
        de agua. */
@@ -126,18 +126,18 @@ export const CASOS: Caso[] = [
     resumen:
       "El paso de tener prácticas responsables sin documentar a una gestión integrada que la organización entiende, sostiene y sabe comunicar.",
     descripcion:
-      "En conjunto con Grupo Esperanza, implementamos un proceso de acompañamiento y asesoría para PyMes enfocado en integrar la sostenibilidad de manera transversal en sus procesos operativos y en construir una cultura organizacional sólida. Nuestra intervención resolvió el reto de estructurar, documentar y comunicar de forma efectiva las evidencias de impacto social que la empresa ya generaba de forma nativa pero no sabía plasmar. Más allá de orientar al equipo hacia la obtención de un distintivo corporativo, nuestro enfoque se centró en una guía integral basada en la transferencia de conocimiento y el aprendizaje continuo, lo que permitió a la organización apropiarse del proceso, descubrir nuevas oportunidades de innovación y consolidar un propósito social plenamente arraigado en su operación diaria.",
+      "Acompañamos a Grupo Esperanza brindándoles asesoría para PyMes enfocada en integrar la sostenibilidad de manera transversal en sus procesos operativos y en construir una cultura organizacional sólida. Nuestro aporte permitió resolver el reto de estructurar, documentar y comunicar de forma efectiva las acciones con impacto social que la empresa realizaba de forma nativa pero no documentaba. Más allá de orientar al equipo hacia la obtención del Distintivo ESR (Empresa Socialmente Responsable), nuestro enfoque se centró en una guía integral basada en la transferencia de conocimiento y el aprendizaje continuo, lo que permitió a la organización apropiarse del proceso, descubrir nuevas oportunidades de innovación y consolidar un propósito social plenamente ligado con su operación diaria.",
     videoYoutube: "dJ4a6GcpYV4",
     imagen: null,
     serviciosAplicados: ["Acompañamiento en sostenibilidad"],
     reto: [
-      "Grupo Esperanza quería que la sostenibilidad fuera parte de su marca y de su cultura, no una serie de acciones sueltas.",
+      "Grupo Esperanza quería que la sostenibilidad fuera parte de su marca y de su cultura, no una serie de acciones aisladas.",
       "El problema no era la falta de prácticas responsables: ya las tenían. Era que nadie sabía cómo documentarlas. Al preguntar a cada área por sus evidencias, la respuesta era la misma: desconocían cómo registrar lo que hacían. Y sin evidencia no hay reconocimiento posible, ni distintivo, ni comunicación que se sostenga.",
     ],
     solucion: [
       "Un acompañamiento continuo, no un entregable que se entrega y se cierra.",
-      "El trabajo empezó por conversar con cada área antes de pedirles formatos. Primero se dejó que explicaran con sus palabras lo que hacían, y solo después se les guió para convertirlo en evidencia. Ese orden importa: cuando se pide documentación a quien no sabe qué documentar, no sale nada.",
-      "A partir de ahí se mapearon las fortalezas que ya existían, se identificó dónde había innovación real y se integró la responsabilidad social dentro de los procesos de la empresa, en lugar de montar un proceso paralelo que dependiera de una sola persona.",
+      "El trabajo empezó con el acercamiento a cada área antes de pedirles formatos. Primero se dejó que explicaran con sus palabras lo que hacían, y solo después se les guió para convertirlo en evidencia. Ese orden importa: cuando se pide documentación a quien no sabe qué documentar, no sale nada.",
+      "A partir de ahí se mapearon las fortalezas que ya existían, se identificó dónde había innovación real y se integró la sostenibilidad dentro de los procesos de la empresa, en lugar de montar un proceso paralelo que dependiera de una sola persona.",
     ],
     resultados: [
       "Grupo Esperanza pasó de tener acciones responsables poco documentadas a una gestión integrada.",
