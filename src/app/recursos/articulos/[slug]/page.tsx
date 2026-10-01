@@ -55,8 +55,10 @@ export async function generateMetadata(
 
   const canonical = `/recursos/articulos/${articulo.slug}/`;
   return {
-    // Sin sufijo de marca: lo añade el template del layout raíz.
-    title: articulo.titulo,
+    // Sin sufijo de marca: lo añade el template del layout raíz. El título
+    // SEO, más corto, solo se usa aquí; og:title y el resto de la página
+    // siguen con el título visible.
+    title: articulo.tituloSeo ?? articulo.titulo,
     description: articulo.excerpt,
     alternates: { canonical },
     openGraph: {
