@@ -99,7 +99,18 @@ function TarjetaCaso({ caso, activo }: { caso: Caso; activo: boolean }) {
     tarjeta no crezca desproporcionada respecto a esa altura.
   */
   return (
-    <div className="h-full rounded bg-white px-6 py-8 shadow sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+    /*
+      La tarjeta conserva el cursor de la pista (grab): arrastrarla es lo que
+      hace. Su respuesta al hover es solo visual, un filete interior magenta;
+      inset y no exterior porque la pista tiene overflow-x:auto, que también
+      recorta en vertical, y un ring o un translate por fuera se cortarían
+      arriba y abajo.
+
+      El pointer queda reservado al enlace «Ver el caso completo». La pista
+      pone cursor-grab en todos sus enlaces con [&_a]:cursor-grab, más
+      específico que una clase suelta, de ahí el `!` en el enlace.
+    */
+    <div className="h-full rounded bg-white px-6 py-8 shadow transition-shadow duration-150 ring-inset hover:ring-2 hover:ring-magenta/40 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
       <div className="grid items-start gap-8 md:grid-cols-[45%_1fr]">
         <VideoYoutube
           id={caso.videoYoutube}
@@ -129,7 +140,7 @@ function TarjetaCaso({ caso, activo }: { caso: Caso; activo: boolean }) {
           </p>
           <Link
             href={`/casos-de-exito/${caso.slug}/`}
-            className="font-head mt-6 inline-block text-sm font-semibold text-magenta"
+            className="font-head mt-6 inline-block cursor-pointer! text-sm font-semibold text-magenta"
           >
             Ver el caso completo →
           </Link>
