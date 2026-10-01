@@ -108,9 +108,27 @@ ASCII en el origen, así que el problema reaparecerá si se rehace la descarga c
 > `/postular-al-distintivo-esr-del-cemefi/`, `/portfolios/panorama-de-la-responsabilidad-social-en-mexico-2019/`,
 > etc.) se actualizaron a su destino final **directamente en los JSON** de `src/content/articulos/`:
 > 33 enlaces. Las reglas de `next.config.ts` se conservan para quien llega desde fuera del sitio.
-> Quedan 12 enlaces sin cambiar, todavía apuntando a la URL vieja, porque el destino del redirect
-> no corresponde al texto del enlace (por ejemplo, un «formulario» que llevaría a una página de
-> servicio, o un enlace que acabaría apuntando al propio artículo). Están pendientes de decidir.
+> Quedaron 12 enlaces sin cambiar porque el destino del redirect no correspondía al texto del
+> enlace. **Resueltos el 2026-10-01**, también en los JSON:
+>
+> | Artículo | Enlace | Resolución |
+> |---|---|---|
+> | `guia-sobre-los-stakeholders` | «formulario» | `/acompanamiento-rse/` → `/?contacto=1` |
+> | `guia-analisis-de-materialidad` | «formulario» | `/estudio-de-materialidad-2/` → `/?contacto=1` |
+> | `estudio-de-materialidad-10-beneficios-estrategicos` | «tus inquietudes» | `/estudio-de-materialidad-2/` → `/?contacto=1` |
+> | `impartimos-cursos-y-talleres-de-responsabilidad-social-este-2019` | «estrategia de sustentabilidad» | `/estudio-de-materialidad-2/` → `/servicio/estrategia-sostenibilidad/` |
+> | `los-desafios-de-desarrollar-una-estrategia-de-sustentabilidad-exitosa` | «estrategia de Sustentabilidad» | `/cursos-y-talleres-de-rse-en-mexico/` → `/servicio/estrategia-sostenibilidad/` |
+> | `los-desastres-no-son-naturales` | «estrategia RSE de Responsabilidad Social» | `/comunicacion-en-rse/` → `/servicio/estrategia-sostenibilidad/` |
+> | `como-construir-una-cadena-de-valor-y-guiar-a-las-pymes-hacia-los-ods` | «sostenibilidad» | `/cursos-y-talleres-de-rse-en-mexico/` → `/servicio/` |
+> | `datos-que-revelan-el-estado-de-la-rs-en-mexico` | «responsabilidad social corporativa» | `/reputacion-corporativa-2/` → `/servicio/` |
+> | `desarrollando-nuevas-estrategias-en-responsabilidad-social-corporativa` | «responsabilidad social corporativa» | `/reputacion-corporativa-2/` → `/casos-de-exito/bmw/` |
+> | `5-consejos-de-responsabilidad-social-empresarial-rse-que-no-cuestan-casi-nada` | «Empresa Socialmente Responsable» | `/confian-en-nosotros/` → `/servicio/distintivo-esr/` |
+> | `heineken-mexico-pasos-estrategicos-para-un-estudio-de-materialidad-fuera-de-lo-comun` | botón «¡Quiero ver la grabación!» (`/heineken/`) | Eliminado con su contenedor. |
+> | `panorama-de-la-responsabilidad-social-en-mexico-2019` | «¡Descárgalo aquí!» (enlazaba al propio artículo) | Enlace eliminado; la oración queda «Déjanos tu comentario y te lo enviaremos por correo.» |
+>
+> Además, en `panorama-la-responsabilidad-social-mexico-2019` el enlace al estudio mostraba como
+> texto la URL vieja (`/portfolios/panorama-de-la-responsabilidad-social-en-mexico-2019/`); ahora
+> muestra «Panorama de la Responsabilidad Social en México 2019», con el mismo destino.
 
 Se reescribieron a ruta relativa como se indicó, sin inventar destino. **Hoy dan 404.**
 
