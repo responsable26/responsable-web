@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Archivos de trabajo de la revisión del blog (no se suben)
+revision-editorial-blog.md
+propuesta-alt-blog.md
