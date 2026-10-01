@@ -179,7 +179,7 @@ export const CASOS: Caso[] = [
     resumen:
       "Quince meses de trabajo de campo en nueve plantas para construir con datos, y no con supuestos, la línea base del relacionamiento comunitario.",
     descripcion:
-      "Junto con Vestolit, llevamos a cabo un diagnóstico de impacto social en nueve de sus plantas, un proyecto de gran alcance coordinado regionalmente durante más de un año. Nuestra intervención se centró en sustituir el enfoque asistencialista por una estrategia orientada al negocio y a la creación de valor compartido. Este diagnóstico no solo fortaleció sus iniciativas con la comunidad, sino que también sirvió de respaldo para movilizar la cultura organizacional desde la alta dirección, logrando integrar de manera definitiva el impacto social en el núcleo de su estrategia empresarial.",
+      "Apoyamos a Vestolit, realizando un diagnóstico de impacto social en sus nueve plantas, un proyecto de gran alcance coordinado regionalmente durante más de un año. Nuestra intervención se centró en sustituir el enfoque asistencialista por una estrategia orientada al negocio y a la creación de valor compartido. Los resultados no solo nos permitieron fortalecer las iniciativas con la comunidad, sino que también sirvieron de respaldo para movilizar la cultura organizacional desde la alta dirección, logrando integrar de manera definitiva el impacto social en el núcleo de su estrategia empresarial.",
     videoYoutube: "l1hqXtv95c8",
     imagen: null,
     serviciosAplicados: ["Diagnóstico Social y Línea base comunitaria"],
@@ -190,8 +190,8 @@ export const CASOS: Caso[] = [
     ],
     solucion: [
       "Un diagnóstico de quince meses estructurado en tres etapas.",
-      "En la etapa de identificación se delimitaron las zonas de influencia de las nueve plantas, que fue el primer punto difícil: no bastaba con trazar un perímetro, porque la operación afecta a través de infraestructura y tráfico. Se analizaron las características sociodemográficas de cada región y se hizo un benchmark de otras empresas presentes en la zona.",
-      "La etapa de consulta fue trabajo de campo. Se aplicaron 2.422 encuestas en comunidad, 432 encuestas a colaboradores y 40 entrevistas a líderes de opinión, además de 14 focus groups internos.",
+      "En la etapa de identificación se delimitaron las zonas de influencia de las nueve plantas, que fue el primer punto difícil: no bastaba con trazar una circunferencia alrededor de las plantas, porque la operación afecta a través de infraestructura y tráfico, por lo que el radio de la zona de influencia podía ir desde los 2 km hasta los 15 km, dependiendo de las características y riesgos de cada planta. Se lograron identificar las características sociodemográficas de cada región y se hizo un benchmark de otras empresas presentes en la zona.",
+      "La etapa de consulta fue trabajo de campo. Se aplicaron 2,422 encuestas en comunidad, 432 encuestas a colaboradores y 40 entrevistas a líderes de opinión, además de 14 focus groups internos.",
       "En la etapa de definición se procesó la información, se presentaron los resultados a los liderazgos y se realizaron 6 talleres de liderazgo y co-creación, en los que personal directivo y operativo propuso iniciativas a partir de las necesidades detectadas.",
     ],
     resultados: [
