@@ -8,9 +8,10 @@ import { Articulos } from "@/components/home/articulos";
 import { ARTICULOS } from "@/lib/articulos";
 import { CUADRANTES } from "@/lib/servicios";
 import { BASE, ORG_REF } from "@/lib/schema-organizacion";
+import { DESCRIPCION_SERVICIOS } from "@/lib/meta-descripciones";
 
-const DESCRIPCION =
-  "Diagnóstico, estrategia, implementación y comunicación en sostenibilidad. Los servicios con los que acompañamos a su empresa en cada etapa.";
+/* En meta-descripciones.ts: la usa también /llms.txt. */
+const DESCRIPCION = DESCRIPCION_SERVICIOS;
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.

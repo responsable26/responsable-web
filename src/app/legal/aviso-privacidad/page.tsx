@@ -205,27 +205,27 @@ export default function AvisoPrivacidadPage() {
               </p>
               <ul>
                 <li>
-                  Google Analytics — Análisis de tráfico y comportamiento en el
+                  Google Analytics: análisis de tráfico y comportamiento en el
                   sitio
                 </li>
                 <li>
-                  Microsoft Clarity — Mapas de calor, grabaciones de sesión y
+                  Microsoft Clarity: mapas de calor, grabaciones de sesión y
                   análisis de usabilidad
                 </li>
                 <li>
-                  Google Tag Manager — Gestión y despliegue de etiquetas de
+                  Google Tag Manager: gestión y despliegue de etiquetas de
                   seguimiento
                 </li>
                 <li>
-                  Meta Pixel (Facebook/Instagram) — Medición de conversiones y
+                  Meta Pixel (Facebook/Instagram): medición de conversiones y
                   creación de audiencias en plataformas Meta
                 </li>
                 <li>
-                  LinkedIn Insight Tag — Medición de campañas y retargeting en
+                  LinkedIn Insight Tag: medición de campañas y retargeting en
                   LinkedIn
                 </li>
                 <li>
-                  Google Ads (Remarketing) — Medición de conversiones y campañas
+                  Google Ads (Remarketing): medición de conversiones y campañas
                   de remarketing en la red de Google
                 </li>
               </ul>

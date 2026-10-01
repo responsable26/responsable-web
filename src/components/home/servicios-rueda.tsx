@@ -760,7 +760,7 @@ export function ServiciosRueda() {
                       aria-controls={expuesto ? panelId : undefined}
                       aria-label={
                         expuesto
-                          ? `${cuadrante.pregunta} — ver servicios`
+                          ? `Ver servicios: ${cuadrante.pregunta}`
                           : undefined
                       }
                       onClick={() => alternarCuadrante(index)}

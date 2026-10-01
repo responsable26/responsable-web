@@ -7,13 +7,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { CtaContacto } from "@/components/cta-contacto";
 import { CasoCard } from "@/components/casos/caso-card";
 import { VideoYoutube } from "@/components/video-youtube";
-import {
-  CASOS_PUBLICOS,
-  PLACEHOLDER,
-  getCaso,
-  rutaDeServicio,
-} from "@/lib/casos";
+import { CASOS_PUBLICOS, getCaso, rutaDeServicio } from "@/lib/casos";
 import { ORG_REF } from "@/lib/schema-organizacion";
+import { descripcionCaso } from "@/lib/meta-descripciones";
 
 export function generateStaticParams() {
   return CASOS_PUBLICOS.map((caso) => ({ slug: caso.slug }));
@@ -27,13 +23,9 @@ export async function generateMetadata(
   if (!caso) return {};
 
   const canonical = `/casos-de-exito/${caso.slug}/`;
-  /* El resumen del caso, que es texto escrito para leerse. La plantilla queda
-     de respaldo para un caso cuyo resumen aún no esté validado: describe el
-     contenido sin prometer nada y, sobre todo, evita publicar un marcador de
-     posición en los metadatos. */
-  const descripcion = caso.resumen.includes(PLACEHOLDER)
-    ? `Caso de éxito de ${caso.cliente}: el reto, el trabajo realizado y los resultados obtenidos con el acompañamiento de ResponSable.`
-    : caso.resumen;
+  /* El resumen del caso, con plantilla de respaldo (ver descripcionCaso en
+     meta-descripciones.ts, que comparte con /llms.txt). */
+  const descripcion = descripcionCaso(caso);
 
   return {
     // Sin sufijo de marca: lo añade el template del layout raíz.

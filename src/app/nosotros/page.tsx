@@ -6,9 +6,10 @@ import { CtaContacto } from "@/components/cta-contacto";
 import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
 import { BASE, ORG_REF } from "@/lib/schema-organizacion";
+import { CIFRAS_NOSOTROS, DESCRIPCION_NOSOTROS } from "@/lib/meta-descripciones";
 
-const DESCRIPCION =
-  "Consultoría en sostenibilidad y RSE desde 2011. Acompañamos a más de 200 empresas en México y Latinoamérica a convertir la sostenibilidad en decisiones de negocio.";
+/* En meta-descripciones.ts: la usa también /llms.txt. */
+const DESCRIPCION = DESCRIPCION_NOSOTROS;
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.
@@ -79,14 +80,9 @@ const DIFERENCIALES = [
 type ImagenDiferenciales = { src: string; alt: string } | "provisional" | null;
 const IMAGEN_DIFERENCIALES = "provisional" as ImagenDiferenciales;
 
-/** Cifras de la banda. El valor va suelto del texto para poder darle su escala.
- *  Cifras y rótulos salen del documento de credenciales del cliente, que es la
- *  fuente: si cambian, se cambian allí primero. */
-const CIFRAS = [
-  { valor: "+600", etiqueta: "Proyectos de consultoría y capacitación" },
-  { valor: "+200", etiqueta: "Empresas acompañadas en México y Latinoamérica" },
-  { valor: "+15", etiqueta: "Años diseñando soluciones estratégicas en sostenibilidad" },
-];
+/** Cifras de la banda. Viven en meta-descripciones.ts porque /llms.txt también
+ *  las publica; la fuente sigue siendo el documento de credenciales. */
+const CIFRAS = CIFRAS_NOSOTROS;
 
 /* AboutPage: la entidad de la que trata la página es la organización. */
 const ABOUT_JSON_LD = {

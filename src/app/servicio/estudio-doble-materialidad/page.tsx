@@ -19,11 +19,12 @@ import {
   type Beneficio,
 } from "@/components/servicio/beneficios-carousel";
 import { AREA_SERVIDA, ORG_REF } from "@/lib/schema-organizacion";
+import { DESCRIPCION_DOBLE_MATERIALIDAD } from "@/lib/meta-descripciones";
 
 const CANONICAL =
   "https://responsable.net/servicio/estudio-doble-materialidad/";
-const DESCRIPTION =
-  "Realizamos su estudio de doble materialidad: identificamos impactos, riesgos y oportunidades ASG y los convertimos en decisiones de negocio. Alineado a CSRD y ESRS.";
+/* En meta-descripciones.ts: la usa también /llms.txt. */
+const DESCRIPTION = DESCRIPCION_DOBLE_MATERIALIDAD;
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: el template del layout raíz añade "| ResponSable".

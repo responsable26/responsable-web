@@ -4,9 +4,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { ListaCasos } from "@/components/casos/lista-casos";
 import { CASOS_PUBLICOS } from "@/lib/casos";
 import { BASE } from "@/lib/schema-organizacion";
+import { DESCRIPCION_CASOS } from "@/lib/meta-descripciones";
 
-const DESCRIPCION =
-  "Casos de éxito de ResponSable: cómo acompañamos a empresas de distintos sectores a convertir su estrategia de sostenibilidad en resultados de negocio.";
+/* En meta-descripciones.ts: la usa también /llms.txt. */
+const DESCRIPCION = DESCRIPCION_CASOS;
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.

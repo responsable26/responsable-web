@@ -239,7 +239,7 @@ export const CUADRANTES: Cuadrante[] = [
       {
         nombre: "Estrategia de Sostenibilidad",
         descripcion:
-          "Convertimos lo que su empresa ya sabe —materialidad, benchmark, tendencias— en pilares, objetivos y líneas de acción alineados con la visión del negocio, priorizados con criterios de factibilidad y no por orden de llegada.",
+          "Convertimos lo que su empresa ya sabe (materialidad, benchmark, tendencias) en pilares, objetivos y líneas de acción alineados con la visión del negocio, priorizados con criterios de factibilidad y no por orden de llegada.",
         puntos: [
           "Definimos pilares, objetivos y líneas de acción.",
           "Alineamos la sostenibilidad con la visión del negocio.",

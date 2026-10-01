@@ -6,9 +6,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { RejillaRecursos } from "@/components/recursos/rejilla-recursos";
 import { ARTICULOS, formatFecha, type ArticuloMeta } from "@/lib/articulos";
 import { CATEGORIAS, categoriaDe } from "@/lib/categorias-articulos";
+import { DESCRIPCION_RECURSOS } from "@/lib/meta-descripciones";
 
-const DESCRIPCION =
-  "Estudios, perspectivas y artículos de ResponSable: las herramientas que necesita para convertir su estrategia de sostenibilidad en resultados tangibles.";
+/* En meta-descripciones.ts: la usa también /llms.txt. */
+const DESCRIPCION = DESCRIPCION_RECURSOS;
 
 export const metadata: Metadata = {
   // Sin sufijo de marca: lo añade el template del layout raíz.

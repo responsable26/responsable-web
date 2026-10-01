@@ -23,6 +23,7 @@ import {
   type ContenidoServicio,
 } from "@/lib/contenido-servicios";
 import { AREA_SERVIDA, ORG_REF } from "@/lib/schema-organizacion";
+import { metaDescripcionServicio } from "@/lib/meta-descripciones";
 
 /*
   Las diez páginas de servicio con contenido validado, sobre una sola ruta
@@ -44,19 +45,10 @@ export function generateStaticParams() {
   return CONTENIDO_SERVICIOS.map((servicio) => ({ slug: servicio.slug }));
 }
 
-/**
- * Descripción para metadatos, derivada del primer párrafo real del documento.
- *
- * Se recorta a 160 caracteres en límite de palabra: es donde Google deja de
- * mostrarla. No se inventa una frase aparte para no tener dos textos que
- * mantener y que puedan contradecirse.
- */
-function metaDescripcion(contenido: ContenidoServicio): string {
-  const texto = contenido.hero.descripcion[0] ?? contenido.cta.descripcion;
-  if (texto.length <= 160) return texto;
-  const corte = texto.slice(0, 160);
-  return `${corte.slice(0, corte.lastIndexOf(" "))}…`;
-}
+/* La descripción para metadatos sale de meta-descripciones.ts: la usa también
+   /llms.txt. Se deriva del primer párrafo real del documento, para no tener dos
+   textos que mantener y que puedan contradecirse. */
+const metaDescripcion = metaDescripcionServicio;
 
 export async function generateMetadata(
   props: PageProps<"/servicio/[slug]">,
