@@ -244,17 +244,20 @@ export const CASOS: Caso[] = [
     imagen: null,
     serviciosAplicados: ["Diagnóstico Social y Línea base comunitaria"],
     reto: [
-      "HEINEKEN México necesitaba fortalecer su estrategia de acceso al agua.",
-      "La empresa opera en regiones con contextos hídricos muy distintos entre sí, y sin información del territorio cualquier iniciativa corre el mismo riesgo: diseñarse desde el centro, con buena intención y presupuesto, para resolver una necesidad que no es la que la comunidad tiene.",
+      "HEINEKEN México trabaja la protección del agua en cuatro líneas: reducir, reusar, regresar y acceso al agua. En esta última, la empresa llevaba años apoyando a comunidades con escasez hídrica con latas de agua, pipas, tinacos y captadores de lluvia.",
+      "La pregunta era si esos apoyos respondían a lo que cada comunidad necesitaba. La necesidad de Yucatán no es la de Tecate: en un lugar puede haber agua pero faltar herramientas para captarla, y en otro el agua simplemente no alcanza. Sin información del territorio, cualquier iniciativa corría el riesgo de diseñarse desde el centro para resolver una necesidad que no era la de la comunidad.",
+      "El área de sostenibilidad necesitaba, además, un sustento para demostrar a la dirección por qué y en qué invertir, con datos reales y no con estimaciones.",
     ],
     solucion: [
-      "Una consulta comunitaria orientada a entender la situación región por región.",
-      "El trabajo identificó las necesidades reales de cada zona, las percepciones locales sobre la empresa y su operación, y las oportunidades de mejora que las propias comunidades señalaban.",
+      "Una consulta comunitaria enfocada en cómo usan el agua los hogares en su vida cotidiana, no la industria ni el campo.",
+      "El trabajo empezó por dentro. Se consultó a representantes de las vicepresidencias y de relaciones institucionales de las plantas, que son quienes atienden los temas de agua y tienen incidencia en las decisiones. En paralelo se hizo un benchmark de iniciativas de otras empresas, de organizaciones de la sociedad civil nacionales e internacionales y de gobiernos.",
+      "Después se salió a las zonas de influencia de las plantas. Se aplicaron entrevistas y cuestionarios uno a uno en comunidad, reforzados con encuestas en línea para habitantes cercanos. Las encuestas fueron anónimas y no mencionaban a HEINEKEN, para que la marca no sesgara las respuestas. Los instrumentos se simplificaron para quitar el lenguaje técnico propio de los temas de agua.",
+      "El enfoque cambió durante el proceso: en lugar de preguntar qué opinaba la comunidad de los proyectos de la empresa, se preguntó qué apoyo necesitaba realmente, viniera de quien viniera. Al final, los resultados se cruzaron con el benchmark para priorizar las iniciativas de mayor impacto.",
     ],
     resultados: [
-      "La consulta le dio a HEINEKEN México criterio para focalizar iniciativas, recursos y alianzas con mayor precisión.",
-      "Con esa base, la empresa comenzó a desarrollar una estrategia integral de acceso al agua, con iniciativas más asertivas y de mayor impacto que las que habría diseñado sin escuchar primero.",
-      "El valor del ejercicio no estuvo solo en los hallazgos, sino en el proceso de acercarse a los grupos de interés y analizar a fondo lo recopilado.",
+      "La consulta confirmó que las necesidades eran distintas en cada región y obligó a segmentar por zona: iniciativas pensadas como nacionales tenían que adaptarse a cada territorio.",
+      "También aparecieron hallazgos inesperados. En una región, los propios habitantes reconocieron el desperdicio de agua, las fugas sin atender y la morosidad en el pago del servicio, y señalaron que les serviría más recibir información sobre el cuidado del agua que recibir agua. El problema no era solo de acceso, sino de cultura del agua.",
+      "Con esa base, HEINEKEN México comenzó a desarrollar una estrategia integral de acceso al agua, con iniciativas más asertivas, eficientes y de mayor impacto, y planea repetir la evaluación periódicamente como parte de la mejora continua de sus programas.",
     ],
   },
 ];
