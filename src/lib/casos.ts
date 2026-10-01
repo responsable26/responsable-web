@@ -66,6 +66,15 @@ export type Caso = {
    * línea.
    */
   sinValidar?: boolean;
+  /**
+   * Cuando la descripción y el video cuentan un proyecto POSTERIOR al del
+   * relato Reto/Solución/Resultados, la página los pasa al final, después de
+   * los resultados, bajo este título, para que se lean como continuación y no
+   * como el inicio del caso. Sin él, abren el cuerpo como siempre.
+   *
+   * No afecta al carrusel de la Home, que sigue mostrando la descripción.
+   */
+  tituloContinuacion?: string;
   /*
     Un elemento por párrafo, como hero.descripcion en contenido-servicios.ts:
     la página pinta un <p> por entrada. En una sola cadena, un salto de línea
@@ -85,10 +94,13 @@ export const CASOS: Caso[] = [
     resumen:
       "Un conjunto de iniciativas dispersas convertido en un modelo de sostenibilidad alineado a la misión del negocio y adoptado por toda la organización.",
     descripcion:
-      "Conjuntamente con Profuturo, se implementó un proyecto estratégico enfocado en el desarrollo de su cadena de valor sostenible, un componente clave que permitió complementar y cerrar al 100% las metas iniciales de su modelo de madurez en sostenibilidad. Nuestra intervención abordó el desconocimiento técnico inicial mediante una rigurosa planificación y programas de capacitación dirigidos tanto a colaboradores internos como a proveedores de diversas escalas, lo que facilitó el diseño de una guía formal de buenas prácticas que mitiga el riesgo de greenwashing y promueve un impacto real en toda la cadena. A través de una metodología caracterizada por la flexibilidad y un acompañamiento continuo altamente personalizado, brindamos el soporte necesario para superar cada reto operativo, permitiendo a la organización consolidar exitosamente este ciclo de gestión y transitar con solidez hacia su siguiente estrategia corporativa.",
+      "Conjuntamente con Profuturo, se implementó un proyecto estratégico enfocado en el desarrollo de su cadena de valor sostenible, un componente clave que permitió complementar y cerrar al 100% las metas iniciales de su modelo de madurez en sostenibilidad. Nuestra intervención abordó el desconocimiento técnico inicial mediante una rigurosa planificación y programas de capacitación dirigidos a colaboradores internos, lo que facilitó el diseño de una guía formal de buenas prácticas que mitiga el riesgo de greenwashing y promueve un impacto real en toda la cadena. A través de una metodología caracterizada por la flexibilidad y un acompañamiento continuo altamente personalizado, brindamos el soporte necesario para superar cada reto operativo, permitiendo a la organización consolidar exitosamente este ciclo de gestión y transitar con solidez hacia su siguiente estrategia corporativa.",
     videoYoutube: "VJQMRzXtwmQ",
     imagen: null,
     serviciosAplicados: ["Estrategia de Sostenibilidad"],
+    /* La descripción y el video son del proyecto de cadena de valor, posterior
+       a la materialidad y el modelo que narran reto/solución/resultados. */
+    tituloContinuacion: "Seguimiento de su estrategia",
     reto: [
       "Profuturo ya hacía muchas cosas bien. Tenía código de ética, iniciativas de bienestar, acciones filantrópicas, políticas de gobierno corporativo y proyectos sociales. El problema era que ninguna de esas iniciativas estaba conectada con las demás, ni con la estrategia del negocio.",
       "El tema vivía en un área de cuatro personas dentro de Capital Humano, se entendía como responsabilidad social y no como sostenibilidad, y nunca se había consultado a los grupos de interés sobre estos temas. Ni siquiera a los clientes, con quienes la empresa se comunicaba a diario para asuntos de servicio y operación.",

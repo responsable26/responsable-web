@@ -7,7 +7,12 @@ import { SiteFooter } from "@/components/site-footer";
 import { CtaContacto } from "@/components/cta-contacto";
 import { CasoCard } from "@/components/casos/caso-card";
 import { VideoYoutube } from "@/components/video-youtube";
-import { CASOS_PUBLICOS, PLACEHOLDER, getCaso, rutaDeServicio } from "@/lib/casos";
+import {
+  CASOS_PUBLICOS,
+  PLACEHOLDER,
+  getCaso,
+  rutaDeServicio,
+} from "@/lib/casos";
 
 export function generateStaticParams() {
   return CASOS_PUBLICOS.map((caso) => ({ slug: caso.slug }));
@@ -123,6 +128,44 @@ export default async function CasoPage(
     { id: "resultados", titulo: "Los resultados", texto: caso.resultados },
   ];
 
+  const aperturaCaso = (
+    <>
+      {/* Descripción completa, sin truncar: el recorte del carrusel es
+                  solo de presentación. */}
+      <p className="font-body text-[1.15rem] text-ink-soft">
+        {caso.descripcion}
+      </p>
+
+      {/*
+                El testimonio abre el cuerpo, entre la descripción y el relato
+                de Reto/Solución/Resultados. Va aquí y no en una banda a ancho
+                de contenedor porque a 1120px un 16:9 mide 630px de alto y se
+                comería la página; dentro de la columna de texto mide 383px,
+                que es una escala de protagonista sin ser una portada.
+
+                Y va antes del relato, no después: es lo único visual de la
+                página —ningún caso tiene imagen— y el cuerpo
+                arrancaba con tres bloques seguidos de texto corrido. Además la
+                voz del cliente respalda el caso antes de contarlo, no al final.
+
+                El encabezado va a la escala de los otros tres y con su misma
+                fórmula («El reto», «La solución»…), para que los cuatro se
+                lean como el mismo nivel de la jerarquía.
+              */}
+      <section className="mt-10">
+        <h2 className="font-head text-[clamp(1.5rem,3.5vw,2.1rem)] font-semibold text-navy">
+          El testimonio
+        </h2>
+        <VideoYoutube
+          id={caso.videoYoutube}
+          titulo={`Testimonio de ${caso.cliente}`}
+          sizes="(min-width: 1024px) 680px, 100vw"
+          className="mt-4"
+        />
+      </section>
+    </>
+  );
+
   return (
     <>
       <script
@@ -203,42 +246,10 @@ export default async function CasoPage(
                 medida de lectura única del sitio (ver §2 de globals.css). En px
                 y no en ch: el ch resolvería contra los 16px heredados. */}
             <div className="max-w-[786px] lg:flex-1">
-              {/* Descripción completa, sin truncar: el recorte del carrusel es
-                  solo de presentación. */}
-              <p className="font-body text-[1.15rem] text-ink-soft">
-                {caso.descripcion}
-              </p>
-
-              {/*
-                El testimonio abre el cuerpo, entre la descripción y el relato
-                de Reto/Solución/Resultados. Va aquí y no en una banda a ancho
-                de contenedor porque a 1120px un 16:9 mide 630px de alto y se
-                comería la página; dentro de la columna de texto mide 383px,
-                que es una escala de protagonista sin ser una portada.
-
-                Y va antes del relato, no después: es lo único visual de la
-                página —ningún caso tiene imagen— y el cuerpo
-                arrancaba con tres bloques seguidos de texto corrido. Además la
-                voz del cliente respalda el caso antes de contarlo, no al final.
-
-                El encabezado va a la escala de los otros tres y con su misma
-                fórmula («El reto», «La solución»…), para que los cuatro se
-                lean como el mismo nivel de la jerarquía.
-              */}
-              <section className="mt-10">
-                <h2 className="font-head text-[clamp(1.5rem,3.5vw,2.1rem)] font-semibold text-navy">
-                  El testimonio
-                </h2>
-                <VideoYoutube
-                  id={caso.videoYoutube}
-                  titulo={`Testimonio de ${caso.cliente}`}
-                  sizes="(min-width: 1024px) 680px, 100vw"
-                  className="mt-4"
-                />
-              </section>
+              {caso.tituloContinuacion ? null : aperturaCaso}
 
               {SECCIONES.map((seccion) => (
-                <section key={seccion.id} className="mt-10">
+                <section key={seccion.id} className="mt-10 first:mt-0">
                   <h2 className="font-head text-[clamp(1.5rem,3.5vw,2.1rem)] font-semibold text-navy">
                     {seccion.titulo}
                   </h2>
@@ -252,6 +263,26 @@ export default async function CasoPage(
                   ))}
                 </section>
               ))}
+
+              {/* Proyecto posterior: descripción y video cierran el caso como
+                  continuación, con su propio título (ver tituloContinuacion en
+                  casos.ts). */}
+              {caso.tituloContinuacion ? (
+                <section className="mt-10">
+                  <h2 className="font-head text-[clamp(1.5rem,3.5vw,2.1rem)] font-semibold text-navy">
+                    {caso.tituloContinuacion}
+                  </h2>
+                  <p className="font-body mt-4 text-[1.05rem] text-ink-soft">
+                    {caso.descripcion}
+                  </p>
+                  <VideoYoutube
+                    id={caso.videoYoutube}
+                    titulo={`Testimonio de ${caso.cliente}`}
+                    sizes="(min-width: 1024px) 680px, 100vw"
+                    className="mt-6"
+                  />
+                </section>
+              ) : null}
             </div>
 
             <aside className="lg:w-72 lg:shrink-0">
