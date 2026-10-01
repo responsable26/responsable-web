@@ -10,7 +10,7 @@ import { usePistaArrastrable } from "@/components/use-pista-arrastrable";
 
 const LOGOS = [
   { nombre: "Heineken México", archivo: "heineken-mexico", w: 512, h: 182 },
-  { nombre: "Baker M", archivo: "baker-m", w: 800, h: 533 },
+  { nombre: "Baker McKenzie", archivo: "baker-m", w: 800, h: 533 },
   { nombre: "Deacero", archivo: "deacero", w: 235, h: 110 },
   {
     nombre: "Pacto Mundial Red Española",

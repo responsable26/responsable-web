@@ -6,6 +6,8 @@ import { ServiciosCuadrantes } from "@/components/servicio/servicios-cuadrantes"
 import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { Articulos } from "@/components/home/articulos";
 import { ARTICULOS } from "@/lib/articulos";
+import { CUADRANTES } from "@/lib/servicios";
+import { BASE, ORG_REF } from "@/lib/schema-organizacion";
 
 const DESCRIPCION =
   "Diagnóstico, estrategia, implementación y comunicación en sostenibilidad. Los servicios con los que acompañamos a su empresa en cada etapa.";
@@ -27,9 +29,44 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+/* CollectionPage con los 25 servicios del catálogo, en el orden en que se
+   pintan. Los que tienen página propia llevan su URL; los demás, solo nombre y
+   descripción. */
+const COLECCION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Servicios",
+  description: DESCRIPCION,
+  url: `${BASE}/servicio/`,
+  inLanguage: "es-MX",
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: CUADRANTES.flatMap((c) => c.servicios).length,
+    itemListElement: CUADRANTES.flatMap((c) => c.servicios).map(
+      (servicio, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Service",
+          name: servicio.nombre,
+          description: servicio.descripcion,
+          provider: ORG_REF,
+          ...(servicio.href && !servicio.noEnlazable
+            ? { url: `${BASE}${servicio.href}` }
+            : {}),
+        },
+      }),
+    ),
+  },
+};
+
 export default function ServicioPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(COLECCION_JSON_LD) }}
+      />
       <SiteHeader />
 
       <main id="main" className="flex-1">

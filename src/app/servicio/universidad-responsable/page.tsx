@@ -18,6 +18,7 @@ import {
   UNIVERSIDAD,
   type TarjetaUniversidad,
 } from "@/lib/contenido-universidad";
+import { AREA_SERVIDA, ORG_REF } from "@/lib/schema-organizacion";
 
 /*
   E-learning en sostenibilidad: Universidad ResponSable.
@@ -251,13 +252,9 @@ export default function UniversidadResponsablePage() {
     name: hero.titulo,
     description: UNIVERSIDAD.seo.descripcion,
     url: `${BASE}${CANONICAL}`,
-    provider: {
-      "@type": "Organization",
-      name: "ResponSable",
-      url: `${BASE}/`,
-    },
+    provider: ORG_REF,
     /* Mismo valor que las demás páginas de servicio. */
-    areaServed: "ES",
+    areaServed: AREA_SERVIDA,
   };
 
   const breadcrumbJsonLd = {

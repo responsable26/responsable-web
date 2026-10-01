@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 
 /*
-  Sin reglas de bloqueo: la exclusión de la página de doble materialidad la
-  gobierna su propio `robots: { index: false }`, que es más preciso que un
-  Disallow —permite rastrearla y leer la directiva— y vive junto a la página.
+  Sin reglas de bloqueo. Las pocas páginas que no deben indexarse (/legal/ y
+  sus dos hijas, /proveedores/ y /trabaja-con-nosotros/) lo declaran con su
+  propio `robots: { index: false }`, que es más preciso que un Disallow
+  —permite rastrearlas y leer la directiva— y vive junto a cada página.
 */
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ListaCasos } from "@/components/casos/lista-casos";
 import { CASOS_PUBLICOS } from "@/lib/casos";
+import { BASE } from "@/lib/schema-organizacion";
 
 const DESCRIPCION =
   "Casos de éxito de ResponSable: cómo acompañamos a empresas de distintos sectores a convertir su estrategia de sostenibilidad en resultados de negocio.";
@@ -24,9 +25,33 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+/* CollectionPage con los casos publicados, en el orden de la página. */
+const COLECCION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Casos de Éxito",
+  description: DESCRIPCION,
+  url: `${BASE}/casos-de-exito/`,
+  inLanguage: "es-MX",
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: CASOS_PUBLICOS.length,
+    itemListElement: CASOS_PUBLICOS.map((caso, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${BASE}/casos-de-exito/${caso.slug}/`,
+      name: caso.cliente,
+    })),
+  },
+};
+
 export default function CasosPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(COLECCION_JSON_LD) }}
+      />
       <SiteHeader />
 
       <main id="main" className="flex-1">

@@ -17,6 +17,7 @@ import {
 import { categoriaDe } from "@/lib/categorias-articulos";
 import { getArticuloBlocks } from "@/lib/articulos-content";
 import { prepararIndice } from "@/lib/indice-articulo";
+import { ORG_REF } from "@/lib/schema-organizacion";
 
 /**
  * Los tres artículos de "Otros artículos".
@@ -117,24 +118,9 @@ export default async function ArticuloPage(
     image: articulo.imagen
       ? `https://responsable.net${articulo.imagen.src}`
       : undefined,
-    author: {
-      "@type": "Organization",
-      name: "ResponSable",
-      url: "https://responsable.net/",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ResponSable",
-      url: "https://responsable.net/",
-      /* El isotipo en PNG, el mismo que usan el favicon y el correo de
-         contacto: Google pide un logo rasterizado, no SVG. */
-      logo: {
-        "@type": "ImageObject",
-        url: "https://responsable.net/brand/isotipo.png",
-        width: 500,
-        height: 500,
-      },
-    },
+    /* La organización, con su logo, está en el Organization del layout. */
+    author: ORG_REF,
+    publisher: ORG_REF,
     mainEntityOfPage: `https://responsable.net/recursos/articulos/${articulo.slug}/`,
   };
 

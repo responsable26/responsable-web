@@ -10,9 +10,25 @@ import { CtaContacto } from "@/components/cta-contacto";
 import { AbrirContactoDesdeUrl } from "@/components/abrir-contacto-desde-url";
 import { ARTICULOS } from "@/lib/articulos";
 import { POSTER_HERO } from "@/lib/video-hero";
+import {
+  BASE,
+  DESCRIPCION_ORGANIZACION,
+  ORG_REF,
+} from "@/lib/schema-organizacion";
 
-const DESCRIPCION =
-  "Consultoría en sostenibilidad y RSE. Desde 2011 acompañamos a su empresa a anticipar riesgos y convertir la estrategia ESG en resultados medibles.";
+/* La misma frase es la description del Organization: se define una vez, en
+   schema-organizacion.ts, para que no se separen. */
+const DESCRIPCION = DESCRIPCION_ORGANIZACION;
+
+/* WebSite solo en la Home; su publisher es el Organization del layout. */
+const WEBSITE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "ResponSable",
+  url: `${BASE}/`,
+  inLanguage: "es-MX",
+  publisher: ORG_REF,
+};
 
 export const metadata: Metadata = {
   /*
@@ -39,6 +55,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD) }}
+      />
       <AbrirContactoDesdeUrl />
       <SiteHeader transparent />
       <main>

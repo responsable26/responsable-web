@@ -18,6 +18,7 @@ import {
   BeneficiosCarousel,
   type Beneficio,
 } from "@/components/servicio/beneficios-carousel";
+import { AREA_SERVIDA, ORG_REF } from "@/lib/schema-organizacion";
 
 const CANONICAL =
   "https://responsable.net/servicio/estudio-doble-materialidad/";
@@ -177,12 +178,8 @@ const SERVICE_JSON_LD = {
   description:
     "Estudio de doble materialidad para empresas: identificamos impactos, riesgos y oportunidades ASG (IROs) y los convertimos en decisiones de negocio, alineado a CSRD, ESRS y GRI.",
   url: CANONICAL,
-  provider: {
-    "@type": "Organization",
-    name: "ResponSable",
-    url: "https://responsable.net/",
-  },
-  areaServed: "ES",
+  provider: ORG_REF,
+  areaServed: AREA_SERVIDA,
   audience: {
     "@type": "Audience",
     audienceType:

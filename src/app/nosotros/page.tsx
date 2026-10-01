@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { CtaContacto } from "@/components/cta-contacto";
 import { RuedaCuadrantes } from "@/components/servicio/rueda-cuadrantes";
 import { POSTER_HERO, VIDEO_HERO } from "@/lib/video-hero";
+import { BASE, ORG_REF } from "@/lib/schema-organizacion";
 
 const DESCRIPCION =
   "Consultoría en sostenibilidad y RSE desde 2011. Acompañamos a más de 200 empresas en México y Latinoamérica a convertir la sostenibilidad en decisiones de negocio.";
@@ -87,9 +88,24 @@ const CIFRAS = [
   { valor: "+15", etiqueta: "Años diseñando soluciones estratégicas en sostenibilidad" },
 ];
 
+/* AboutPage: la entidad de la que trata la página es la organización. */
+const ABOUT_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "Conócenos",
+  description: DESCRIPCION,
+  url: `${BASE}/nosotros/`,
+  inLanguage: "es-MX",
+  mainEntity: ORG_REF,
+};
+
 export default function NosotrosPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_JSON_LD) }}
+      />
       <SiteHeader />
 
       <main id="main" className="flex-1">

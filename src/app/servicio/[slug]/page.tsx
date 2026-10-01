@@ -22,6 +22,7 @@ import {
   type BloqueServicio,
   type ContenidoServicio,
 } from "@/lib/contenido-servicios";
+import { AREA_SERVIDA, ORG_REF } from "@/lib/schema-organizacion";
 
 /*
   Las diez páginas de servicio con contenido validado, sobre una sola ruta
@@ -435,15 +436,9 @@ export default async function ServicioPage(
     name: hero.titulo,
     description: descripcion,
     url: canonical,
-    provider: {
-      "@type": "Organization",
-      name: "ResponSable",
-      url: `${BASE}/`,
-    },
-    /* Mismo valor que declara la página de Doble Materialidad, para no abrir
-       dos criterios distintos en el mismo sitio. Ver el reporte: el contenido
-       apunta sobre todo a México. */
-    areaServed: "ES",
+    provider: ORG_REF,
+    /* México y Latinoamérica, como el resto del sitio y el Organization. */
+    areaServed: AREA_SERVIDA,
   };
 
   const breadcrumbJsonLd = {

@@ -13,6 +13,7 @@ import {
   getCaso,
   rutaDeServicio,
 } from "@/lib/casos";
+import { ORG_REF } from "@/lib/schema-organizacion";
 
 export function generateStaticParams() {
   return CASOS_PUBLICOS.map((caso) => ({ slug: caso.slug }));
@@ -83,17 +84,16 @@ export default async function CasoPage(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `Caso de éxito: ${caso.cliente}`,
+    description: caso.resumen,
+    /* La imagen del caso si la tiene; si no, la miniatura de su video de
+       YouTube, que es lo que se ve del caso. Sin datePublished: no hay fecha
+       real del caso que declarar. */
+    image: caso.imagen
+      ? `https://responsable.net${caso.imagen.src}`
+      : `https://i.ytimg.com/vi/${caso.videoYoutube}/hqdefault.jpg`,
     about: { "@type": "Organization", name: caso.cliente },
-    author: {
-      "@type": "Organization",
-      name: "ResponSable",
-      url: "https://responsable.net/",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ResponSable",
-      url: "https://responsable.net/",
-    },
+    author: ORG_REF,
+    publisher: ORG_REF,
     mainEntityOfPage: `https://responsable.net/casos-de-exito/${caso.slug}/`,
   };
 

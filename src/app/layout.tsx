@@ -9,6 +9,7 @@ import {
   GoogleTagManagerNoScript,
 } from "@/components/gtm";
 import { HojasFlotantes } from "@/components/hojas-flotantes";
+import { ORGANIZACION_JSON_LD } from "@/lib/schema-organizacion";
 import "./globals.css";
 
 /*
@@ -47,6 +48,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Primer elemento del body, como pide GTM. */}
         <GoogleTagManagerNoScript />
         <GoogleTagManager />
+        {/* Organization con @id estable, en todas las páginas: el resto de
+            schemas la referencia por ese @id (ver schema-organizacion.ts). */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(ORGANIZACION_JSON_LD),
+          }}
+        />
         <ScrollSuave />
         <CapturaGclid />
         {/*

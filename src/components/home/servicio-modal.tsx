@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, type RefObject } from "react";
 import Link from "next/link";
 import { CloseIcon } from "@/components/icons";
 import { pausarScroll, reanudarScroll } from "@/lib/scroll-suave";
 import { ContactButton } from "@/components/contact-button";
-import type { Servicio } from "@/lib/servicios";
+import { CUADRANTES, type Servicio } from "@/lib/servicios";
+
+/** Los 25 servicios del catálogo, en el orden de los cuadrantes. */
+const TODOS: Servicio[] = CUADRANTES.flatMap((c) => c.servicios);
 
 /** Selector de lo que puede recibir foco dentro del panel, para el atrapado. */
 const ENFOCABLES =
@@ -19,6 +22,14 @@ const ENFOCABLES =
  *
  * La devolución del foco al disparador la hace quien lo abre, que es el único
  * que sabe de qué botón salió.
+ *
+ * Las fichas de los 25 servicios se renderizan siempre, también en el
+ * servidor, y solo la abierta se muestra. Así la descripción y los puntos de
+ * cada servicio llegan en el HTML sin ejecutar JavaScript, como el contenido
+ * plegado del acordeón de preguntas frecuentes. Las cerradas llevan `hidden`
+ * (display: none): no se ven, no reciben foco y quedan fuera del árbol de
+ * accesibilidad. La lista sale del catálogo y no de quien abre el modal, que
+ * solo indica cuál está abierta.
  */
 export function ServicioModal({
   servicio,
@@ -29,7 +40,6 @@ export function ServicioModal({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const cerrarRef = useRef<HTMLButtonElement>(null);
-  const tituloId = useId();
 
   useEffect(() => {
     if (!servicio) return;
@@ -71,13 +81,47 @@ export function ServicioModal({
     };
   }, [servicio, onClose]);
 
-  if (!servicio) return null;
+  return (
+    <>
+      {TODOS.map((item) => {
+        const abierta = servicio?.nombre === item.nombre;
+        return (
+          <FichaServicio
+            key={item.nombre}
+            servicio={item}
+            abierta={abierta}
+            onClose={onClose}
+            panelRef={abierta ? panelRef : undefined}
+            cerrarRef={abierta ? cerrarRef : undefined}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+/** Una ficha. Mismo marcado que antes; cerrada, lleva `hidden`. */
+function FichaServicio({
+  servicio,
+  abierta,
+  onClose,
+  panelRef,
+  cerrarRef,
+}: {
+  servicio: Servicio;
+  abierta: boolean;
+  onClose: () => void;
+  panelRef?: RefObject<HTMLDivElement | null>;
+  cerrarRef?: RefObject<HTMLButtonElement | null>;
+}) {
+  const tituloId = useId();
 
   // noEnlazable manda sobre href: nunca se pinta el enlace.
   const enlazable = Boolean(servicio.href) && !servicio.noEnlazable;
 
   return (
     <div
+      hidden={!abierta}
       role="dialog"
       aria-modal="true"
       aria-labelledby={tituloId}
