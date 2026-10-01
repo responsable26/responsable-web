@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "Centro de Recursos | ResponSable",
     description: DESCRIPCION,
     url: "/recursos/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };
@@ -97,6 +97,29 @@ export default function RecursosPage() {
     articulo,
     categoria: categoriaDe(articulo.slug).id,
   }));
+  /* CollectionPage con la lista de artículos en el mismo orden en que se
+     pintan: el destacado primero y después la rejilla. Son todos los de
+     ARTICULOS, también los que llegan ocultos tras «Ver más»: están en el HTML
+     y forman parte de la página. */
+  const COLECCION_JSON_LD = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Centro de Recursos",
+    description: DESCRIPCION,
+    url: "https://responsable.net/recursos/",
+    inLanguage: "es-MX",
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: ordenados.length,
+      itemListElement: ordenados.map((articulo, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `https://responsable.net/recursos/articulos/${articulo.slug}/`,
+        name: articulo.titulo,
+      })),
+    },
+  };
+
   const categorias = CATEGORIAS.map((c) => ({
     id: c.id,
     nombre: c.nombre,
@@ -105,6 +128,10 @@ export default function RecursosPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(COLECCION_JSON_LD) }}
+      />
       <SiteHeader />
 
       <main id="main" className="flex-1">

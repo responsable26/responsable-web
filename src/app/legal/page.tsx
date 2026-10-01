@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "Legal | ResponSable",
     description: DESCRIPCION,
     url: "/legal/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

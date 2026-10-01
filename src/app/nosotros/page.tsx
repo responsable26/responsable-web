@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: "Conócenos | ResponSable",
     description: DESCRIPCION,
     url: "/nosotros/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

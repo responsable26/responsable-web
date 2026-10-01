@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: "ResponSable | Consultoría en sostenibilidad y ESG",
     description: DESCRIPCION,
     url: "/",
-    locale: "es_ES",
+    locale: "es_MX",
     images: [{ url: POSTER_HERO, width: 1280, height: 720 }],
   },
   twitter: { card: "summary_large_image" },

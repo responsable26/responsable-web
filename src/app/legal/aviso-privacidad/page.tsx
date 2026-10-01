@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: "Aviso de Privacidad | ResponSable",
     description: DESCRIPCION,
     url: "/legal/aviso-privacidad/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

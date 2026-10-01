@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: "Trabaja con nosotros | ResponSable",
     description: DESCRIPCION,
     url: "/trabaja-con-nosotros/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

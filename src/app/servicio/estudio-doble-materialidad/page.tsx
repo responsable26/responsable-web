@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "Estudio de Doble Materialidad para Empresas | ResponSable",
     description: DESCRIPTION,
     url: CANONICAL,
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

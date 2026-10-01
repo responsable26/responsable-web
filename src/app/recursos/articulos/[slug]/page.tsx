@@ -38,7 +38,7 @@ export async function generateMetadata(
       title: `${articulo.titulo} | ResponSable`,
       description: articulo.excerpt,
       url: canonical,
-      locale: "es_ES",
+      locale: "es_MX",
       publishedTime: articulo.fecha,
       images: articulo.imagen
         ? [
@@ -66,10 +66,12 @@ export default async function ArticuloPage(
     await getArticuloBlocks(articulo.slug),
   );
   const conIndice = total >= 2;
-  /* La categoría del Centro de Recursos, no la de WordPress: la miga lleva a
-     /recursos/ con ese filtro aplicado. */
+  /* La categoría del Centro de Recursos, no la de WordPress. Solo se muestra
+     como etiqueta sobre el título: la miga va a /recursos/ y no a
+     /recursos/?categoria=…, que no es una página propia (el filtro vive en el
+     cliente y la URL canonicaliza a /recursos/). Cuando las categorías tengan
+     URL, la miga puede volver a pasar por ellas. */
   const categoria = categoriaDe(articulo.slug);
-  const urlCategoria = `/recursos/?categoria=${categoria.id}`;
   const relacionados = ARTICULOS.filter((a) => a.slug !== articulo.slug).slice(
     0,
     3,
@@ -81,6 +83,9 @@ export default async function ArticuloPage(
     headline: articulo.titulo,
     description: articulo.excerpt,
     datePublished: articulo.fecha,
+    /* El export de WordPress no trae fecha de modificación: se declara la de
+       publicación en vez de inventar una. */
+    dateModified: articulo.fecha,
     image: articulo.imagen
       ? `https://responsable.net${articulo.imagen.src}`
       : undefined,
@@ -93,6 +98,14 @@ export default async function ArticuloPage(
       "@type": "Organization",
       name: "ResponSable",
       url: "https://responsable.net/",
+      /* El isotipo en PNG, el mismo que usan el favicon y el correo de
+         contacto: Google pide un logo rasterizado, no SVG. */
+      logo: {
+        "@type": "ImageObject",
+        url: "https://responsable.net/brand/isotipo.png",
+        width: 500,
+        height: 500,
+      },
     },
     mainEntityOfPage: `https://responsable.net/recursos/articulos/${articulo.slug}/`,
   };
@@ -110,8 +123,8 @@ export default async function ArticuloPage(
       {
         "@type": "ListItem",
         position: 2,
-        name: categoria.nombre,
-        item: `https://responsable.net${urlCategoria}`,
+        name: "Recursos",
+        item: "https://responsable.net/recursos/",
       },
       {
         "@type": "ListItem",
@@ -178,13 +191,13 @@ export default async function ArticuloPage(
             <ol className="font-body flex flex-wrap items-center gap-2 text-sm text-ink-soft">
               <li>
                 <Link href="/" className="hover:text-navy">
-                  Home
+                  Inicio
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
               <li>
-                <Link href={urlCategoria} className="hover:text-navy">
-                  {categoria.nombre}
+                <Link href="/recursos/" className="hover:text-navy">
+                  Recursos
                 </Link>
               </li>
               <li aria-hidden="true">/</li>

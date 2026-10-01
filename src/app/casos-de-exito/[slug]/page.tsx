@@ -46,7 +46,7 @@ export async function generateMetadata(
       title: `Caso de éxito: ${caso.cliente} | ResponSable`,
       description: descripcion,
       url: canonical,
-      locale: "es_ES",
+      locale: "es_MX",
       images: caso.imagen
         ? [
             {

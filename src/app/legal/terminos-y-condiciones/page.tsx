@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: "Términos y Condiciones | ResponSable",
     description: DESCRIPCION,
     url: "/legal/terminos-y-condiciones/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

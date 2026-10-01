@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Casos de Éxito | ResponSable",
     description: DESCRIPCION,
     url: "/casos-de-exito/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${poppins.variable} h-full antialiased`}>
+    <html lang="es-MX" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {/* Primer elemento del body, como pide GTM. */}
         <GoogleTagManagerNoScript />

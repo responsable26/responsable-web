@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     title: UNIVERSIDAD.seo.titulo,
     description: UNIVERSIDAD.seo.descripcion,
     url: CANONICAL,
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };

@@ -82,7 +82,7 @@ export async function generateMetadata(
       title: `${contenido.hero.titulo} | ResponSable`,
       description: descripcion,
       url: canonical,
-      locale: "es_ES",
+      locale: "es_MX",
     },
     twitter: { card: "summary_large_image" },
   };

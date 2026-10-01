@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "Proveedores | ResponSable",
     description: DESCRIPCION,
     url: "/proveedores/",
-    locale: "es_ES",
+    locale: "es_MX",
   },
   twitter: { card: "summary_large_image" },
 };
