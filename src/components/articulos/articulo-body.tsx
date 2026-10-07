@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ContactButton } from "@/components/contact-button";
 import type { ArticuloBlock } from "@/lib/articulos-content";
 
 /**
@@ -45,6 +46,16 @@ export function ArticuloBody({ blocks }: { blocks: ArticuloBlock[] }) {
                   className="h-auto w-full rounded-sm"
                 />
               ))}
+            </div>
+          );
+        }
+
+        if (block.t === "cta") {
+          return (
+            <div key={i} className="my-6">
+              <ContactButton variant="primary" size="md">
+                {block.boton}
+              </ContactButton>
             </div>
           );
         }

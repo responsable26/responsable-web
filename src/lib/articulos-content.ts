@@ -10,8 +10,14 @@ export type ArticuloBlockGallery = {
 };
 /** Embed de YouTube (bloque legacy o shortcode del tema antiguo). */
 export type ArticuloBlockYoutube = { t: "youtube"; id: string };
+/** Botón que abre el modal de contacto sin sacar al lector de la nota. */
+export type ArticuloBlockCta = { t: "cta"; boton: string };
 
-export type ArticuloBlock = ArticuloBlockHtml | ArticuloBlockGallery | ArticuloBlockYoutube;
+export type ArticuloBlock =
+  | ArticuloBlockHtml
+  | ArticuloBlockGallery
+  | ArticuloBlockYoutube
+  | ArticuloBlockCta;
 
 /**
  * Lee el contenido de una nota. Solo se llama desde componentes de servidor
