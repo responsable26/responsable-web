@@ -53,6 +53,7 @@ const CATEGORIA_POR_SLUG: Record<string, CategoriaId> = {
   "10-errores-que-debes-evitar-en-tu-informe-de-sostenibilidad": "informes", // 2021 · 10 errores que debes evitar en tu Informe de Sostenibilidad
   "como-reportar-ods-en-informes-de-sustentabilidad": "informes", // 2019 · Cómo reportar ODS en tu informe de sustentabilidad en 2020
   /* distintivo-esr */
+  "como-comunicar-el-distintivo-esr-sin-greenwashing": "distintivo-esr", // 2026 · Cómo comunicar el Distintivo ESR sin caer en greenwashing
   "criterios-y-niveles-del-distintivo-esr": "distintivo-esr", // 2026 · Distintivo ESR: qué evalúa el modelo actual y cómo preparar a su empresa
   "que-es-el-distintivo-esr-y-como-postular": "distintivo-esr", // 2026 · ¿Qué es el Distintivo ESR de Cemefi y cómo postular?
   "nuevas-estrategias-para-una-postulacion-exitosa-al-distintivo-esr-2024": "distintivo-esr", // 2024 · Nuevas estrategias para una postulación exitosa al distintivo ESR 2024
