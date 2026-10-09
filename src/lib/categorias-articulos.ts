@@ -47,6 +47,7 @@ const CATEGORIA_POR_SLUG: Record<string, CategoriaId> = {
   "como-empezar-un-plan-de-responsabilidad-social": "estrategia", // 2020 · ¿Cómo empezar un plan de Responsabilidad Social?
   "las-10-recomendaciones-en-rs-de-bimbo-coca-cola-mexico-cemex-y-bio-pappel": "estrategia", // 2015 · Las 10 recomendaciones en RS de BIMBO, Coca-Cola México, CEMEX y Bio-P
   /* informes */
+  "niif-s1-s2-nis-gri-esrs-que-marco-aplica-a-su-empresa": "informes", // 2026 · NIIF S1 y S2, NIS, GRI o ESRS: qué marco aplica a su empresa
   "guia-reporte-de-sustentabilidad": "informes", // 2024 · Reporte de sustentabilidad: Guía para estructurarlo bajo estándares GR
   "tips-para-reportar-con-los-nuevos-estandares-gri": "informes", // 2022 · Tips para reportar con los nuevos estándares GRI
   "el-a-b-c-de-la-actualizacion-de-los-estandares-de-gri": "informes", // 2021 · El A, B, C de la actualización de los Estándares de GRI
