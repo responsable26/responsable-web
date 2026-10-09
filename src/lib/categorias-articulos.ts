@@ -28,6 +28,7 @@ export type CategoriaId = (typeof CATEGORIAS)[number]["id"];
 /** Una categoría por artículo, por slug. */
 const CATEGORIA_POR_SLUG: Record<string, CategoriaId> = {
   /* materialidad */
+  "materialidad-financiera-de-impacto-o-doble-materialidad": "materialidad", // 2026 · Materialidad financiera, de impacto o doble materialidad: cuál necesita su empresa
   "doble-materialidad-en-mexico-cuando-la-necesita-una-empresa": "materialidad", // 2026 · Doble materialidad en México: cuándo la necesita realmente una empresa
   "guia-sobre-la-doble-materialidad": "materialidad", // 2025 · Doble materialidad: Qué es y cómo soluciona tu estrategia ESG
   "guia-sobre-los-stakeholders": "materialidad", // 2025 · Tipos de stakeholders en una empresa y cómo gestionarlos correctamente
